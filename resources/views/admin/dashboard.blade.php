@@ -1,31 +1,72 @@
-@extends('layouts.admin.app')
+<x-admin-layout>
+    <div class="p-6 max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">Dashboard Admin</h1>
 
-@section('title', 'Dashboard')
+        <!-- Grid Statistik Utama -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
+            <!-- Total Pendapatan -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 font-medium">Total Pendapatan</p>
+                <h3 class="text-2xl font-bold text-gray-800">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</h3>
+            </div>
 
-@section('content')
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">Overview</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">📦</div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium">Total Produk</p>
-                <h3 class="text-2xl font-bold text-gray-900">0</h3>
+            <!-- Total Pesanan -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 font-medium">Total Pesanan</p>
+                <h3 class="text-2xl font-bold text-gray-800">{{ $totalPesanan }}</h3>
+            </div>
+
+            <!-- Pesanan Pending -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-orange-100 border-l-4 border-l-orange-500">
+                <p class="text-sm text-gray-500 font-medium">Pesanan Pending</p>
+                <h3 class="text-2xl font-bold text-orange-600">{{ $pesananPending }}</h3>
+            </div>
+
+            <!-- Pesanan Selesai -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-green-100 border-l-4 border-l-green-500">
+                <p class="text-sm text-gray-500 font-medium">Pesanan Selesai</p>
+                <h3 class="text-2xl font-bold text-green-600">{{ $pesananSelesai }}</h3>
+            </div>
+
+            <!-- Total Customer -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <p class="text-sm text-gray-500 font-medium">Total Customer</p>
+                <h3 class="text-2xl font-bold text-gray-800">{{ $totalCustomer }}</h3>
+            </div>
+
+            <!-- Akun Premium Tersedia -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-blue-100 border-l-4 border-l-blue-500">
+                <p class="text-sm text-gray-500 font-medium">Akun Premium Tersedia</p>
+                <h3 class="text-2xl font-bold text-blue-600">{{ $akunTersedia }}</h3>
             </div>
         </div>
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-2xl">🛒</div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium">Pesanan Aktif</p>
-                <h3 class="text-2xl font-bold text-gray-900">0</h3>
-            </div>
-        </div>
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl">💰</div>
-            <div>
-                <p class="text-sm text-gray-500 font-medium">Pendapatan</p>
-                <h3 class="text-2xl font-bold text-gray-900">Rp 0</h3>
+
+        <!-- Bagian Bawah: Produk Terlaris -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Produk Terlaris</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Produk</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terjual</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($produkTerlaris as $produk)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $produk->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $produk->orders_count }} kali</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="2" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Belum ada data penjualan.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-@endsection
+</x-admin-layout>

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OrderController; // <-- Import Admin OrderController
+use App\Http\Controllers\Admin\PremiumAccountController; // <-- Import Admin PremiumAccountController
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -43,6 +44,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // CRUD Produk
     Route::resource('products', ProductController::class);
+    
+    // Kelola Stok Akun Premium
+    Route::resource('premium-accounts', PremiumAccountController::class)->parameters([
+        'premium-accounts' => 'premium_account'
+    ]);
     
     // Kelola Pesanan (Admin Order Management)
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);

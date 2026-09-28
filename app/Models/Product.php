@@ -9,9 +9,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    /**
-     * Kolom yang diizinkan untuk diisi secara massal (mass assignment).
-     */
     protected $fillable = [
         'category_id',
         'name',
@@ -32,11 +29,18 @@ class Product extends Model
         'terms_and_conditions',
     ];
 
-    /**
-     * Relasi Belongs-To: Banyak produk dimiliki oleh satu kategori.
-     */
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Relasi Many-to-Many ke Order melalui tabel order_items
+     */
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items')
+                    ->withPivot('quantity', 'price')
+                    ->withTimestamps();
     }
 }
