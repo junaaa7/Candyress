@@ -23,6 +23,7 @@ class User extends Authenticatable
         'role',
         'avatar',
         'phone',
+        'is_active', // <-- Tambahan kolom status aktif/nonaktif
     ];
 
     /**
@@ -62,5 +63,13 @@ class User extends Authenticatable
     public function isCustomer(): bool
     {
         return $this->role === 'customer';
+    }
+
+    /**
+     * Relasi ke pesanan (Riwayat Pembelian)
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

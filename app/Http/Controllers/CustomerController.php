@@ -22,7 +22,8 @@ class CustomerController extends Controller
         $pendingOrders = $orders->where('status', 'pending')->count();
         $completedOrders = $orders->where('status', 'completed')->count();
 
-        return view('dashboard', compact('orders', 'totalOrders', 'pendingOrders', 'completedOrders'));
+        // PERUBAHAN DI SINI: tambahkan "customer." sebelum "dashboard"
+        return view('customer.dashboard', compact('orders', 'totalOrders', 'pendingOrders', 'completedOrders'));
     }
 
     public function showOrder($order_number)

@@ -9,18 +9,9 @@ class Category extends Model
 {
     use HasFactory;
 
-    /**
-     * Kolom yang diizinkan untuk diisi secara massal (mass assignment).
-     */
-    protected $fillable = [
-        'name',
-        'slug',
-        'icon',
-    ];
+    protected $fillable = ['name', 'slug'];
 
-    /**
-     * Relasi One-to-Many: Satu kategori memiliki banyak produk.
-     */
+    // Relasi: Satu kategori memiliki banyak produk
     public function products()
     {
         return $this->hasMany(Product::class);

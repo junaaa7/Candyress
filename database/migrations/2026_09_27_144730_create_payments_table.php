@@ -6,25 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
-            $table->string('payment_method');
-            $table->decimal('amount', 12, 2);
-            $table->enum('status', ['pending', 'verified', 'failed'])->default('pending');
-            $table->string('proof_of_payment')->nullable(); // Untuk upload bukti transfer
+            $table->string('payment_method'); // Contoh: BCA, QRIS, GoPay
+            $table->decimal('amount', 15, 2); // Jumlah yang ditransfer
+            $table->string('payment_proof')->nullable(); // Link gambar bukti transfer
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('rejection_reason')->nullable(); // Alasan jika ditolak
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('payments');

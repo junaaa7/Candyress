@@ -1,61 +1,57 @@
-@extends('layouts.admin.app')
-@section('title', 'Kelola Pesanan')
-@section('content')
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">Daftar Pesanan</h1>
+<x-admin-layout>
+    <div class="p-6 max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Kelola Pesanan</h1>
 
-    @if(session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-6">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-50 border-b border-gray-100 text-sm text-gray-500">
-                        <th class="p-4 font-semibold">Order ID</th>
-                        <th class="p-4 font-semibold">Customer</th>
-                        <th class="p-4 font-semibold">Total Tagihan</th>
-                        <th class="p-4 font-semibold">Status Pembayaran</th>
-                        <th class="p-4 font-semibold">Status Order</th>
-                        <th class="p-4 font-semibold text-right">Aksi</th>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. Pesanan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelanggan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Pembayaran</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm">
+                <tbody class="bg-white divide-y divide-gray-200">
                     @forelse($orders as $order)
-                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
-                            <td class="p-4 font-bold text-brand-600">{{ $order->order_number }}</td>
-                            <td class="p-4">
-                                <span class="block text-gray-900 font-medium">{{ $order->user->name }}</span>
-                                <span class="text-xs text-gray-500">{{ $order->user->email }}</span>
-                            </td>
-                            <td class="p-4 font-semibold text-gray-900">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</td>
-                            <td class="p-4">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-bold {{ $order->payment->status == 'verified' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700' }}">
-                                    {{ strtoupper($order->payment->status) }}
-                                </span>
-                            </td>
-                            <td class="p-4">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-bold 
-                                    {{ $order->status == 'completed' ? 'bg-green-100 text-green-700' : ($order->status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-blue-100 text-blue-700') }}">
-                                    {{ strtoupper($order->status) }}
-                                </span>
-                            </td>
-                            <td class="p-4 text-right">
-                                <a href="{{ route('admin.orders.show', $order->id) }}" class="inline-block bg-brand-50 hover:bg-brand-100 text-brand-700 font-semibold px-4 py-2 rounded-xl transition text-xs">Proses</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
+                            #{{ $order->order_number }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">{{ $order->user->name ?? 'User Dihapus' }}</div>
+                            <div class="text-sm text-gray-500">{{ $order->user->email ?? '' }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ $order->created_at->format('d M Y, H:i') }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            Rp {{ number_format($order->total_price, 0, ',', '.') }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($order->status == 'pending')
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            @elseif($order->status == 'processing')
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Diproses</span>
+                            @elseif($order->status == 'completed')
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Selesai</span>
+                            @else
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Dibatalkan</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="text-indigo-600 hover:text-indigo-900">Lihat Detail &rarr;</a>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" class="p-8 text-center text-gray-500">Belum ada pesanan masuk.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">Belum ada pesanan masuk.</td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="p-4 border-t border-gray-100">
-            {{ $orders->links() }}
-        </div>
     </div>
-@endsection
+</x-admin-layout>

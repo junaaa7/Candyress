@@ -3,13 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CategoryController; 
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\OrderController; // <-- Import Admin OrderController
-use App\Http\Controllers\Admin\PremiumAccountController; // <-- Import Admin PremiumAccountController
+use App\Http\Controllers\Admin\OrderController; 
+use App\Http\Controllers\Admin\PremiumAccountController; 
+use App\Http\Controllers\Admin\PaymentController; 
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController; 
+use App\Http\Controllers\Admin\VoucherController;
+use App\Http\Controllers\Admin\ReviewController; // <-- Import Admin ReviewController
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
 
 // Route Publik
 Route::get('/', [StoreController::class, 'index'])->name('home');
@@ -42,6 +49,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
+    // Kelola Kategori Produk
+    Route::resource('categories', CategoryController::class)->except(['show']);
+    
     // CRUD Produk
     Route::resource('products', ProductController::class);
     
@@ -52,6 +62,28 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     
     // Kelola Pesanan (Admin Order Management)
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
+
+    // Kelola Pembayaran (Admin Payment Management)
+    Route::resource('payments', PaymentController::class)->only(['index', 'show', 'update']);
+
+    // Kelola Customer (Admin Customer Management)
+    Route::resource('customers', AdminCustomerController::class)->only(['index', 'show']);
+    Route::patch('customers/{customer}/toggle-status', [AdminCustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
+
+    // Kelola Voucher / Promo
+    Route::resource('vouchers', VoucherController::class);
+
+    // Kelola Review / Ulasan
+    Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::patch('reviews/{review}/toggle', [ReviewController::class, 'toggleVisibility'])->name('reviews.toggle');
+    Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // Laporan Penjualan
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
+    // Pengaturan Toko
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__.'/auth.php';

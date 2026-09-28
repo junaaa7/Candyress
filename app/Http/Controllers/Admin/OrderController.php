@@ -8,37 +8,34 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    // 1. Melihat semua pesanan
     public function index()
     {
-        $orders = Order::with('user', 'payment')->latest()->paginate(10);
+        // Mengambil pesanan terbaru beserta data user pelanggannya
+        $orders = Order::with('user')->latest()->get();
         return view('admin.orders.index', compact('orders'));
     }
 
+    // 2. Melihat detail pesanan (Pelanggan & Produk)
     public function show(Order $order)
     {
-        $order->load(['items.product', 'payment', 'user']);
+        // Memuat relasi pelanggan dan produk yang ada di dalam pesanan
+        $order->load(['user', 'products']);
         return view('admin.orders.show', compact('order'));
     }
 
+    // 3. Mengubah status pesanan
     public function update(Request $request, Order $order)
     {
-        $request->validate([
-            'status' => 'required|in:pending,processing,completed,cancelled',
-            'payment_status' => 'required|in:pending,verified,failed',
-            'account_credentials' => 'nullable|string'
+        $validated = $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled'
         ]);
 
-        // Update status order dan detail akun
-        $order->update([
-            'status' => $request->status,
-            'account_credentials' => $request->account_credentials
-        ]);
+        $order->update(['status' => $validated['status']]);
 
-        // Update status pembayaran
-        $order->payment->update([
-            'status' => $request->payment_status
-        ]);
+        // Jika status selesai, di sini nanti Anda bisa menambahkan logika 
+        // untuk otomatis mengirim email berisi kredensial akun ke pelanggan
 
-        return back()->with('success', 'Pesanan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui!');
     }
 }
