@@ -21,7 +21,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="text-gray-500">Total Tagihan</span>
-                    <span class="font-extrabold text-2xl text-brand-600">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+                    <span class="font-extrabold text-2xl text-brand-600">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
                 </div>
             </div>
 

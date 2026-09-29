@@ -27,7 +27,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Dashboard Customer & Riwayat Pesanan
     Route::get('/dashboard', [CustomerController::class, 'index'])->name('dashboard');
+    
+    // Katalog Produk Customer (browsing + search + filter)
+    Route::get('/katalog-produk', [CustomerController::class, 'products'])->name('customer.products.index');
+    
+    // Riwayat Pesanan Customer (full list with filter) — harus sebelum route {order_number}
+    Route::get('/pesanan', [CustomerController::class, 'orders'])->name('customer.orders.index');
     Route::get('/pesanan/{order_number}', [CustomerController::class, 'showOrder'])->name('customer.order.show');
+    
+    // Upload Bukti Pembayaran
+    Route::get('/pembayaran', [CustomerController::class, 'payments'])->name('customer.payments.index');
+    Route::post('/pesanan/{order_number}/upload-pembayaran', [CustomerController::class, 'uploadPayment'])->name('customer.payment.upload');
+    
+    // Review / Ulasan Customer
+    Route::get('/ulasan', [CustomerController::class, 'reviews'])->name('customer.reviews.index');
+    Route::post('/ulasan', [CustomerController::class, 'storeReview'])->name('customer.reviews.store');
+    
+    // Update Profil Customer (enhanced with phone & avatar)
+    Route::post('/profile/update-customer', [CustomerController::class, 'updateProfile'])->name('customer.profile.update');
+
+    // Halaman Profil Customer (dedicated view)
+    Route::get('/profil', function () {
+        return view('customer.profile');
+    })->name('customer.profile');
 
     // Profil Bawaan Breeze
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

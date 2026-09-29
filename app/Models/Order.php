@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    // Mengubah 'total_amount' menjadi 'total_price' dan 'account_credentials' menjadi 'payment_method' sesuai migration Anda
-    protected $fillable = ['user_id', 'order_number', 'total_price', 'status', 'payment_method'];
+    protected $fillable = ['user_id', 'order_number', 'total_price', 'status', 'payment_method', 'account_credentials'];
 
     public function items() {
         return $this->hasMany(OrderItem::class);

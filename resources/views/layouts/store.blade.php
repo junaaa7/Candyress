@@ -16,7 +16,7 @@
     @include('components.navbar')
 
     <!-- Main Content -->
-    <main class="min-h-screen">
+    <main class="min-h-screen pt-16">
         @yield('content')
     </main>
 

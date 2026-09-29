@@ -49,7 +49,7 @@ class CheckoutController extends Controller
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'order_number' => 'ORD-' . strtoupper(Str::random(8)),
-                'total_amount' => $totalAmount,
+                'total_price' => $totalAmount,
                 'status' => 'pending'
             ]);
 

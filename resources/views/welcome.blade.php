@@ -54,39 +54,80 @@
         </div>
     </div>
 
-    <!-- 3. Produk Unggulan Section -->
-    <div id="produk" class="bg-gray-50 py-16">
+    <!-- 3. Katalog Showcase Section -->
+    <div id="produk" class="bg-gray-50 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <h2 class="text-2xl font-bold text-brand-900">Produk Pilihan</h2>
-                    <p class="text-gray-500 mt-2">Penawaran terbaik minggu ini untuk Anda.</p>
-                </div>
-                <a href="#" class="hidden sm:inline-block text-brand-600 font-semibold hover:text-brand-700">Lihat Semua &rarr;</a>
+            {{-- Header --}}
+            <div class="text-center mb-14">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-xs font-bold tracking-widest uppercase border border-brand-100 mb-4">
+                    Katalog
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-brand-900 tracking-tight">
+                    Aplikasi Premium Pilihan
+                </h2>
+                <p class="mt-4 text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                    Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
+                </p>
             </div>
-            
-           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {{-- Catalog Grid --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($products as $product)
-                    <x-product-card 
-                        name="{{ $product->name }}" 
-                        category="{{ $product->category->name ?? '-' }}" 
-                        price="{{ $product->price }}" 
-                        discountPrice="{{ $product->discount_price }}" 
-                        rating="{{ $product->rating }}" 
-                        sold="{{ $product->sold }}" 
-                        image="{{ $product->thumbnail ? asset('storage/' . $product->thumbnail) : null }}"
-                        detailUrl="{{ route('product.show', $product->slug) }}"
-                    />
+                    <a href="{{ route('product.show', $product->slug) }}"
+                       class="group bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col items-center text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+
+                        {{-- Logo / Icon --}}
+                        <div class="w-20 h-20 rounded-2xl overflow-hidden mb-5 shadow-sm ring-1 ring-gray-100 group-hover:shadow-md group-hover:ring-brand-200 transition-all duration-300 flex-shrink-0">
+                            @if($product->thumbnail)
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                     alt="{{ $product->name }}"
+                                     class="w-full h-full object-cover" />
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center">
+                                    <span class="text-2xl font-bold text-brand-500">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- App Name --}}
+                        <h3 class="text-base font-bold text-brand-900 mb-1.5 group-hover:text-brand-600 transition-colors line-clamp-1">
+                            {{ $product->name }}
+                        </h3>
+
+                        {{-- Tagline / Short Description --}}
+                        <p class="text-sm text-gray-400 leading-relaxed line-clamp-2 mb-4">
+                            {{ Str::limit(strip_tags($product->description), 70) ?: ($product->category->name ?? 'Layanan digital premium') }}
+                        </p>
+
+                        {{-- Category Pill --}}
+                        <span class="mt-auto inline-block px-3 py-1 rounded-full bg-brand-50 text-brand-600 text-xs font-semibold border border-brand-100">
+                            {{ $product->category->name ?? 'Digital' }}
+                        </span>
+                    </a>
                 @empty
-                    <div class="col-span-full text-center py-10 bg-white rounded-2xl border border-gray-100">
+                    <div class="col-span-full text-center py-16 bg-white rounded-2xl border border-gray-100">
+                        <div class="mx-auto w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                            </svg>
+                        </div>
                         <p class="text-gray-500 font-medium">Belum ada produk yang ditambahkan.</p>
                     </div>
                 @endforelse
             </div>
-            
-            <div class="mt-8 text-center sm:hidden">
-                <a href="#" class="inline-block text-brand-600 font-semibold hover:text-brand-700">Lihat Semua Produk &rarr;</a>
-            </div>
+
+            {{-- View All Link --}}
+            @if($products->count())
+                <div class="mt-12 text-center">
+                    <a href="{{ route('home') }}#produk"
+                       class="inline-flex items-center gap-2 text-brand-600 font-semibold hover:text-brand-700 transition-colors text-sm">
+                        Lihat Semua Produk
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 
