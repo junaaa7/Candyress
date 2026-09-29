@@ -15,6 +15,29 @@
             </div>
         </div>
 
+        <!-- Wallet Balance Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div class="flex flex-col sm:flex-row items-stretch">
+                <div class="flex-1 p-6 flex items-center gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br from-brand-500 to-accent-500 rounded-2xl flex items-center justify-center shrink-0 shadow-md">
+                        <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 0 0-2.25-2.25H15a3 3 0 1 1-6 0H5.25A2.25 2.25 0 0 0 3 12m18 0v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 9m18 0V6a2.25 2.25 0 0 0-2.25-2.25H5.25A2.25 2.25 0 0 0 3 6v3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 font-medium">Saldo Anda</p>
+                        <p class="text-2xl sm:text-3xl font-extrabold text-brand-900">Rp {{ number_format(Auth::user()->balance, 0, ',', '.') }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center px-6 py-4 sm:py-0 border-t sm:border-t-0 sm:border-l border-gray-100">
+                    <a href="{{ route('customer.topup.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold rounded-xl transition shadow-sm hover:shadow-md">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                        Top-Up Saldo
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- Statistics -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Orders -->

@@ -53,9 +53,19 @@
             @endforeach
         </div>
     </div>
+    
+    <!-- TAMBAHAN: Section Tentang Kami (Target id="tentang") -->
+    <div id="tentang" class="bg-white py-20 scroll-mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-brand-900 mb-6">Tentang Candyress</h2>
+            <p class="text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
+                Candyress adalah platform penyedia layanan akun digital premium yang berdedikasi untuk memberikan akses mudah, murah, dan aman ke berbagai aplikasi favorit Anda. Kami menjamin setiap transaksi diproses secara instan dan didukung oleh layanan garansi penuh.
+            </p>
+        </div>
+    </div>
 
-    <!-- 3. Katalog Showcase Section -->
-    <div id="produk" class="bg-gray-50 py-20">
+    <!-- 3. Katalog Showcase Section (Target id="produk") -->
+    <div id="produk" class="bg-gray-50 py-20 scroll-mt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Header --}}
             <div class="text-center mb-14">
@@ -131,8 +141,8 @@
         </div>
     </div>
 
-    <!-- 4. Mengapa Memilih Kami & Cara Kerja -->
-    <div id="cara-beli" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <!-- 4. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
+    <div id="cara-beli" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-16">
         <div class="grid md:grid-cols-2 gap-16">
             <!-- Kenapa Kami -->
             <div>
@@ -176,9 +186,36 @@
             </div>
         </div>
     </div>
+    
+    <!-- TAMBAHAN: Section Testimoni (Target id="testimoni") -->
+    <div id="testimoni" class="bg-white py-20 scroll-mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-brand-900 mb-10">Apa Kata Mereka?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Dummy Testimoni 1 -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-yellow-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-4">"Akun Netflix mendarat dengan aman, prosesnya cepat banget. Recommended!"</p>
+                    <p class="font-semibold text-gray-900">- Budi S.</p>
+                </div>
+                <!-- Dummy Testimoni 2 -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-yellow-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-4">"Langganan Canva Pro di sini harganya miring, garansinya beneran aktif."</p>
+                    <p class="font-semibold text-gray-900">- Rina M.</p>
+                </div>
+                <!-- Dummy Testimoni 3 -->
+                <div class="bg-gray-50 p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-yellow-400 text-lg mb-4">★★★★★</div>
+                    <p class="text-gray-600 italic mb-4">"Adminnya fast response, sangat terbantu waktu ada kendala di awal. Mantap Candyress."</p>
+                    <p class="font-semibold text-gray-900">- Andi P.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- 5. FAQ Section (Alpine JS) -->
-    <div class="bg-gray-50 py-20">
+    <!-- 5. FAQ Section (Target id="faq") (Alpine JS) -->
+    <div id="faq" class="bg-gray-50 py-20 scroll-mt-16">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold text-brand-900 text-center mb-10">Pertanyaan Sering Diajukan (FAQ)</h2>
             <div class="space-y-4">
@@ -205,4 +242,7 @@
             </div>
         </div>
     </div>
+    
+    <!-- Dummy div untuk target id="kontak" di paling bawah agar tidak lompat kosong -->
+    <div id="kontak"></div>
 @endsection

@@ -15,6 +15,8 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\TopupController;
+use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
 
@@ -65,7 +67,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+
+    // Saldo & Top-Up (Wallet)
+    Route::get('/saldo', [TopupController::class, 'index'])->name('customer.topup.index');
+    Route::post('/saldo/topup', [TopupController::class, 'store'])->name('customer.topup.store');
+    Route::get('/saldo/topup/{referenceId}', [TopupController::class, 'show'])->name('customer.topup.show');
 });
+
+// Webhook Payment Gateway (QRIS callback — no auth, no CSRF)
+Route::post('/webhook/payment', [WebhookController::class, 'handlePayment'])
+    ->name('webhook.payment')
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 // Route khusus Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {

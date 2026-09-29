@@ -23,7 +23,8 @@ class User extends Authenticatable
         'role',
         'avatar',
         'phone',
-        'is_active', // <-- Tambahan kolom status aktif/nonaktif
+        'is_active',
+        'balance',
     ];
 
     /**
@@ -46,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'balance' => 'integer',
         ];
     }
     
@@ -71,5 +73,23 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function topups()
+    {
+        return $this->hasMany(Topup::class);
+    }
+
+    public function walletTransactions()
+    {
+        return $this->hasMany(WalletTransaction::class);
+    }
+
+    /**
+     * Get formatted balance string.
+     */
+    public function getFormattedBalanceAttribute(): string
+    {
+        return 'Rp ' . number_format($this->balance, 0, ',', '.');
     }
 }
