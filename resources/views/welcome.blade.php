@@ -3,156 +3,37 @@
 @section('title', 'Home')
 
 @section('content')
-    <style>
-
-        :root {
-            --c-blush: #FFF5F8;
-            --c-petal: #FFE1EA;
-            --c-rose: #FF9EBB;
-            --c-berry: #D6477F;
-            --c-cocoa: #5B3A4A;
-            --c-lilac: #EBDDFB;
-            --c-peach: #FFE6D6;
-        }
-
-        .cute-page { font-family: 'Nunito', system-ui, sans-serif; color: var(--c-cocoa); background: var(--c-blush); }
-        .cute-page h1, .cute-page h2, .cute-page h3, .cute-display { font-family: 'Fredoka', 'Nunito', sans-serif; letter-spacing: 0.005em; }
-        .cute-muted { color: #9C7A8A; }
-
-        /* Sticker-style cards: soft pink outline + offset shadow */
-        .cute-card {
-            background: #fff;
-            border: 2px solid var(--c-petal);
-            border-radius: 1.75rem;
-            box-shadow: 0 6px 0 var(--c-petal);
-            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-        }
-        .cute-card:hover { transform: translateY(-4px); border-color: var(--c-rose); box-shadow: 0 10px 0 var(--c-petal); }
-
-        .cute-pill {
-            display: inline-block; padding: .3rem .9rem; border-radius: 999px;
-            background: var(--c-petal); color: var(--c-berry);
-            font-weight: 700; font-size: .8rem; border: 2px dashed var(--c-rose);
-        }
-
-        .cute-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
-            padding: .85rem 2rem; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600;
-            transition: transform .15s ease, box-shadow .15s ease;
-        }
-        .cute-btn:hover { transform: translateY(2px); }
-        .cute-btn-primary { background: var(--c-rose); color: #fff; box-shadow: 0 5px 0 var(--c-berry); }
-        .cute-btn-primary:hover { box-shadow: 0 3px 0 var(--c-berry); }
-        .cute-btn-ghost { background: #fff; color: var(--c-berry); border: 2px solid var(--c-rose); box-shadow: 0 5px 0 var(--c-petal); }
-        .cute-btn-ghost:hover { box-shadow: 0 3px 0 var(--c-petal); }
-
-        .cute-title-underline {
-            background-image: linear-gradient(transparent 62%, var(--c-petal) 62%);
-            padding: 0 .25rem;
-        }
-
-        .cute-dots {
-            background-image: radial-gradient(var(--c-rose) 1.4px, transparent 1.4px);
-            background-size: 22px 22px; opacity: .22;
-        }
-
-        /* Hero stickers: the single animated moment on the page */
-        .cute-float { animation: cute-float 5s ease-in-out infinite; }
-        .cute-float.d2 { animation-delay: -1.6s; }
-        .cute-float.d3 { animation-delay: -3.2s; }
-        @keyframes cute-float { 0%,100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-12px) rotate(var(--r, 0deg)); } }
-        @media (prefers-reduced-motion: reduce) { .cute-float { animation: none; } }
-
-        .cute-wave { display: block; width: 100%; height: 48px; }
-
-        /* Cara Pembelian card (plain CSS so it never depends on Tailwind's compiled classes) */
-        .cute-steps { position: relative; overflow: hidden; border-radius: 2rem; padding: 2rem; color: #fff;
-            background: linear-gradient(145deg, #FF9EBB, #E86FA0); box-shadow: 0 18px 36px -14px rgba(214, 71, 127, .45); }
-        .cute-steps-bubble-a { position: absolute; top: -2.5rem; right: -2.5rem; width: 10rem; height: 10rem; border-radius: 999px; background: rgba(255,255,255,.2); pointer-events: none; }
-        .cute-steps-bubble-b { position: absolute; bottom: -3rem; left: -2rem; width: 8rem; height: 8rem; border-radius: 999px; background: rgba(255,255,255,.12); pointer-events: none; }
-        .cute-steps-title { position: relative; z-index: 1; font-size: 1.875rem; font-weight: 700; margin-bottom: 2rem; }
-        .cute-steps-list { position: relative; z-index: 1; list-style: none; margin: 0; padding: 0; }
-        .cute-step { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
-        .cute-step:last-child { margin-bottom: 0; }
-        .cute-step-num { flex: none; width: 2.25rem; height: 2.25rem; border-radius: 999px; background: #fff; color: var(--c-berry);
-            display: flex; align-items: center; justify-content: center; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: .9rem; }
-        .cute-step-text { font-weight: 700; }
-
-        /* Hero sticker positions */
-        .cute-s1 { position: absolute; left: 6%; top: 18%; }
-        .cute-s2 { position: absolute; right: 8%; top: 22%; }
-        .cute-s3 { position: absolute; left: 12%; bottom: 16%; }
-        .cute-s4 { position: absolute; right: 14%; bottom: 20%; }
-
-        /* Hover / focus helpers */
-        .cute-card:hover .cute-product-name { color: var(--c-berry); }
-        .cute-faq-btn:focus-visible { outline: 2px solid var(--c-rose); outline-offset: -2px; }
-
-        /* Hero: big, bold first impression */
-        .cute-hero-inner { position: relative; max-width: 80rem; margin: 0 auto; text-align: center;
-            padding: clamp(4.5rem, 10vw, 9rem) 1.25rem clamp(5rem, 11vw, 10rem); }
-        .cute-hero-pill { font-size: clamp(.9rem, 1.4vw, 1.1rem); padding: .5rem 1.4rem; margin-bottom: 1.75rem; }
-        .cute-hero-title { font-size: clamp(3rem, 9vw, 7.25rem); font-weight: 700; line-height: 1.02;
-            letter-spacing: -0.01em; color: var(--c-cocoa); margin: 0; }
-        .cute-hero-sub { margin: 1.75rem auto 0; max-width: 44rem; font-size: clamp(1.1rem, 2vw, 1.45rem); line-height: 1.65; }
-        .cute-hero-actions { margin-top: 2.75rem; display: flex; flex-wrap: wrap; gap: 1.1rem; justify-content: center; }
-        .cute-btn-lg { padding: 1.05rem 2.6rem; font-size: clamp(1.05rem, 1.6vw, 1.25rem); }
-        .cute-hero-inner .cute-title-underline { background-image: linear-gradient(transparent 66%, var(--c-petal) 66%); padding: 0 .4rem; }
-
-        .cute-s1, .cute-s2, .cute-s3, .cute-s4 { display: none; transform: rotate(var(--r, 0deg)); }
-        .cute-s1, .cute-s2 { width: 3.25rem; height: 3.25rem; }
-        .cute-s3 { width: 5.5rem; height: 3.4rem; }
-        .cute-s4 { width: 4.25rem; height: 2.8rem; }
-        @media (min-width: 640px) { .cute-s1, .cute-s2 { display: block; } }
-        @media (min-width: 768px) { .cute-s3, .cute-s4 { display: block; } }
-        @media (min-width: 1024px) {
-            .cute-s1, .cute-s2 { width: 4.25rem; height: 4.25rem; }
-            .cute-s3 { width: 7rem; height: 4.4rem; }
-            .cute-s4 { width: 5.25rem; height: 3.5rem; }
-        }
-
-        /* Ikon kawaii */
-        .cute-ic { display: block; width: 2.5rem; height: 2.5rem; flex: none; }
-        .cute-ic-lg { width: 4rem; height: 4rem; margin: 0 auto .75rem; }
-
-        /* Maskot permen */
-        .cute-mascot { display: block; width: clamp(7.5rem, 16vw, 11rem); height: auto; margin: 0 auto 1.25rem; }
-        .cute-mascot-sm { width: 7rem; margin-bottom: 1rem; }
-        [x-cloak] { display: none !important; }
-    </style>
-
-    <div class="cute-page">
-
-
     <!-- 1. Hero Section -->
-    <div class="relative overflow-hidden" style="background: linear-gradient(180deg, #FFEAF1 0%, var(--c-blush) 100%);">
-        <div class="absolute inset-0 cute-dots"></div>
-        <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full blur-3xl opacity-70" style="background: var(--c-lilac);"></div>
-        <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full blur-3xl opacity-70" style="background: var(--c-peach);"></div>
+    <div class="relative overflow-hidden bg-gradient-to-b from-brand-100/60 to-brand-50">
+        <div class="pointer-events-none absolute inset-0 bg-cute-dots opacity-20"></div>
+        <div class="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-accent-100 opacity-70 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-peach opacity-80 blur-3xl"></div>
 
         {{-- Stiker dekorasi SVG --}}
-        <svg class="cute-s1" style="--r:-12deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-heart"/></svg>
-        <svg class="cute-s2" style="--r:10deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-sparkle"/></svg>
-        <svg class="cute-s3" style="--r:6deg" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
-        <svg class="cute-s4" style="--r:-8deg" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
+        <svg class="pointer-events-none absolute left-[6%] top-[18%] hidden h-[3.25rem] w-[3.25rem] -rotate-12 sm:block lg:h-[4.25rem] lg:w-[4.25rem]" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-heart"/></svg>
+        <svg class="pointer-events-none absolute right-[8%] top-[22%] hidden h-[3.25rem] w-[3.25rem] rotate-[10deg] sm:block lg:h-[4.25rem] lg:w-[4.25rem]" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-sparkle"/></svg>
+        <svg class="pointer-events-none absolute bottom-[16%] left-[12%] hidden h-[3.4rem] w-[5.5rem] rotate-6 md:block lg:h-[4.4rem] lg:w-28" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
+        <svg class="pointer-events-none absolute bottom-[20%] right-[14%] hidden h-[2.8rem] w-[4.25rem] -rotate-[8deg] md:block lg:h-14 lg:w-[5.25rem]" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
 
-        <div class="cute-hero-inner">
-            <svg class="cute-mascot cute-float" style="--r:0deg" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
-            <span class="cute-pill cute-hero-pill">🍬 Toko akun digital favoritmu</span>
-            <h1 class="cute-hero-title">
+        <div class="relative mx-auto max-w-7xl px-5 pb-[clamp(5rem,11vw,10rem)] pt-[clamp(4.5rem,10vw,9rem)] text-center">
+            <div class="hero-in">
+                <svg class="cute-mascot animate-float motion-reduce:animate-none" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
+            </div>
+            <span class="hero-in cute-pill mb-7 px-5 py-2 text-[clamp(0.9rem,1.4vw,1.1rem)]" style="--hero-delay: 100ms">🍬 Toko akun digital favoritmu</span>
+            <h1 class="hero-in text-[clamp(3rem,9vw,7.25rem)] font-bold leading-[1.02] tracking-tight text-brand-900" style="--hero-delay: 200ms">
                 Premium Apps, <br />
-                <span class="cute-title-underline" style="color: var(--c-berry);">Harga Bersahabat</span> 💕
+                <span class="cute-underline text-brand-600">Harga Bersahabat</span> 💕
             </h1>
-            <p class="cute-hero-sub cute-muted">
+            <p class="hero-in mx-auto mt-7 max-w-2xl text-[clamp(1.1rem,2vw,1.45rem)] leading-relaxed text-mauve" style="--hero-delay: 320ms">
                 Temukan berbagai layanan digital premium untuk hiburan, produktivitas, desain, AI, dan lainnya. Proses instan dan bergaransi.
             </p>
-            <div class="cute-hero-actions">
-                <a href="#produk" class="cute-btn cute-btn-primary cute-btn-lg">Jelajahi Produk</a>
-                <a href="#cara-beli" class="cute-btn cute-btn-ghost cute-btn-lg">Cara Pembelian</a>
+            <div class="hero-in mt-11 flex flex-wrap items-center justify-center gap-4" style="--hero-delay: 440ms">
+                <a href="#produk" class="cute-btn cute-btn-primary px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)]">Jelajahi Produk</a>
+                <a href="#cara-beli" class="cute-btn cute-btn-ghost px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)]">Cara Pembelian</a>
             </div>
         </div>
 
-        <svg class="cute-wave" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true">
+        <svg class="block h-12 w-full" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true">
             <path d="M0 24 Q 60 0 120 24 T 240 24 T 360 24 T 480 24 T 600 24 T 720 24 T 840 24 T 960 24 T 1080 24 T 1200 24 T 1320 24 T 1440 24 V48 H0 Z" fill="#fff"/>
         </svg>
     </div>
@@ -160,23 +41,25 @@
     <!-- 2. Kategori Section -->
     <div class="bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="text-center mb-10">
+            <div class="reveal text-center mb-10">
                 <h2 class="text-3xl font-bold">Kategori Populer</h2>
-                <p class="cute-muted mt-2">Pilih yang paling kamu suka</p>
+                <p class="mt-2 text-mauve">Pilih yang paling kamu suka</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
                 @php
                     $categories = [
-                        ['name' => 'Streaming', 'icon' => 'cute-ic-streaming', 'bg' => '#FFE1EA'],
-                        ['name' => 'AI Tools', 'icon' => 'cute-ic-ai', 'bg' => '#EBDDFB'],
-                        ['name' => 'Design', 'icon' => 'cute-ic-design', 'bg' => '#FFE6D6'],
-                        ['name' => 'Productivity', 'icon' => 'cute-ic-productivity', 'bg' => '#DDF3EA'],
+                        ['name' => 'Streaming', 'icon' => 'cute-ic-streaming', 'bg' => 'bg-brand-100'],
+                        ['name' => 'AI Tools', 'icon' => 'cute-ic-ai', 'bg' => 'bg-accent-100'],
+                        ['name' => 'Design', 'icon' => 'cute-ic-design', 'bg' => 'bg-peach'],
+                        ['name' => 'Productivity', 'icon' => 'cute-ic-productivity', 'bg' => 'bg-mint'],
                     ];
                 @endphp
                 @foreach($categories as $cat)
-                    <a href="#" class="cute-card p-6 text-center group">
-                        <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform" style="background: {{ $cat['bg'] }};"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#{{ $cat['icon'] }}"/></svg></div>
-                        <h3 class="font-semibold text-lg">{{ $cat['name'] }}</h3>
+                    <a href="#" class="reveal cute-card cute-lift group p-6 text-center" style="--reveal-delay: {{ $loop->index * 90 }}ms">
+                        <div class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full transition-transform group-hover:scale-110 {{ $cat['bg'] }}">
+                            <svg class="h-10 w-10 flex-none" viewBox="0 0 48 48" aria-hidden="true"><use href="#{{ $cat['icon'] }}"/></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">{{ $cat['name'] }}</h3>
                     </a>
                 @endforeach
             </div>
@@ -184,12 +67,12 @@
     </div>
 
     <!-- TAMBAHAN: Section Tentang Kami (Target id="tentang") -->
-    <div id="tentang" class="py-20 scroll-mt-16" style="background: var(--c-petal);">
+    <div id="tentang" class="scroll-mt-16 bg-brand-100 py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="cute-card p-8 md:p-12" style="box-shadow: 0 6px 0 var(--c-rose); border-color: var(--c-rose);">
-                <svg class="cute-ic cute-ic-lg" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-lollipop"/></svg>
-                <h2 class="text-3xl font-bold mb-5">Tentang Candyress</h2>
-                <p class="text-lg cute-muted leading-relaxed">
+            <div class="reveal cute-card border-brand-300 p-8 shadow-[0_6px_0_theme(colors.brand.300)] md:p-12">
+                <svg class="mx-auto mb-3 block h-16 w-16" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-lollipop"/></svg>
+                <h2 class="mb-5 text-3xl font-bold">Tentang Candyress</h2>
+                <p class="text-lg leading-relaxed text-mauve">
                     Candyress adalah platform penyedia layanan akun digital premium yang berdedikasi untuk memberikan akses mudah, murah, dan aman ke berbagai aplikasi favorit Anda. Kami menjamin setiap transaksi diproses secara instan dan didukung oleh layanan garansi penuh.
                 </p>
             </div>
@@ -197,13 +80,13 @@
     </div>
 
     <!-- 3. Katalog Showcase Section (Target id="produk") -->
-    <div id="produk" class="py-20 scroll-mt-16" style="background: var(--c-blush);">
+    <div id="produk" class="scroll-mt-16 bg-brand-50 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Header --}}
-            <div class="text-center mb-14">
-                <span class="cute-pill mb-4">🛍️ Katalog</span>
+            <div class="reveal text-center mb-14">
+                <span class="cute-pill mb-4 px-4 py-1.5 text-sm">🛍️ Katalog</span>
                 <h2 class="text-3xl md:text-4xl font-bold">Aplikasi Premium Pilihan</h2>
-                <p class="mt-4 cute-muted max-w-2xl mx-auto leading-relaxed">
+                <p class="mx-auto mt-4 max-w-2xl leading-relaxed text-mauve">
                     Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
                 </p>
             </div>
@@ -212,29 +95,29 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($products as $product)
                     <a href="{{ route('product.show', $product->slug) }}"
-                       class="group cute-card p-6 flex flex-col items-center text-center">
+                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center"
+                       style="--reveal-delay: {{ ($loop->index % 4) * 90 }}ms">
 
                         {{-- Logo / Icon --}}
-                        <div class="w-20 h-20 rounded-3xl overflow-hidden mb-5 flex-shrink-0 transition-transform duration-300 group-hover:rotate-3"
-                             style="border: 3px solid var(--c-petal); box-shadow: 0 4px 0 var(--c-petal);">
+                        <div class="mb-5 h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
                             @if($product->thumbnail)
                                 <img src="{{ asset('storage/' . $product->thumbnail) }}"
                                      alt="{{ $product->name }}"
                                      class="w-full h-full object-cover" />
                             @else
-                                <div class="w-full h-full flex items-center justify-center" style="background: linear-gradient(135deg, var(--c-petal), var(--c-lilac));">
-                                    <span class="cute-display text-2xl font-bold" style="color: var(--c-berry);">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
+                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100">
+                                    <span class="font-display text-2xl font-bold text-brand-600">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
                                 </div>
                             @endif
                         </div>
 
                         {{-- App Name --}}
-                        <h3 class="text-lg font-semibold mb-1.5 transition-colors line-clamp-1 cute-product-name">
+                        <h3 class="mb-1.5 line-clamp-1 text-lg font-semibold transition-colors group-hover:text-brand-600">
                             {{ $product->name }}
                         </h3>
 
                         {{-- Tagline / Short Description --}}
-                        <p class="text-sm cute-muted leading-relaxed line-clamp-2 mb-4">
+                        <p class="mb-4 line-clamp-2 text-sm leading-relaxed text-mauve">
                             {{ Str::limit(strip_tags($product->description), 70) ?: ($product->category->name ?? 'Layanan digital premium') }}
                         </p>
 
@@ -244,18 +127,18 @@
                         </span>
                     </a>
                 @empty
-                    <div class="col-span-full text-center py-16 cute-card">
-                        <svg class="cute-mascot cute-mascot-sm" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
-                        <p class="font-semibold" style="color: var(--c-berry);">Belum ada produk yang ditambahkan.</p>
-                        <p class="cute-muted text-sm mt-1">Produk akan muncul di sini setelah ditambahkan.</p>
+                    <div class="reveal cute-card col-span-full py-16 text-center">
+                        <svg class="cute-mascot mb-4 w-28" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
+                        <p class="font-semibold text-brand-600">Belum ada produk yang ditambahkan.</p>
+                        <p class="mt-1 text-sm text-mauve">Produk akan muncul di sini setelah ditambahkan.</p>
                     </div>
                 @endforelse
             </div>
 
             {{-- View All Link --}}
             @if($products->count())
-                <div class="mt-12 text-center">
-                    <a href="{{ route('home') }}#produk" class="cute-btn cute-btn-ghost text-sm">
+                <div class="reveal mt-12 text-center">
+                    <a href="{{ route('home') }}#produk" class="cute-btn cute-btn-ghost px-8 py-3 text-sm">
                         Lihat Semua Produk
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -267,47 +150,51 @@
     </div>
 
     <!-- 4. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
-    <div id="cara-beli" class="bg-white scroll-mt-16">
+    <div id="cara-beli" class="scroll-mt-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+            <div class="grid items-start gap-12 md:grid-cols-2 md:gap-16">
                 <!-- Kenapa Kami -->
-                <div>
-                    <h2 class="text-3xl font-bold mb-8">Mengapa Candyress? 💖</h2>
+                <div class="reveal">
+                    <h2 class="mb-8 text-3xl font-bold">Mengapa Candyress? 💖</h2>
                     <div class="space-y-6">
                         <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center" style="background: #DDF3EA;"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-bolt"/></svg></div>
+                            <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-mint">
+                                <svg class="h-10 w-10 flex-none" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-bolt"/></svg>
+                            </div>
                             <div>
-                                <h3 class="font-semibold text-xl">Proses Otomatis & Cepat</h3>
-                                <p class="cute-muted mt-1">Akun digital dikirim secara instan setelah pembayaran terverifikasi.</p>
+                                <h3 class="text-xl font-semibold">Proses Otomatis & Cepat</h3>
+                                <p class="mt-1 text-mauve">Akun digital dikirim secara instan setelah pembayaran terverifikasi.</p>
                             </div>
                         </div>
                         <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center" style="background: var(--c-lilac);"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-shield"/></svg></div>
+                            <div class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-accent-100">
+                                <svg class="h-10 w-10 flex-none" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-shield"/></svg>
+                            </div>
                             <div>
-                                <h3 class="font-semibold text-xl">Full Garansi</h3>
-                                <p class="cute-muted mt-1">Jika akun bermasalah selama masa aktif, kami ganti baru tanpa ribet.</p>
+                                <h3 class="text-xl font-semibold">Full Garansi</h3>
+                                <p class="mt-1 text-mauve">Jika akun bermasalah selama masa aktif, kami ganti baru tanpa ribet.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Cara Pembelian -->
-                <div class="cute-steps">
-                    <div class="cute-steps-bubble-a" aria-hidden="true"></div>
-                    <div class="cute-steps-bubble-b" aria-hidden="true"></div>
-                    <h2 class="cute-steps-title">Cara Pembelian</h2>
-                    <ul class="cute-steps-list">
-                        <li class="cute-step">
-                            <span class="cute-step-num">1</span>
-                            <span class="cute-step-text">Pilih produk digital yang Anda inginkan.</span>
+                <div class="reveal relative overflow-hidden rounded-4xl bg-gradient-to-br from-brand-300 to-brand-500 p-8 text-white shadow-xl shadow-brand-600/30" style="--reveal-delay: 120ms">
+                    <div class="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/20"></div>
+                    <div class="pointer-events-none absolute -bottom-12 -left-8 h-32 w-32 rounded-full bg-white/10"></div>
+                    <h2 class="relative z-10 mb-8 text-3xl font-bold">Cara Pembelian</h2>
+                    <ul class="relative z-10 space-y-5">
+                        <li class="flex items-center gap-4">
+                            <span class="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-white font-display text-sm font-bold text-brand-600">1</span>
+                            <span class="font-bold">Pilih produk digital yang Anda inginkan.</span>
                         </li>
-                        <li class="cute-step">
-                            <span class="cute-step-num">2</span>
-                            <span class="cute-step-text">Lakukan checkout &amp; pembayaran via sistem.</span>
+                        <li class="flex items-center gap-4">
+                            <span class="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-white font-display text-sm font-bold text-brand-600">2</span>
+                            <span class="font-bold">Lakukan checkout &amp; pembayaran via sistem.</span>
                         </li>
-                        <li class="cute-step">
-                            <span class="cute-step-num">3</span>
-                            <span class="cute-step-text">Dapatkan detail akun di Dashboard Anda.</span>
+                        <li class="flex items-center gap-4">
+                            <span class="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-white font-display text-sm font-bold text-brand-600">3</span>
+                            <span class="font-bold">Dapatkan detail akun di Dashboard Anda.</span>
                         </li>
                     </ul>
                 </div>
@@ -316,54 +203,54 @@
     </div>
 
     <!-- TAMBAHAN: Section Testimoni (Target id="testimoni") -->
-    <div id="testimoni" class="py-20 scroll-mt-16" style="background: linear-gradient(180deg, var(--c-blush), #FFEAF1);">
+    <div id="testimoni" class="scroll-mt-16 bg-gradient-to-b from-brand-50 to-brand-100/70 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-10">Apa Kata Mereka? 💌</h2>
+            <h2 class="reveal mb-10 text-3xl font-bold">Apa Kata Mereka? 💌</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Dummy Testimoni 1 -->
-                <div class="cute-card p-6" style="transform: rotate(-1.2deg);">
-                    <div class="text-lg mb-4" style="color: #FFB84D;">★★★★★</div>
+                <div class="reveal cute-card -rotate-1 p-6">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
                     <p class="mb-4">"Akun Netflix mendarat dengan aman, prosesnya cepat banget. Recommended!"</p>
-                    <p class="font-semibold" style="color: var(--c-berry);">- Budi S.</p>
+                    <p class="font-semibold text-brand-600">- Budi S.</p>
                 </div>
                 <!-- Dummy Testimoni 2 -->
-                <div class="cute-card p-6" style="transform: rotate(1deg);">
-                    <div class="text-lg mb-4" style="color: #FFB84D;">★★★★★</div>
+                <div class="reveal cute-card rotate-1 p-6" style="--reveal-delay: 120ms">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
                     <p class="mb-4">"Langganan Canva Pro di sini harganya miring, garansinya beneran aktif."</p>
-                    <p class="font-semibold" style="color: var(--c-berry);">- Rina M.</p>
+                    <p class="font-semibold text-brand-600">- Rina M.</p>
                 </div>
                 <!-- Dummy Testimoni 3 -->
-                <div class="cute-card p-6" style="transform: rotate(-0.8deg);">
-                    <div class="text-lg mb-4" style="color: #FFB84D;">★★★★★</div>
+                <div class="reveal cute-card -rotate-1 p-6" style="--reveal-delay: 240ms">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
                     <p class="mb-4">"Adminnya fast response, sangat terbantu waktu ada kendala di awal. Mantap Candyress."</p>
-                    <p class="font-semibold" style="color: var(--c-berry);">- Andi P.</p>
+                    <p class="font-semibold text-brand-600">- Andi P.</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 5. FAQ Section (Target id="faq") (Alpine JS) -->
-    <div id="faq" class="bg-white py-20 scroll-mt-16">
+    <div id="faq" class="scroll-mt-16 bg-white py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center mb-10">Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️</h2>
+            <h2 class="reveal mb-10 text-center text-3xl font-bold">Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️</h2>
             <div class="space-y-4">
                 <!-- Item FAQ -->
-                <div x-data="{ expanded: false }" class="cute-card overflow-hidden" style="border-radius: 1.5rem; box-shadow: 0 4px 0 var(--c-petal);">
-                    <button @click="expanded = !expanded" class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none cute-faq-btn" :aria-expanded="expanded">
+                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
                         <span class="font-semibold">Apakah akun yang dijual legal?</span>
-                        <span x-text="expanded ? '−' : '+'" class="w-8 h-8 rounded-full flex items-center justify-center text-xl flex-shrink-0 ml-3" style="background: var(--c-petal); color: var(--c-berry);"></span>
+                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
                     </button>
-                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 cute-muted">
+                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
                         Ya, semua akun yang kami sediakan adalah 100% legal dan menggunakan metode pembayaran resmi, sehingga aman digunakan.
                     </div>
                 </div>
 
-                <div x-data="{ expanded: false }" class="cute-card overflow-hidden" style="border-radius: 1.5rem; box-shadow: 0 4px 0 var(--c-petal);">
-                    <button @click="expanded = !expanded" class="w-full px-6 py-4 flex justify-between items-center text-left focus:outline-none cute-faq-btn" :aria-expanded="expanded">
+                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm" style="--reveal-delay: 120ms">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
                         <span class="font-semibold">Bagaimana sistem garansinya?</span>
-                        <span x-text="expanded ? '−' : '+'" class="w-8 h-8 rounded-full flex items-center justify-center text-xl flex-shrink-0 ml-3" style="background: var(--c-petal); color: var(--c-berry);"></span>
+                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
                     </button>
-                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 cute-muted">
+                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
                         Kami memberikan garansi penuh sesuai durasi produk. Cukup lapor melalui tiket di dashboard Anda jika ada kendala.
                     </div>
                 </div>
@@ -373,6 +260,4 @@
 
     <!-- Dummy div untuk target id="kontak" di paling bawah agar tidak lompat kosong -->
     <div id="kontak"></div>
-
-    </div>
 @endsection

@@ -1,8 +1,162 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    [x-cloak] { display: none !important; }
+
+    body {
+        @apply bg-brand-50 font-sans text-brand-900 antialiased;
+    }
+
+    h1, h2, h3 {
+        @apply font-display;
+    }
+
+    ::selection {
+        @apply bg-brand-300 text-white;
+    }
+}
+
+@layer components {
+    /* ---------- Kartu & label ---------- */
+    .cute-card {
+        @apply rounded-4xl border-2 border-brand-100 bg-white shadow-sticker transition duration-200;
+    }
+    .cute-lift {
+        @apply hover:-translate-y-1 hover:border-brand-300 hover:shadow-sticker-lg;
+    }
+    .cute-pill {
+        @apply inline-block rounded-full border-2 border-dashed border-brand-300 bg-brand-100 px-4 py-1 text-xs font-bold text-brand-600;
+    }
+    .cute-underline {
+        @apply px-1;
+        background-image: linear-gradient(transparent 64%, theme('colors.brand.100') 64%);
+    }
+    .bg-cute-dots {
+        background-image: radial-gradient(theme('colors.brand.300') 1.4px, transparent 1.4px);
+        background-size: 22px 22px;
+    }
+
+    /* ---------- Tombol ---------- */
+    .cute-btn {
+        @apply inline-flex items-center justify-center gap-1.5 rounded-full px-8 py-3 font-display text-base font-semibold transition duration-150 hover:translate-y-0.5;
+    }
+    .cute-btn:focus-visible,
+    .cute-act:focus-visible {
+        outline: 3px solid theme('colors.brand.600');
+        outline-offset: 3px;
+    }
+    .cute-btn-primary {
+        @apply bg-brand-300 text-white shadow-pop hover:shadow-pop-sm;
+    }
+    .cute-btn-ghost {
+        @apply border-2 border-brand-300 bg-white text-brand-600 shadow-sticker-sm hover:shadow-sticker-xs;
+    }
+
+    /* ---------- Link ---------- */
+    .cute-link {
+        @apply font-bold text-brand-600 underline-offset-4 hover:underline;
+    }
+    .cute-nav-link {
+        @apply rounded-full font-bold text-brand-900 transition hover:bg-brand-100 hover:text-brand-600;
+    }
+    .cute-menu-item {
+        @apply flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-brand-900 transition-colors hover:bg-brand-100 hover:text-brand-600;
+    }
+    .cute-menu-danger {
+        @apply text-rose-600 hover:text-rose-700;
+    }
+    .cute-footer-link {
+        @apply font-semibold text-mauve transition-all hover:pl-1 hover:text-brand-600;
+    }
+    .cute-social {
+        @apply inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-brand-100 bg-white text-brand-600 shadow-sticker-sm transition hover:translate-y-0.5 hover:border-brand-300 hover:bg-brand-300 hover:text-white hover:shadow-sticker-xs;
+    }
+
+    /* ---------- Form ---------- */
+    .cute-label {
+        @apply mb-2 block text-sm font-bold;
+    }
+    .cute-hint {
+        @apply mt-1.5 block text-xs text-mauve;
+    }
+    .cute-input {
+        @apply block w-full rounded-2xl border-2 border-brand-100 bg-brand-50 px-4 py-3 text-base text-brand-900 shadow-none transition placeholder:text-brand-200 focus:border-brand-300 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-300/30;
+    }
+    .cute-select {
+        @apply cute-input cursor-pointer appearance-none pr-11;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D6477F' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1.1rem;
+    }
+
+    /* ---------- Tabel admin ---------- */
+    .cute-table {
+        @apply w-full border-separate border-spacing-0;
+    }
+    .cute-table thead th {
+        @apply bg-brand-100 px-6 py-3.5 text-left text-xs font-bold uppercase tracking-wider text-brand-600;
+    }
+    .cute-table thead th:first-child { border-radius: 1rem 0 0 1rem; }
+    .cute-table thead th:last-child { border-radius: 0 1rem 1rem 0; }
+    .cute-table tbody td {
+        @apply border-t-2 border-dashed border-brand-100 px-6 py-4 align-middle text-sm;
+    }
+    .cute-table tbody tr:first-child td { @apply border-t-0; }
+    .cute-table tbody tr:hover td { @apply bg-brand-50; }
+
+    .cute-act {
+        @apply inline-block rounded-full border-2 px-4 py-1 text-sm font-bold transition hover:-translate-y-px;
+    }
+    .cute-act-edit {
+        @apply border-accent-200 bg-accent-100 text-purple-600 hover:bg-accent-200;
+    }
+    .cute-act-del {
+        @apply border-brand-300 bg-white text-rose-600 hover:bg-brand-100;
+    }
+
+    /* ---------- Efek fade-up saat scroll (lihat resources/js/reveal.js) ---------- */
+    .js-reveal .reveal {
+        opacity: 0;
+        translate: 0 1.5rem;
+        transition-property: opacity, translate, transform, box-shadow, border-color, background-color, color;
+        transition-duration: .65s, .65s, .2s, .2s, .2s, .2s, .2s;
+        transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s, 0s, 0s, 0s;
+        transition-timing-function: ease-out;
+    }
+    .js-reveal .reveal.is-visible {
+        opacity: 1;
+        translate: 0 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .js-reveal .reveal { opacity: 1; translate: none; transition: none; }
+    }
+
+    /* ---------- Ikon & maskot ---------- */
+    .cute-mascot {
+        @apply mx-auto mb-5 block h-auto;
+        width: clamp(7.5rem, 16vw, 11rem);
+    }
+}
+
+/* ---------- Animasi masuk hero saat halaman dimuat ---------- */
+@layer components {
+    .hero-in {
+        animation: hero-in .7s ease-out both;
+        animation-delay: var(--hero-delay, 0ms);
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hero-in { animation: none; }
+    }
+}
+@keyframes hero-in {
+    from { opacity: 0; translate: 0 1.25rem; }
+    to { opacity: 1; translate: 0 0; }
+}
 
 /* Custom Utilities untuk menyembunyikan scrollbar tapi tetap bisa scroll jika diperlukan */
 .no-scrollbar::-webkit-scrollbar {

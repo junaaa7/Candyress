@@ -1,56 +1,15 @@
-<style>
-
-    .cute-footer {
-        --c-blush: #FFF5F8;
-        --c-petal: #FFE1EA;
-        --c-rose: #FF9EBB;
-        --c-berry: #D6477F;
-        --c-cocoa: #5B3A4A;
-        font-family: 'Nunito', system-ui, sans-serif;
-        color: var(--c-cocoa);
-        background: linear-gradient(180deg, var(--c-blush) 0%, #FFEAF1 100%);
-        position: relative;
-    }
-        .cute-logo-mascot { width: 2.5rem; height: 1.75rem; flex: none; }
-    .cute-footer .cute-display { font-family: 'Fredoka', 'Nunito', sans-serif; }
-    .cute-footer-muted { color: #9C7A8A; }
-
-    .cute-footer-wave { display: block; width: 100%; height: 40px; margin-bottom: -1px; }
-
-    .cute-footer-heading {
-        font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1rem; color: var(--c-berry);
-        display: inline-block; padding: .2rem .8rem; border-radius: 999px;
-        background: var(--c-petal); border: 2px dashed var(--c-rose);
-    }
-
-    .cute-footer-link { color: #9C7A8A; font-weight: 600; transition: color .2s ease, padding-left .2s ease; }
-    .cute-footer-link:hover { color: var(--c-berry); padding-left: .25rem; }
-
-    /* Round sticker-style social buttons */
-    .cute-social {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 2.75rem; height: 2.75rem; border-radius: 999px;
-        background: #fff; color: var(--c-berry);
-        border: 2px solid var(--c-petal); box-shadow: 0 4px 0 var(--c-petal);
-        transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease, color .2s ease, border-color .2s ease;
-    }
-    .cute-social:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--c-rose); background: var(--c-rose); color: #fff; border-color: var(--c-rose); }
-
-    .cute-footer :focus-visible { outline: 2px solid var(--c-rose); outline-offset: 3px; border-radius: 999px; }
-</style>
-
-<footer class="cute-footer mt-12">
-    <svg class="cute-footer-wave" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true">
+<footer class="mt-12 bg-gradient-to-b from-brand-50 to-brand-100/70 text-brand-900">
+    <svg class="-mb-px block h-10 w-full" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0 20 Q 60 0 120 20 T 240 20 T 360 20 T 480 20 T 600 20 T 720 20 T 840 20 T 960 20 T 1080 20 T 1200 20 T 1320 20 T 1440 20 V0 H0 Z" fill="#fff"/>
     </svg>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-2">
-                <span class="cute-display inline-flex items-center text-2xl font-bold tracking-tight" style="color: var(--c-berry); gap: .4rem;">
-                    <svg class="cute-logo-mascot" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
+                <span class="inline-flex items-center gap-1.5 font-display text-2xl font-bold tracking-tight text-brand-600">
+                    <svg class="h-7 w-10 flex-none" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
                 </span>
-                <p class="mt-4 text-sm cute-footer-muted max-w-sm leading-relaxed">
+                <p class="mt-4 max-w-sm text-sm leading-relaxed text-mauve">
                     Platform terpercaya untuk kebutuhan layanan digital premium Anda. Proses cepat, harga bersahabat, dan bergaransi. 💕
                 </p>
 
@@ -80,7 +39,7 @@
             </div>
 
             <div>
-                <h3 class="cute-footer-heading">Menu</h3>
+                <h3 class="inline-block rounded-full border-2 border-dashed border-brand-300 bg-brand-100 px-3.5 py-0.5 text-base font-semibold text-brand-600">Menu</h3>
                 <ul class="mt-5 space-y-2.5">
                     <li><a href="#" class="cute-footer-link text-sm">Home</a></li>
                     <li><a href="#" class="cute-footer-link text-sm">Semua Produk</a></li>
@@ -89,7 +48,7 @@
             </div>
 
             <div>
-                <h3 class="cute-footer-heading">Bantuan</h3>
+                <h3 class="inline-block rounded-full border-2 border-dashed border-brand-300 bg-brand-100 px-3.5 py-0.5 text-base font-semibold text-brand-600">Bantuan</h3>
                 <ul class="mt-5 space-y-2.5">
                     <li><a href="#" class="cute-footer-link text-sm">FAQ</a></li>
                     <li><a href="#" class="cute-footer-link text-sm">Syarat & Ketentuan</a></li>
@@ -98,8 +57,8 @@
             </div>
         </div>
 
-        <div class="mt-10 pt-8 flex items-center justify-between" style="border-top: 2px dashed var(--c-rose);">
-            <p class="text-sm cute-footer-muted">&copy; {{ date('Y') }} Candyress. All rights reserved. 🎀</p>
+        <div class="mt-10 flex items-center justify-between border-t-2 border-dashed border-brand-300 pt-8">
+            <p class="text-sm text-mauve">&copy; {{ date('Y') }} Candyress. All rights reserved. 🎀</p>
         </div>
     </div>
 </footer>

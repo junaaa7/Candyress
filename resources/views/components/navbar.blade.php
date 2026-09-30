@@ -1,69 +1,13 @@
-<style>
-
-    .cute-nav {
-        --c-blush: #FFF5F8;
-        --c-petal: #FFE1EA;
-        --c-rose: #FF9EBB;
-        --c-berry: #D6477F;
-        --c-cocoa: #5B3A4A;
-        --c-lilac: #EBDDFB;
-        font-family: 'Nunito', system-ui, sans-serif;
-        color: var(--c-cocoa);
-        background: rgba(255, 245, 248, 0.85);
-        border-bottom: 2px dashed var(--c-petal);
-    }
-        .cute-logo-mascot { width: 2.5rem; height: 1.75rem; flex: none; }
-    .cute-nav .cute-display { font-family: 'Fredoka', 'Nunito', sans-serif; }
-
-    /* Links (desktop + mobile) */
-    .cute-nav-link {
-        color: var(--c-cocoa); border-radius: 999px; font-weight: 700;
-        transition: background-color .2s ease, color .2s ease, transform .15s ease;
-    }
-    .cute-nav-link:hover { background: var(--c-petal); color: var(--c-berry); }
-
-    /* Dropdown items */
-    .cute-menu-item { color: var(--c-cocoa); transition: background-color .15s ease, color .15s ease; }
-    .cute-menu-item:hover { background: var(--c-petal); color: var(--c-berry); }
-    .cute-menu-danger { color: #E0457B; }
-    .cute-menu-danger:hover { background: #FFE1EA; color: #C2255F; }
-
-    /* Buttons */
-    .cute-nav-btn {
-        display: inline-flex; align-items: center; justify-content: center;
-        font-family: 'Fredoka', sans-serif; font-weight: 600; border-radius: 999px;
-        transition: transform .15s ease, box-shadow .15s ease;
-    }
-    .cute-nav-btn:hover { transform: translateY(2px); }
-    .cute-nav-btn-primary { background: var(--c-rose); color: #fff; box-shadow: 0 4px 0 var(--c-berry); }
-    .cute-nav-btn-primary:hover { box-shadow: 0 2px 0 var(--c-berry); }
-    .cute-nav-btn-ghost { background: #fff; color: var(--c-berry); border: 2px solid var(--c-rose); box-shadow: 0 4px 0 var(--c-petal); }
-    .cute-nav-btn-ghost:hover { box-shadow: 0 2px 0 var(--c-petal); }
-
-    .cute-avatar {
-        background: linear-gradient(135deg, var(--c-rose), #E86FA0); color: #fff;
-        font-family: 'Fredoka', sans-serif; border: 2px solid #fff; box-shadow: 0 0 0 2px var(--c-petal);
-    }
-
-    .cute-dropdown {
-        background: #fff; border: 2px solid var(--c-petal); border-radius: 1.25rem;
-        box-shadow: 0 6px 0 var(--c-petal);
-    }
-
-    .cute-nav :focus-visible { outline: 2px solid var(--c-rose); outline-offset: 2px; }
-    [x-cloak] { display: none !important; }
-</style>
-
 <nav x-data="{ mobileOpen: false, profileOpen: false }"
-     class="cute-nav fixed top-0 inset-x-0 z-50 backdrop-blur-md transition-shadow"
+     class="fixed top-0 inset-x-0 z-50 border-b-2 border-dashed border-brand-100 bg-brand-50/85 text-brand-900 backdrop-blur-md transition-shadow"
      :class="{ 'shadow-sm': mobileOpen }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
 
             {{-- ═══════════ Brand Logo (Left) ═══════════ --}}
             <div class="flex-shrink-0">
-                <a href="/" class="cute-display inline-flex items-center text-2xl font-bold tracking-tight" style="color: var(--c-berry); gap: .4rem;">
-                    <svg class="cute-logo-mascot" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
+                <a href="/" class="inline-flex items-center gap-1.5 font-display text-2xl font-bold tracking-tight text-brand-600">
+                    <svg class="h-7 w-10 flex-none" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
                 </a>
             </div>
 
@@ -98,22 +42,22 @@
                     </a>
 
                     {{-- Divider --}}
-                    <div class="h-5 w-0 border-l-2 border-dotted" style="border-color: var(--c-rose);"></div>
+                    <div class="h-5 w-0 border-l-2 border-dotted border-brand-300"></div>
 
                     {{-- Profile Dropdown --}}
                     <div class="relative" @click.outside="profileOpen = false">
                         <button @click="profileOpen = !profileOpen"
-                                class="cute-nav-link inline-flex items-center gap-2 pl-1.5 pr-3 py-1.5"
+                                class="cute-nav-link inline-flex items-center gap-2 py-1.5 pl-1.5 pr-3"
                                 type="button">
                             {{-- Avatar --}}
-                            <span class="cute-avatar inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold">
+                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-xs font-bold text-white ring-2 ring-brand-100">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </span>
                             <span class="text-sm font-bold max-w-[120px] truncate">
                                 {{ Auth::user()->name }}
                             </span>
                             {{-- Chevron --}}
-                            <svg class="w-4 h-4 transition-transform duration-200" style="color: var(--c-rose);"
+                            <svg class="w-4 h-4 text-brand-300 transition-transform duration-200"
                                  :class="{ 'rotate-180': profileOpen }"
                                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -129,23 +73,23 @@
                              x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                              x-transition:leave-end="opacity-0 scale-95 -translate-y-1"
                              x-cloak
-                             class="cute-dropdown absolute right-0 mt-3 w-56 origin-top-right overflow-hidden focus:outline-none">
+                             class="absolute right-0 mt-3 w-56 origin-top-right overflow-hidden rounded-2xl border-2 border-brand-100 bg-white shadow-sticker focus:outline-none">
 
                             {{-- User Info Header --}}
-                            <div class="px-4 py-3" style="background: var(--c-blush); border-bottom: 2px dashed var(--c-petal);">
-                                <p class="cute-display text-sm font-semibold truncate">{{ Auth::user()->name }}</p>
-                                <p class="text-xs truncate" style="color: #9C7A8A;">{{ Auth::user()->email }}</p>
+                            <div class="border-b-2 border-dashed border-brand-100 bg-brand-50 px-4 py-3">
+                                <p class="truncate font-display text-sm font-semibold">{{ Auth::user()->name }}</p>
+                                <p class="truncate text-xs text-mauve">{{ Auth::user()->email }}</p>
                             </div>
 
                             {{-- Menu Items --}}
                             <div class="py-1">
-                                <a href="{{ route('dashboard') }}" class="cute-menu-item flex items-center gap-2 px-4 py-2.5 text-sm font-semibold">
+                                <a href="{{ route('dashboard') }}" class="cute-menu-item">
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                     </svg>
                                     Profil Saya
                                 </a>
-                                <a href="{{ route('customer.orders.index') }}" class="cute-menu-item flex items-center gap-2 px-4 py-2.5 text-sm font-semibold">
+                                <a href="{{ route('customer.orders.index') }}" class="cute-menu-item">
                                     <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                                     </svg>
@@ -154,11 +98,11 @@
                             </div>
 
                             {{-- Logout --}}
-                            <div class="py-1" style="border-top: 2px dashed var(--c-petal);">
+                            <div class="border-t-2 border-dashed border-brand-100 py-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
-                                            class="cute-menu-item cute-menu-danger flex w-full items-center gap-2 px-4 py-2.5 text-sm font-semibold"
+                                            class="cute-menu-item cute-menu-danger w-full"
                                             onclick="return confirm('Yakin ingin keluar?')">
                                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
@@ -173,7 +117,7 @@
                     {{-- Guest: Masuk --}}
                     <a href="{{ route('login') }}" class="cute-nav-link px-5 py-2 text-sm">Masuk</a>
                     {{-- Guest: Daftar --}}
-                    <a href="{{ route('register') }}" class="cute-nav-btn cute-nav-btn-primary px-6 py-2 text-sm">Daftar ✨</a>
+                    <a href="{{ route('register') }}" class="cute-btn cute-btn-primary px-6 py-2 text-sm">Daftar ✨</a>
                 @endauth
             </div>
 
@@ -205,8 +149,7 @@
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-2"
          x-cloak
-         class="lg:hidden backdrop-blur-lg"
-         style="background: rgba(255, 245, 248, 0.97); border-top: 2px dashed var(--c-petal);">
+         class="lg:hidden border-t-2 border-dashed border-brand-100 bg-brand-50/95 backdrop-blur-lg">
         <div class="px-4 py-4 space-y-1">
             {{-- Navigation Links --}}
             <a href="#produk" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Produk</a>
@@ -217,16 +160,16 @@
         </div>
 
         {{-- Auth Section --}}
-        <div class="px-4 py-4" style="border-top: 2px dashed var(--c-petal);">
+        <div class="border-t-2 border-dashed border-brand-100 px-4 py-4">
             @auth
                 {{-- User Info --}}
-                <div class="flex items-center gap-3 px-3 py-2 mb-2 rounded-2xl" style="background: var(--c-petal);">
-                    <span class="cute-avatar inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-bold">
+                <div class="mb-2 flex items-center gap-3 rounded-2xl bg-brand-100 px-3 py-2">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-sm font-bold text-white ring-2 ring-brand-100">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </span>
                     <div class="min-w-0">
-                        <p class="cute-display text-sm font-semibold truncate">{{ Auth::user()->name }}</p>
-                        <p class="text-xs truncate" style="color: #9C7A8A;">{{ Auth::user()->email }}</p>
+                        <p class="truncate font-display text-sm font-semibold">{{ Auth::user()->name }}</p>
+                        <p class="truncate text-xs text-mauve">{{ Auth::user()->email }}</p>
                     </div>
                 </div>
 
@@ -243,11 +186,11 @@
                     Pesanan Saya
                 </a>
 
-                <div class="mt-2 pt-2" style="border-top: 2px dashed var(--c-petal);">
+                <div class="mt-2 border-t-2 border-dashed border-brand-100 pt-2">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                                class="cute-nav-link cute-menu-danger flex w-full items-center gap-2 px-4 py-2.5 text-base"
+                                class="cute-nav-link flex w-full items-center gap-2 px-4 py-2.5 text-base text-rose-600 hover:text-rose-700"
                                 onclick="return confirm('Yakin ingin keluar?')">
                             <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
@@ -258,8 +201,8 @@
                 </div>
             @else
                 <div class="flex flex-col gap-3">
-                    <a href="{{ route('login') }}" @click="mobileOpen = false" class="cute-nav-btn cute-nav-btn-ghost w-full px-4 py-2.5 text-base">Masuk</a>
-                    <a href="{{ route('register') }}" @click="mobileOpen = false" class="cute-nav-btn cute-nav-btn-primary w-full px-4 py-2.5 text-base">Daftar ✨</a>
+                    <a href="{{ route('login') }}" @click="mobileOpen = false" class="cute-btn cute-btn-ghost w-full px-4 py-2.5 text-base">Masuk</a>
+                    <a href="{{ route('register') }}" @click="mobileOpen = false" class="cute-btn cute-btn-primary w-full px-4 py-2.5 text-base">Daftar ✨</a>
                 </div>
             @endauth
         </div>

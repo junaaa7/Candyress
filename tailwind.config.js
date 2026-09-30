@@ -11,36 +11,55 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                // Teks biasa
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-                // Judul & tombol (font bulat yang lucu)
                 display: ['Fredoka', 'Nunito', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                // Pink pastel utama. Nilainya sama persis dengan variabel warna di file Blade:
-                // 50 = blush, 100 = petal, 300 = rose, 600 = berry, 900 = cocoa
+                // 50 blush, 100 petal, 300 rose, 600 berry, 900 cocoa
                 brand: {
-                    50: '#FFF5F8',   // blush (latar halaman)
-                    100: '#FFE1EA',  // petal (latar kartu/pill)
+                    50: '#FFF5F8',
+                    100: '#FFE1EA',
                     200: '#FFC8D9',
-                    300: '#FF9EBB',  // rose (tombol utama, border)
+                    300: '#FF9EBB',
                     400: '#F77FA6',
-                    500: '#E86FA0',  // hover / gradasi
-                    600: '#D6477F',  // berry (teks aksen, link)
-                    700: '#B83468',  // hover berry
+                    500: '#E86FA0',
+                    600: '#D6477F',
+                    700: '#B83468',
                     800: '#8E3B5E',
-                    900: '#5B3A4A',  // cocoa (teks utama)
+                    900: '#5B3A4A',
                 },
-                // Pendamping: lilac lembut
                 accent: {
                     50: '#F8F1FE',
-                    100: '#EBDDFB',  // lilac
+                    100: '#EBDDFB',
                     200: '#DCC6F7',
                     500: '#C9A7F0',
-                    600: '#B48BE6',  // hover lilac
+                    600: '#B48BE6',
                 },
                 peach: '#FFE6D6',
                 mint: '#DDF3EA',
+                butter: '#FFD98A',
+                mauve: '#9C7A8A',
+            },
+            borderRadius: {
+                '4xl': '1.75rem',
+            },
+            // Bayangan "stiker": offset solid tanpa blur
+            boxShadow: {
+                'sticker-xs': '0 2px 0 #FFE1EA',
+                'sticker-sm': '0 4px 0 #FFE1EA',
+                'sticker': '0 6px 0 #FFE1EA',
+                'sticker-lg': '0 10px 0 #FFE1EA',
+                'pop': '0 5px 0 #D6477F',
+                'pop-sm': '0 3px 0 #D6477F',
+            },
+            keyframes: {
+                float: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-12px)' },
+                },
+            },
+            animation: {
+                float: 'float 5s ease-in-out infinite',
             },
         },
     },
