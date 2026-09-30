@@ -26,11 +26,12 @@
         }
 
         .login-body {
-            position: relative; overflow: hidden; min-height: 100vh;
+            position: relative; min-height: 100vh;
             display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
             font-family: 'Nunito', system-ui, sans-serif; color: var(--c-cocoa);
             background: linear-gradient(180deg, #FFEAF1 0%, var(--c-blush) 100%);
         }
+        .login-decor { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
         .login-dots { position: absolute; inset: 0; opacity: .22; pointer-events: none;
             background-image: radial-gradient(var(--c-rose) 1.4px, transparent 1.4px); background-size: 22px 22px; }
         .login-blob-a { position: absolute; top: -6rem; left: -6rem; width: 24rem; height: 24rem; border-radius: 999px; background: var(--c-lilac); filter: blur(64px); opacity: .7; pointer-events: none; }
@@ -83,10 +84,6 @@
     </style>
 </head>
 <body class="login-body">
-    <div class="login-dots" aria-hidden="true"></div>
-    <div class="login-blob-a" aria-hidden="true"></div>
-    <div class="login-blob-b" aria-hidden="true"></div>
-
     <!-- Dekorasi SVG orisinal Candyress (maskot permen + hiasan) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
         <defs>
@@ -130,10 +127,17 @@
         </defs>
     </svg>
 
-    <svg class="login-s login-s1" style="--r:-12deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-heart"/></svg>
-    <svg class="login-s login-s2" style="--r:10deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-sparkle"/></svg>
-    <svg class="login-s login-s3" style="--r:6deg" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
-    <svg class="login-s login-s4" style="--r:-8deg" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
+    <div class="login-decor" aria-hidden="true">
+    <div class="login-dots" aria-hidden="true"></div>
+        <div class="login-blob-a" aria-hidden="true"></div>
+        <div class="login-blob-b" aria-hidden="true"></div>
+
+    
+        <svg class="login-s login-s1" style="--r:-12deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-heart"/></svg>
+        <svg class="login-s login-s2" style="--r:10deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-sparkle"/></svg>
+        <svg class="login-s login-s3" style="--r:6deg" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
+        <svg class="login-s login-s4" style="--r:-8deg" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
+    </div>
 
     <div class="login-wrap">
         <svg class="login-mascot" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
