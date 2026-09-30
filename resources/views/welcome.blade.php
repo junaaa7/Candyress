@@ -99,15 +99,30 @@
         .cute-btn-lg { padding: 1.05rem 2.6rem; font-size: clamp(1.05rem, 1.6vw, 1.25rem); }
         .cute-hero-inner .cute-title-underline { background-image: linear-gradient(transparent 66%, var(--c-petal) 66%); padding: 0 .4rem; }
 
-        .cute-s1, .cute-s2 { font-size: 2.75rem; display: none; }
-        .cute-s3, .cute-s4 { font-size: 2.25rem; display: none; }
+        .cute-s1, .cute-s2, .cute-s3, .cute-s4 { display: none; transform: rotate(var(--r, 0deg)); }
+        .cute-s1, .cute-s2 { width: 3.25rem; height: 3.25rem; }
+        .cute-s3 { width: 5.5rem; height: 3.4rem; }
+        .cute-s4 { width: 4.25rem; height: 2.8rem; }
         @media (min-width: 640px) { .cute-s1, .cute-s2 { display: block; } }
         @media (min-width: 768px) { .cute-s3, .cute-s4 { display: block; } }
-        @media (min-width: 1024px) { .cute-s1, .cute-s2 { font-size: 3.5rem; } .cute-s3, .cute-s4 { font-size: 3rem; } }
+        @media (min-width: 1024px) {
+            .cute-s1, .cute-s2 { width: 4.25rem; height: 4.25rem; }
+            .cute-s3 { width: 7rem; height: 4.4rem; }
+            .cute-s4 { width: 5.25rem; height: 3.5rem; }
+        }
+
+        /* Ikon kawaii */
+        .cute-ic { display: block; width: 2.5rem; height: 2.5rem; flex: none; }
+        .cute-ic-lg { width: 4rem; height: 4rem; margin: 0 auto .75rem; }
+
+        /* Maskot permen */
+        .cute-mascot { display: block; width: clamp(7.5rem, 16vw, 11rem); height: auto; margin: 0 auto 1.25rem; }
+        .cute-mascot-sm { width: 7rem; margin-bottom: 1rem; }
         [x-cloak] { display: none !important; }
     </style>
 
     <div class="cute-page">
+
 
     <!-- 1. Hero Section -->
     <div class="relative overflow-hidden" style="background: linear-gradient(180deg, #FFEAF1 0%, var(--c-blush) 100%);">
@@ -115,13 +130,14 @@
         <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full blur-3xl opacity-70" style="background: var(--c-lilac);"></div>
         <div class="absolute -bottom-24 -right-24 w-96 h-96 rounded-full blur-3xl opacity-70" style="background: var(--c-peach);"></div>
 
-        {{-- Floating stickers --}}
-        <span class="cute-float cute-s1 select-none" style="--r:-12deg" aria-hidden="true">🍓</span>
-        <span class="cute-float d2 cute-s2 select-none" style="--r:10deg" aria-hidden="true">🎀</span>
-        <span class="cute-float d3 cute-s3 select-none" style="--r:8deg" aria-hidden="true">☁️</span>
-        <span class="cute-float cute-s4 select-none" style="--r:-8deg" aria-hidden="true">✨</span>
+        {{-- Stiker dekorasi SVG --}}
+        <svg class="cute-s1" style="--r:-12deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-heart"/></svg>
+        <svg class="cute-s2" style="--r:10deg" viewBox="0 0 32 32" aria-hidden="true"><use href="#cute-sparkle"/></svg>
+        <svg class="cute-s3" style="--r:6deg" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
+        <svg class="cute-s4" style="--r:-8deg" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
 
         <div class="cute-hero-inner">
+            <svg class="cute-mascot cute-float" style="--r:0deg" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
             <span class="cute-pill cute-hero-pill">🍬 Toko akun digital favoritmu</span>
             <h1 class="cute-hero-title">
                 Premium Apps, <br />
@@ -151,15 +167,15 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
                 @php
                     $categories = [
-                        ['name' => 'Streaming', 'icon' => '🎬', 'bg' => '#FFE1EA'],
-                        ['name' => 'AI Tools', 'icon' => '🤖', 'bg' => '#EBDDFB'],
-                        ['name' => 'Design', 'icon' => '🎨', 'bg' => '#FFE6D6'],
-                        ['name' => 'Productivity', 'icon' => '📈', 'bg' => '#DDF3EA'],
+                        ['name' => 'Streaming', 'icon' => 'cute-ic-streaming', 'bg' => '#FFE1EA'],
+                        ['name' => 'AI Tools', 'icon' => 'cute-ic-ai', 'bg' => '#EBDDFB'],
+                        ['name' => 'Design', 'icon' => 'cute-ic-design', 'bg' => '#FFE6D6'],
+                        ['name' => 'Productivity', 'icon' => 'cute-ic-productivity', 'bg' => '#DDF3EA'],
                     ];
                 @endphp
                 @foreach($categories as $cat)
                     <a href="#" class="cute-card p-6 text-center group">
-                        <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-3xl group-hover:scale-110 transition-transform" style="background: {{ $cat['bg'] }};">{{ $cat['icon'] }}</div>
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform" style="background: {{ $cat['bg'] }};"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#{{ $cat['icon'] }}"/></svg></div>
                         <h3 class="font-semibold text-lg">{{ $cat['name'] }}</h3>
                     </a>
                 @endforeach
@@ -171,7 +187,7 @@
     <div id="tentang" class="py-20 scroll-mt-16" style="background: var(--c-petal);">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="cute-card p-8 md:p-12" style="box-shadow: 0 6px 0 var(--c-rose); border-color: var(--c-rose);">
-                <div class="text-4xl mb-3" aria-hidden="true">🍭</div>
+                <svg class="cute-ic cute-ic-lg" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-lollipop"/></svg>
                 <h2 class="text-3xl font-bold mb-5">Tentang Candyress</h2>
                 <p class="text-lg cute-muted leading-relaxed">
                     Candyress adalah platform penyedia layanan akun digital premium yang berdedikasi untuk memberikan akses mudah, murah, dan aman ke berbagai aplikasi favorit Anda. Kami menjamin setiap transaksi diproses secara instan dan didukung oleh layanan garansi penuh.
@@ -229,7 +245,7 @@
                     </a>
                 @empty
                     <div class="col-span-full text-center py-16 cute-card">
-                        <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl" style="background: var(--c-petal);" aria-hidden="true">🧁</div>
+                        <svg class="cute-mascot cute-mascot-sm" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
                         <p class="font-semibold" style="color: var(--c-berry);">Belum ada produk yang ditambahkan.</p>
                         <p class="cute-muted text-sm mt-1">Produk akan muncul di sini setelah ditambahkan.</p>
                     </div>
@@ -259,14 +275,14 @@
                     <h2 class="text-3xl font-bold mb-8">Mengapa Candyress? 💖</h2>
                     <div class="space-y-6">
                         <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background: #DDF3EA;">⚡</div>
+                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center" style="background: #DDF3EA;"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-bolt"/></svg></div>
                             <div>
                                 <h3 class="font-semibold text-xl">Proses Otomatis & Cepat</h3>
                                 <p class="cute-muted mt-1">Akun digital dikirim secara instan setelah pembayaran terverifikasi.</p>
                             </div>
                         </div>
                         <div class="flex gap-4">
-                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl" style="background: var(--c-lilac);">🛡️</div>
+                            <div class="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center" style="background: var(--c-lilac);"><svg class="cute-ic" viewBox="0 0 48 48" aria-hidden="true"><use href="#cute-ic-shield"/></svg></div>
                             <div>
                                 <h3 class="font-semibold text-xl">Full Garansi</h3>
                                 <p class="cute-muted mt-1">Jika akun bermasalah selama masa aktif, kami ganti baru tanpa ribet.</p>

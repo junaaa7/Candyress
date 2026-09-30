@@ -11,6 +11,7 @@
         background: linear-gradient(180deg, var(--c-blush) 0%, #FFEAF1 100%);
         position: relative;
     }
+        .cute-logo-mascot { width: 2.5rem; height: 1.75rem; flex: none; }
     .cute-footer .cute-display { font-family: 'Fredoka', 'Nunito', sans-serif; }
     .cute-footer-muted { color: #9C7A8A; }
 
@@ -46,8 +47,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1 md:col-span-2">
-                <span class="cute-display inline-flex items-center gap-1.5 text-2xl font-bold tracking-tight" style="color: var(--c-berry);">
-                    <span aria-hidden="true">🍬</span>Candyress.
+                <span class="cute-display inline-flex items-center text-2xl font-bold tracking-tight" style="color: var(--c-berry); gap: .4rem;">
+                    <svg class="cute-logo-mascot" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
                 </span>
                 <p class="mt-4 text-sm cute-footer-muted max-w-sm leading-relaxed">
                     Platform terpercaya untuk kebutuhan layanan digital premium Anda. Proses cepat, harga bersahabat, dan bergaransi. 💕

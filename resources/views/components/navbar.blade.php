@@ -12,6 +12,7 @@
         background: rgba(255, 245, 248, 0.85);
         border-bottom: 2px dashed var(--c-petal);
     }
+        .cute-logo-mascot { width: 2.5rem; height: 1.75rem; flex: none; }
     .cute-nav .cute-display { font-family: 'Fredoka', 'Nunito', sans-serif; }
 
     /* Links (desktop + mobile) */
@@ -61,8 +62,8 @@
 
             {{-- ═══════════ Brand Logo (Left) ═══════════ --}}
             <div class="flex-shrink-0">
-                <a href="/" class="cute-display inline-flex items-center gap-1.5 text-2xl font-bold tracking-tight" style="color: var(--c-berry);">
-                    <span aria-hidden="true">🍬</span>Candyress.
+                <a href="/" class="cute-display inline-flex items-center text-2xl font-bold tracking-tight" style="color: var(--c-berry); gap: .4rem;">
+                    <svg class="cute-logo-mascot" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.
                 </a>
             </div>
 
