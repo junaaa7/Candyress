@@ -11,21 +11,37 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Plus Jakarta Sans"', ...defaultTheme.fontFamily.sans],
+                // Teks biasa
+                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                // Judul & tombol (font bulat yang lucu)
+                display: ['Fredoka', 'Nunito', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                // Pink pastel utama. Nilainya sama persis dengan variabel warna di file Blade:
+                // 50 = blush, 100 = petal, 300 = rose, 600 = berry, 900 = cocoa
                 brand: {
-                    50: '#f0f3ff',
-                    100: '#e0e7ff',
-                    500: '#6366f1', // Indigo/Blue
-                    600: '#4f46e5', // Hover Blue
-                    900: '#0f172a', // Dark Navy/Charcoal
+                    50: '#FFF5F8',   // blush (latar halaman)
+                    100: '#FFE1EA',  // petal (latar kartu/pill)
+                    200: '#FFC8D9',
+                    300: '#FF9EBB',  // rose (tombol utama, border)
+                    400: '#F77FA6',
+                    500: '#E86FA0',  // hover / gradasi
+                    600: '#D6477F',  // berry (teks aksen, link)
+                    700: '#B83468',  // hover berry
+                    800: '#8E3B5E',
+                    900: '#5B3A4A',  // cocoa (teks utama)
                 },
+                // Pendamping: lilac lembut
                 accent: {
-                    500: '#a855f7', // Purple
-                    600: '#9333ea', // Hover Purple
-                }
-            }
+                    50: '#F8F1FE',
+                    100: '#EBDDFB',  // lilac
+                    200: '#DCC6F7',
+                    500: '#C9A7F0',
+                    600: '#B48BE6',  // hover lilac
+                },
+                peach: '#FFE6D6',
+                mint: '#DDF3EA',
+            },
         },
     },
     plugins: [forms],
