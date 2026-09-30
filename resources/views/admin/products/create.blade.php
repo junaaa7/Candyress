@@ -1,24 +1,24 @@
 <x-admin-layout>
-    <div class="p-6 max-w-4xl mx-auto">
-        <div class="flex items-center gap-4 mb-6">
-            <a href="{{ route('admin.products.index') }}" class="text-gray-500 hover:text-gray-700">&larr; Kembali</a>
-            <h1 class="text-2xl font-bold text-gray-800">Tambah Produk Baru</h1>
+    <div class="mx-auto max-w-4xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+            <a href="{{ route('admin.products.index') }}" class="cute-btn cute-btn-ghost px-4 py-1.5 text-sm">&larr; Kembali</a>
+            <h1 class="text-3xl font-bold">Tambah <span class="text-brand-600">Produk Baru</span> 🛍️</h1>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <div class="cute-card p-7">
             <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="mb-7 grid grid-cols-1 gap-6 md:grid-cols-2">
                     <!-- Nama Produk -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Paket (Contoh: Netflix Premium)</label>
-                        <input type="text" name="name" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Nama Paket (Contoh: Netflix Premium)</label>
+                        <input type="text" name="name" required class="cute-input">
                     </div>
 
                     <!-- Kategori -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                        <select name="category_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Kategori</label>
+                        <select name="category_id" required class="cute-select">
                             <option value="">Pilih Kategori</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -28,20 +28,20 @@
 
                     <!-- Harga -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-                        <input type="number" name="price" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Harga (Rp)</label>
+                        <input type="number" name="price" required class="cute-input">
                     </div>
 
                     <!-- Durasi -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Durasi (Contoh: 1 Bulan, 1 Tahun)</label>
-                        <input type="text" name="duration" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Durasi (Contoh: 1 Bulan, 1 Tahun)</label>
+                        <input type="text" name="duration" required class="cute-input">
                     </div>
 
                     <!-- Tipe Produk -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Akun</label>
-                        <select name="product_type" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Tipe Akun</label>
+                        <select name="product_type" required class="cute-select">
                             <option value="Shared Account">Shared Account</option>
                             <option value="Private Account">Private Account</option>
                             <option value="License Key">License Key</option>
@@ -50,27 +50,27 @@
 
                     <!-- Upload Gambar / Thumbnail -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Produk (Opsional)</label>
-                        <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <label class="cute-label">Gambar Produk (Opsional)</label>
+                        <input type="file" name="thumbnail" accept="image/*" class="block w-full text-sm text-mauve file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-brand-100 file:px-5 file:py-2.5 file:text-sm file:font-bold file:text-brand-600 hover:file:bg-brand-200">
                     </div>
 
                     <!-- Status Aktif -->
-                    <div class="flex items-center h-full pt-2 md:col-span-2">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1" checked class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
-                            <span class="ml-2 text-sm text-gray-700">Aktifkan Produk Ini (Bisa dibeli)</span>
+                    <div class="flex h-full items-center pt-2 md:col-span-2">
+                        <label class="flex cursor-pointer items-center gap-2">
+                            <input type="checkbox" name="is_active" value="1" checked class="h-[1.15rem] w-[1.15rem] cursor-pointer rounded border-2 border-brand-200 text-brand-300 focus:ring-brand-300">
+                            <span class="text-sm font-semibold">Aktifkan Produk Ini (Bisa dibeli)</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Deskripsi -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk & Aturan</label>
-                    <textarea name="description" rows="4" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+                <div class="mb-7">
+                    <label class="cute-label">Deskripsi Produk & Aturan</label>
+                    <textarea name="description" rows="4" required class="cute-input resize-y"></textarea>
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 font-medium">
+                    <button type="submit" class="cute-btn cute-btn-primary px-8 py-3">
                         Simpan Produk
                     </button>
                 </div>

@@ -1,25 +1,25 @@
 <x-admin-layout>
-    <div class="p-6 max-w-4xl mx-auto">
-        <div class="flex items-center gap-4 mb-6">
-            <a href="{{ route('admin.products.index') }}" class="text-gray-500 hover:text-gray-700">&larr; Kembali</a>
-            <h1 class="text-2xl font-bold text-gray-800">Edit Produk: {{ $product->name }}</h1>
+    <div class="mx-auto max-w-4xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+            <a href="{{ route('admin.products.index') }}" class="cute-btn cute-btn-ghost px-4 py-1.5 text-sm">&larr; Kembali</a>
+            <h1 class="text-3xl font-bold">Edit Produk: <span class="text-brand-600">{{ $product->name }}</span> 🛍️</h1>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <div class="cute-card p-7">
             <!-- Form mengarah ke route update dan menggunakan method PUT -->
             <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+                <div class="mb-7 grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Paket</label>
-                        <input type="text" name="name" value="{{ old('name', $product->name) }}" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Nama Paket</label>
+                        <input type="text" name="name" value="{{ old('name', $product->name) }}" required class="cute-input">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
-                        <select name="category_id" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Kategori</label>
+                        <select name="category_id" required class="cute-select">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -29,18 +29,18 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Harga (Rp)</label>
-                        <input type="number" name="price" value="{{ old('price', $product->price) }}" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Harga (Rp)</label>
+                        <input type="number" name="price" value="{{ old('price', $product->price) }}" required class="cute-input">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Durasi</label>
-                        <input type="text" name="duration" value="{{ old('duration', $product->duration) }}" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Durasi</label>
+                        <input type="text" name="duration" value="{{ old('duration', $product->duration) }}" required class="cute-input">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Akun</label>
-                        <select name="product_type" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Tipe Akun</label>
+                        <select name="product_type" required class="cute-select">
                             <option value="Shared Account" {{ $product->product_type == 'Shared Account' ? 'selected' : '' }}>Shared Account</option>
                             <option value="Private Account" {{ $product->product_type == 'Private Account' ? 'selected' : '' }}>Private Account</option>
                             <option value="License Key" {{ $product->product_type == 'License Key' ? 'selected' : '' }}>License Key</option>
@@ -49,31 +49,31 @@
 
                     <!-- Upload & Pratinjau Gambar -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Produk</label>
+                        <label class="cute-label">Gambar Produk</label>
                         @if($product->thumbnail)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Thumbnail" class="h-16 w-16 object-cover rounded border">
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="Thumbnail" class="h-16 w-16 rounded-2xl border-[3px] border-brand-100 object-cover shadow-sticker-sm">
                             </div>
                         @endif
-                        <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                        <span class="text-xs text-gray-500">Biarkan kosong jika tidak ingin mengubah gambar.</span>
+                        <input type="file" name="thumbnail" accept="image/*" class="block w-full text-sm text-mauve file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-brand-100 file:px-5 file:py-2.5 file:text-sm file:font-bold file:text-brand-600 hover:file:bg-brand-200">
+                        <span class="cute-hint">Biarkan kosong jika tidak ingin mengubah gambar.</span>
                     </div>
 
-                    <div class="flex items-center h-full pt-2 md:col-span-2">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1" {{ $product->is_active ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
-                            <span class="ml-2 text-sm text-gray-700">Aktifkan Produk Ini (Bisa dibeli)</span>
+                    <div class="flex h-full items-center pt-2 md:col-span-2">
+                        <label class="flex cursor-pointer items-center gap-2">
+                            <input type="checkbox" name="is_active" value="1" {{ $product->is_active ? 'checked' : '' }} class="h-[1.15rem] w-[1.15rem] cursor-pointer rounded border-2 border-brand-200 text-brand-300 focus:ring-brand-300">
+                            <span class="text-sm font-semibold">Aktifkan Produk Ini (Bisa dibeli)</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk & Aturan</label>
-                    <textarea name="description" rows="4" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('description', $product->description) }}</textarea>
+                <div class="mb-7">
+                    <label class="cute-label">Deskripsi Produk & Aturan</label>
+                    <textarea name="description" rows="4" required class="cute-input resize-y">{{ old('description', $product->description) }}</textarea>
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 font-medium">
+                    <button type="submit" class="cute-btn cute-btn-primary px-8 py-3">
                         Simpan Perubahan
                     </button>
                 </div>
