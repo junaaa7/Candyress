@@ -1,71 +1,71 @@
 <x-admin-layout>
-    <div class="p-6 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-            <h1 class="text-2xl font-bold text-gray-800">Laporan Penjualan</h1>
-            
+    <div class="mx-auto max-w-7xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-col items-center justify-between gap-4 md:flex-row">
+            <h1 class="text-3xl font-bold">Laporan <span class="text-brand-600">Penjualan</span> 📊</h1>
+
             <!-- Form Filter Tanggal -->
-            <form action="{{ route('admin.reports.index') }}" method="GET" class="flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+            <form action="{{ route('admin.reports.index') }}" method="GET" class="flex flex-wrap items-center justify-center gap-2 rounded-2xl border-2 border-brand-100 bg-white p-2 shadow-sticker-sm">
                 <div>
-                    <input type="date" name="start_date" value="{{ $startDate->format('Y-m-d') }}" class="text-sm rounded border-gray-300">
+                    <input type="date" name="start_date" value="{{ $startDate->format('Y-m-d') }}" class="cute-input w-auto px-3 py-2 text-sm">
                 </div>
-                <span class="text-gray-500">-</span>
+                <span class="font-bold text-brand-300">-</span>
                 <div>
-                    <input type="date" name="end_date" value="{{ $endDate->format('Y-m-d') }}" class="text-sm rounded border-gray-300">
+                    <input type="date" name="end_date" value="{{ $endDate->format('Y-m-d') }}" class="cute-input w-auto px-3 py-2 text-sm">
                 </div>
-                <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-900">
+                <button type="submit" class="cute-btn cute-btn-primary px-5 py-2 text-sm">
                     Filter
                 </button>
             </form>
         </div>
 
         <!-- Ringkasan Penjualan & Pendapatan -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 flex items-center">
-                <div class="p-4 bg-blue-100 rounded-lg text-blue-600 mr-4">
+        <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="cute-card flex items-center p-6">
+                <div class="mr-4 rounded-2xl bg-brand-100 p-4 text-brand-600">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Penjualan Sukses</p>
-                    <p class="text-3xl font-bold text-gray-900">{{ number_format($summary->total_orders ?? 0, 0, ',', '.') }} <span class="text-lg font-medium text-gray-500">Pesanan</span></p>
+                    <p class="text-sm font-bold uppercase tracking-wider text-mauve">Total Penjualan Sukses</p>
+                    <p class="font-display text-3xl font-bold">{{ number_format($summary->total_orders ?? 0, 0, ',', '.') }} <span class="font-sans text-lg font-semibold text-mauve">Pesanan</span></p>
                 </div>
             </div>
-            
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 flex items-center">
-                <div class="p-4 bg-green-100 rounded-lg text-green-600 mr-4">
+
+            <div class="cute-card flex items-center p-6">
+                <div class="mr-4 rounded-2xl bg-mint p-4 text-emerald-700">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Pendapatan</p>
-                    <p class="text-3xl font-bold text-green-600">Rp {{ number_format($summary->total_revenue ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-sm font-bold uppercase tracking-wider text-mauve">Total Pendapatan</p>
+                    <p class="font-display text-3xl font-bold text-emerald-700">Rp {{ number_format($summary->total_revenue ?? 0, 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <!-- Tabel Produk Terlaris -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 border-b border-gray-200 bg-gray-50">
-                    <h2 class="font-bold text-gray-800">10 Produk Terlaris</h2>
+            <div class="cute-card overflow-hidden">
+                <div class="border-b-2 border-dashed border-brand-100 bg-brand-100/60 p-4">
+                    <h2 class="text-lg font-semibold">10 Produk Terlaris 🏆</h2>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-white">
+                <div class="overflow-x-auto p-3">
+                    <table class="cute-table min-w-[24rem]">
+                        <thead>
                             <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Produk</th>
-                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Terjual</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Pendapatan</th>
+                                <th>Nama Produk</th>
+                                <th class="text-center">Terjual</th>
+                                <th class="text-right">Pendapatan</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody>
                             @forelse($topProducts as $product)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ $product->name }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-500 text-center font-bold">{{ $product->total_sold }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-900 text-right font-medium">Rp {{ number_format($product->total_revenue, 0, ',', '.') }}</td>
+                            <tr>
+                                <td class="font-bold">{{ $product->name }}</td>
+                                <td class="text-center font-bold text-mauve">{{ $product->total_sold }}</td>
+                                <td class="text-right font-bold">Rp {{ number_format($product->total_revenue, 0, ',', '.') }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500">Belum ada data penjualan pada periode ini.</td>
+                                <td colspan="3" class="text-center font-semibold text-mauve">Belum ada data penjualan pada periode ini.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -74,29 +74,29 @@
             </div>
 
             <!-- Tabel Pesanan Berdasarkan Periode (Harian) -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 border-b border-gray-200 bg-gray-50">
-                    <h2 class="font-bold text-gray-800">Pesanan Harian (Periode Terpilih)</h2>
+            <div class="cute-card overflow-hidden">
+                <div class="border-b-2 border-dashed border-brand-100 bg-brand-100/60 p-4">
+                    <h2 class="text-lg font-semibold">Pesanan Harian (Periode Terpilih) 📅</h2>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-white">
+                <div class="overflow-x-auto p-3">
+                    <table class="cute-table min-w-[24rem]">
+                        <thead>
                             <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase">Jumlah Pesanan</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Pendapatan Harian</th>
+                                <th>Tanggal</th>
+                                <th class="text-center">Jumlah Pesanan</th>
+                                <th class="text-right">Pendapatan Harian</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody>
                             @forelse($dailySales as $sales)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ \Carbon\Carbon::parse($sales->date)->format('d M Y') }}</td>
-                                <td class="px-4 py-3 text-sm text-gray-500 text-center font-bold">{{ $sales->total_orders }}</td>
-                                <td class="px-4 py-3 text-sm text-green-600 text-right font-bold">Rp {{ number_format($sales->daily_revenue, 0, ',', '.') }}</td>
+                            <tr>
+                                <td class="font-bold">{{ \Carbon\Carbon::parse($sales->date)->format('d M Y') }}</td>
+                                <td class="text-center font-bold text-mauve">{{ $sales->total_orders }}</td>
+                                <td class="text-right font-bold text-emerald-700">Rp {{ number_format($sales->daily_revenue, 0, ',', '.') }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="3" class="px-4 py-4 text-center text-sm text-gray-500">Tidak ada transaksi pada periode ini.</td>
+                                <td colspan="3" class="text-center font-semibold text-mauve">Tidak ada transaksi pada periode ini.</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -104,6 +104,6 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </x-admin-layout>

@@ -1,73 +1,78 @@
 <x-admin-layout>
-    <div class="p-6 max-w-7xl mx-auto">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Manajemen Review Pelanggan</h1>
+    <div class="mx-auto max-w-7xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <h1 class="mb-6 text-3xl font-bold">Manajemen <span class="text-brand-600">Review Pelanggan</span> ⭐</h1>
 
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                {{ session('success') }}
+            <div class="mb-5 flex items-center gap-3 rounded-2xl border-2 border-dashed border-emerald-300 bg-mint px-5 py-3.5 font-bold text-emerald-700" role="status">
+                <svg class="h-6 w-6 flex-none" viewBox="0 0 24 24" fill="#fff" stroke="#1F7A57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6" fill="none"/>
+                </svg>
+                <span>{{ session('success') }}</span>
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+        <div class="cute-card overflow-x-auto p-3">
+            <table class="cute-table min-w-[52rem]">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pelanggan & Produk</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rating</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Komentar</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th>Pelanggan & Produk</th>
+                        <th>Rating</th>
+                        <th>Komentar</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @forelse($reviews as $review)
                     <tr>
-                        <td class="px-6 py-4">
-                            <div class="text-sm font-bold text-gray-900">{{ $review->user->name ?? 'User Dihapus' }}</div>
-                            <div class="text-xs text-blue-600 font-medium">{{ $review->product->name ?? 'Produk Dihapus' }}</div>
+                        <td>
+                            <div class="font-bold">{{ $review->user->name ?? 'User Dihapus' }}</div>
+                            <div class="text-xs font-bold text-brand-600">{{ $review->product->name ?? 'Produk Dihapus' }}</div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="flex text-yellow-400 text-sm">
+                        <td>
+                            <div class="flex text-base text-amber-400">
                                 @for($i = 1; $i <= 5; $i++)
                                     @if($i <= $review->rating)
                                         ★
                                     @else
-                                        <span class="text-gray-300">★</span>
+                                        <span class="text-brand-200">★</span>
                                     @endif
                                 @endfor
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-700 max-w-xs truncate" title="{{ $review->comment }}">
+                        <td class="max-w-xs truncate" title="{{ $review->comment }}">
                             {{ $review->comment ?? '-' }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td>
                             @if($review->is_visible)
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tampil</span>
+                                <span class="inline-block rounded-full border-2 border-emerald-200 bg-mint px-3.5 py-0.5 text-xs font-bold text-emerald-700">Tampil</span>
                             @else
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-600">Disembunyikan</span>
+                                <span class="inline-block rounded-full border-2 border-brand-200 bg-brand-50 px-3.5 py-0.5 text-xs font-bold text-mauve">Disembunyikan</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-sm font-medium flex gap-3 items-center mt-2">
-                            <!-- Tombol Sembunyikan/Tampilkan -->
-                            <form action="{{ route('admin.reviews.toggle', $review->id) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="{{ $review->is_visible ? 'text-orange-600 hover:text-orange-900' : 'text-green-600 hover:text-green-900' }}">
-                                    {{ $review->is_visible ? 'Sembunyikan' : 'Tampilkan' }}
-                                </button>
-                            </form>
-                            
-                            <!-- Tombol Hapus -->
-                            <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus review ini permanen?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                            </form>
+                        <td>
+                            <div class="flex items-center gap-2.5">
+                                <!-- Tombol Sembunyikan/Tampilkan -->
+                                <form action="{{ route('admin.reviews.toggle', $review->id) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="cute-act {{ $review->is_visible ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100' : 'border-emerald-200 bg-mint text-emerald-700 hover:bg-emerald-100' }}">
+                                        {{ $review->is_visible ? 'Sembunyikan' : 'Tampilkan' }}
+                                    </button>
+                                </form>
+
+                                <!-- Tombol Hapus -->
+                                <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus review ini permanen?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="cute-act cute-act-del">Hapus</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada ulasan dari pelanggan.</td>
+                        <td colspan="5" class="text-center font-semibold text-mauve">Belum ada ulasan dari pelanggan.</td>
                     </tr>
                     @endforelse
                 </tbody>
