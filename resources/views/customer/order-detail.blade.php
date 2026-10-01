@@ -213,9 +213,10 @@
                         @if($order->payment && $order->payment->payment_proof)
                             <div class="mb-6">
                                 <p class="mb-3 text-sm font-bold text-mauve">Bukti Pembayaran Terakhir:</p>
-                                <div class="group relative h-64 w-48 overflow-hidden rounded-2xl border-2 border-brand-100 bg-brand-50">
-                                    <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Bukti Pembayaran" class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 flex items-center justify-center bg-brand-900/40 opacity-0 transition-opacity group-hover:opacity-100">
+                                {{-- Kotak diperlebar (max-w-xs) dan gambar menggunakan object-contain --}}
+                                <div class="group relative h-64 w-full max-w-xs overflow-hidden rounded-2xl border-2 border-brand-100 bg-brand-50 p-2">
+                                    <img src="{{ asset('storage/' . $order->payment->payment_proof) }}" alt="Bukti Pembayaran" class="w-full h-full object-contain">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-brand-900/40 opacity-0 transition-opacity group-hover:opacity-100 rounded-2xl">
                                         <a href="{{ asset('storage/' . $order->payment->payment_proof) }}" target="_blank" rel="noopener" class="rounded-full bg-white px-4 py-1.5 text-sm font-bold text-brand-600 hover:bg-brand-50">
                                             Lihat Penuh
                                         </a>
@@ -240,7 +241,8 @@
                                             <div class="flex justify-center text-sm">
                                                 <label for="payment_proof" class="relative cursor-pointer rounded-md font-bold text-brand-600 hover:text-brand-700 focus-within:outline-none focus-within:ring-2 focus-within:ring-brand-300 focus-within:ring-offset-2">
                                                     <span>Upload file</span>
-                                                    <input id="payment_proof" name="payment_proof" type="file" class="sr-only" accept="image/jpeg,image/png,image/jpg">
+                                                    {{-- Note: Menambahkan id yang sesuai dengan label agar bisa diklik --}}
+                                                    <input id="payment_proof" name="payment_proof" type="file" class="sr-only" accept="image/jpeg,image/png,image/jpg" required>
                                                 </label>
                                             </div>
                                             <p class="text-xs text-mauve">

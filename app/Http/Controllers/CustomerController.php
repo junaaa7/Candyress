@@ -106,25 +106,35 @@ class CustomerController extends Controller
         $order = Order::where('user_id', auth()->id())
             ->where('order_number', $order_number)
             ->firstOrFail();
-
-        $payment = $order->payment;
-        
-        if (!$payment) {
-            return back()->with('error', 'Data pembayaran tidak ditemukan.');
+            
+        // Pastikan pesanan belum selesai atau dibatalkan
+        if (in_array($order->status, ['completed', 'cancelled'])) {
+            return back()->with('error', 'Status pesanan tidak mengizinkan pembayaran.');
         }
 
+        $payment = $order->payment;
+
         // Delete old proof if exists
-        if ($payment->payment_proof) {
+        if ($payment && $payment->payment_proof) {
             Storage::disk('public')->delete($payment->payment_proof);
         }
 
         // Store new proof
         $path = $request->file('payment_proof')->store('payment-proofs', 'public');
         
-        $payment->update([
-            'payment_proof' => $path,
-            'status' => 'pending', // Reset to pending for re-review
-        ]);
+        // Gunakan updateOrCreate agar data payment dibuat jika belum ada
+        Payment::updateOrCreate(
+            ['order_id' => $order->id],
+            [
+                'payment_method' => $order->payment_method ?? 'Transfer Bank',
+                'payment_proof' => $path,
+                'status' => 'pending', // Reset to pending for re-review
+                'amount' => $order->total_price,
+            ]
+        );
+        
+        // Ubah status order menjadi processing setelah bukti dikirim
+        $order->update(['status' => 'processing']);
 
         return back()->with('success', 'Bukti pembayaran berhasil diupload! Admin akan memverifikasi segera.');
     }

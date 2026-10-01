@@ -38,11 +38,11 @@
         </svg>
     </div>
 
-    <!-- 2. Kategori Section -->
-    <div class="bg-white">
+    <!-- 2. Katalog Section (Target id="produk" dipindahkan ke sini) -->
+    <div id="produk" class="scroll-mt-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="reveal text-center mb-10">
-                <h2 class="text-3xl font-bold">Kategori Populer</h2>
+                <h2 class="text-3xl font-bold">Katalog</h2>
                 <p class="mt-2 text-mauve">Pilih yang paling kamu suka</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <!-- TAMBAHAN: Section Tentang Kami (Target id="tentang") -->
+    <!-- Section Tentang Kami (Target id="tentang") -->
     <div id="tentang" class="scroll-mt-16 bg-brand-100 py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="reveal cute-card border-brand-300 p-8 shadow-[0_6px_0_theme(colors.brand.300)] md:p-12">
@@ -79,77 +79,7 @@
         </div>
     </div>
 
-    <!-- 3. Katalog Showcase Section (Target id="produk") -->
-    <div id="produk" class="scroll-mt-16 bg-brand-50 py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Header --}}
-            <div class="reveal text-center mb-14">
-                <span class="cute-pill mb-4 px-4 py-1.5 text-sm">🛍️ Katalog</span>
-                <h2 class="text-3xl md:text-4xl font-bold">Aplikasi Premium Pilihan</h2>
-                <p class="mx-auto mt-4 max-w-2xl leading-relaxed text-mauve">
-                    Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
-                </p>
-            </div>
-
-            {{-- Catalog Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @forelse($products as $product)
-                    <a href="{{ route('product.show', $product->slug) }}"
-                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center"
-                       style="--reveal-delay: {{ ($loop->index % 4) * 90 }}ms">
-
-                        {{-- Logo / Icon --}}
-                        <div class="mb-5 h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
-                            @if($product->thumbnail)
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                     alt="{{ $product->name }}"
-                                     class="w-full h-full object-cover" />
-                            @else
-                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100">
-                                    <span class="font-display text-2xl font-bold text-brand-600">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
-                                </div>
-                            @endif
-                        </div>
-
-                        {{-- App Name --}}
-                        <h3 class="mb-1.5 line-clamp-1 text-lg font-semibold transition-colors group-hover:text-brand-600">
-                            {{ $product->name }}
-                        </h3>
-
-                        {{-- Tagline / Short Description --}}
-                        <p class="mb-4 line-clamp-2 text-sm leading-relaxed text-mauve">
-                            {{ Str::limit(strip_tags($product->description), 70) ?: ($product->category->name ?? 'Layanan digital premium') }}
-                        </p>
-
-                        {{-- Category Pill --}}
-                        <span class="cute-pill mt-auto">
-                            {{ $product->category->name ?? 'Digital' }}
-                        </span>
-                    </a>
-                @empty
-                    <div class="reveal cute-card col-span-full py-16 text-center">
-                        <svg class="cute-mascot mb-4 w-28" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
-                        <p class="font-semibold text-brand-600">Belum ada produk yang ditambahkan.</p>
-                        <p class="mt-1 text-sm text-mauve">Produk akan muncul di sini setelah ditambahkan.</p>
-                    </div>
-                @endforelse
-            </div>
-
-            {{-- View All Link --}}
-            @if($products->count())
-                <div class="reveal mt-12 text-center">
-                    <a href="{{ route('home') }}#produk" class="cute-btn cute-btn-ghost px-8 py-3 text-sm">
-                        Lihat Semua Produk
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                    </a>
-                </div>
-            @endif
-        </div>
-    </div>
-
-    <!-- 4. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
+    <!-- 3. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
     <div id="cara-beli" class="scroll-mt-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="grid items-start gap-12 md:grid-cols-2 md:gap-16">
@@ -202,7 +132,7 @@
         </div>
     </div>
 
-    <!-- TAMBAHAN: Section Testimoni (Target id="testimoni") -->
+    <!-- Section Testimoni (Target id="testimoni") -->
     <div id="testimoni" class="scroll-mt-16 bg-gradient-to-b from-brand-50 to-brand-100/70 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="reveal mb-10 text-3xl font-bold">Apa Kata Mereka? 💌</h2>
@@ -229,7 +159,7 @@
         </div>
     </div>
 
-    <!-- 5. FAQ Section (Target id="faq") (Alpine JS) -->
+    <!-- 4. FAQ Section (Target id="faq") (Alpine JS) -->
     <div id="faq" class="scroll-mt-16 bg-white py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="reveal mb-10 text-center text-3xl font-bold">Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️</h2>
