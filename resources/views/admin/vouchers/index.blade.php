@@ -1,64 +1,69 @@
 <x-admin-layout>
-    <div class="p-6 max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Manajemen Voucher Promo</h1>
-            <a href="{{ route('admin.vouchers.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+    <div class="mx-auto max-w-6xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <h1 class="text-3xl font-bold">Manajemen <span class="text-brand-600">Voucher Promo</span> 🎟️</h1>
+            <a href="{{ route('admin.vouchers.create') }}" class="cute-btn cute-btn-primary px-6 py-2.5">
                 + Buat Voucher Baru
             </a>
         </div>
 
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-                {{ session('success') }}
+            <div class="mb-5 flex items-center gap-3 rounded-2xl border-2 border-dashed border-emerald-300 bg-mint px-5 py-3.5 font-bold text-emerald-700" role="status">
+                <svg class="h-6 w-6 flex-none" viewBox="0 0 24 24" fill="#fff" stroke="#1F7A57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6" fill="none"/>
+                </svg>
+                <span>{{ session('success') }}</span>
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+        <div class="cute-card overflow-x-auto p-3">
+            <table class="cute-table min-w-[44rem]">
+                <thead>
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kode Promo</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nilai Diskon</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Masa Berlaku</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        <th>Kode Promo</th>
+                        <th>Nilai Diskon</th>
+                        <th>Masa Berlaku</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
+                <tbody>
                     @forelse($vouchers as $voucher)
                     <tr>
-                        <td class="px-6 py-4">
-                            <span class="font-bold text-gray-900 px-2 py-1 bg-gray-100 border rounded tracking-widest">{{ $voucher->code }}</span>
+                        <td>
+                            <span class="inline-block rounded-lg border-2 border-dashed border-brand-300 bg-brand-100 px-3 py-1 font-bold tracking-widest text-brand-600">{{ $voucher->code }}</span>
                         </td>
-                        <td class="px-6 py-4 font-medium text-blue-600">
+                        <td class="font-bold text-brand-600">
                             @if($voucher->discount_type == 'nominal')
                                 Rp {{ number_format($voucher->discount_value, 0, ',', '.') }}
                             @else
                                 {{ $voucher->discount_value }}%
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">
+                        <td class="text-mauve">
                             {{ $voucher->valid_until ? $voucher->valid_until->format('d M Y') : 'Tanpa Batas' }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td>
                             @if($voucher->is_active)
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                                <span class="inline-block rounded-full border-2 border-emerald-200 bg-mint px-3.5 py-0.5 text-xs font-bold text-emerald-700">Aktif</span>
                             @else
-                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Nonaktif</span>
+                                <span class="inline-block rounded-full border-2 border-brand-300 bg-brand-100 px-3.5 py-0.5 text-xs font-bold text-rose-600">Nonaktif</span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-sm font-medium flex gap-3">
-                            <a href="{{ route('admin.vouchers.edit', $voucher->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                            <form action="{{ route('admin.vouchers.destroy', $voucher->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus voucher ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                            </form>
+                        <td>
+                            <div class="flex items-center gap-2.5">
+                                <a href="{{ route('admin.vouchers.edit', $voucher->id) }}" class="cute-act cute-act-edit">Edit</a>
+                                <form action="{{ route('admin.vouchers.destroy', $voucher->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus voucher ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="cute-act cute-act-del">Hapus</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada voucher yang dibuat.</td>
+                        <td colspan="5" class="text-center font-semibold text-mauve">Belum ada voucher yang dibuat.</td>
                     </tr>
                     @endforelse
                 </tbody>

@@ -4,110 +4,114 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="theme-color" content="#FFE1EA">
 
         <title>Admin Panel - Candyress</title>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Favicon emoji permen -->
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍬</text></svg>">
 
-        <!-- Scripts (Pastikan npm run dev berjalan) -->
+        <!-- Scripts (Pastikan npm run dev berjalan). Font Nunito & Fredoka dimuat dari app.css -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-gray-100">
+    <body class="font-sans antialiased bg-brand-50 text-brand-900">
+        <!-- Gambar SVG maskot & ikon -->
+        @include('components.cute-defs')
+
         <div class="min-h-screen flex">
-            
+
             <!-- Sidebar Kiri -->
-            <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
-                <div class="h-16 flex items-center justify-center border-b border-gray-200">
-                    <h2 class="text-xl font-bold text-gray-800">Candyress Admin</h2>
+            <aside class="hidden w-64 flex-col border-r-2 border-dashed border-brand-100 bg-white md:flex">
+                <div class="flex h-16 items-center justify-center gap-2 border-b-2 border-dashed border-brand-100">
+                    <svg class="h-7 w-10 flex-none" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
+                    <h2 class="font-display text-xl font-bold text-brand-600">Candyress Admin</h2>
                 </div>
-                
+
                 <!-- Container flex-col & justify-between untuk menekan tombol Logout ke bawah -->
                 <div class="flex-1 px-4 py-6 overflow-y-auto flex flex-col justify-between">
-                    <ul class="space-y-1 font-medium text-sm text-gray-700">
+                    <ul class="space-y-1 text-sm font-semibold text-brand-900">
                         <li>
-                            <a href="{{ route('admin.dashboard') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Dashboard</span>
+                            <a href="{{ route('admin.dashboard') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">🏠</span><span>Dashboard</span>
                             </a>
                         </li>
 
                         <!-- Menu Produk (Dropdown) -->
                         <li x-data="{ open: {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') ? 'true' : 'false' }} }">
-                            <button @click="open = !open" class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 hover:text-blue-600 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') ? 'bg-gray-100 text-blue-600' : '' }}">
-                                <span>Produk</span>
+                            <button @click="open = !open" class="flex w-full items-center justify-between rounded-2xl p-3 transition-colors hover:bg-brand-50 hover:text-brand-600 {{ request()->routeIs('admin.products.*') || request()->routeIs('admin.categories.*') ? 'bg-brand-100 font-bold text-brand-600' : '' }}" :aria-expanded="open">
+                                <span class="flex items-center"><span class="mr-2.5 w-5 text-center" aria-hidden="true">🛍️</span><span>Produk</span></span>
                                 <svg :class="{'rotate-180': open}" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
                             <!-- Sub-menu -->
                             <ul x-show="open" x-transition class="mt-1 space-y-1">
                                 <li>
-                                    <a href="{{ route('admin.products.index') }}" class="flex items-center p-2 pl-4 rounded-lg {{ request()->routeIs('admin.products.*') ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600' }}">
-                                        <span class="mr-2 text-gray-400 font-mono">├─</span> Semua Produk
+                                    <a href="{{ route('admin.products.index') }}" class="flex items-center rounded-2xl p-2 pl-4 transition-colors {{ request()->routeIs('admin.products.*') ? 'font-bold text-brand-600' : 'text-mauve hover:text-brand-600' }}">
+                                        <span class="mr-2 font-mono text-brand-300">├─</span> Semua Produk
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('admin.categories.index') }}" class="flex items-center p-2 pl-4 rounded-lg {{ request()->routeIs('admin.categories.*') ? 'text-blue-600 font-bold' : 'text-gray-600 hover:text-blue-600' }}">
-                                        <span class="mr-2 text-gray-400 font-mono">└─</span> Kategori
+                                    <a href="{{ route('admin.categories.index') }}" class="flex items-center rounded-2xl p-2 pl-4 transition-colors {{ request()->routeIs('admin.categories.*') ? 'font-bold text-brand-600' : 'text-mauve hover:text-brand-600' }}">
+                                        <span class="mr-2 font-mono text-brand-300">└─</span> Kategori
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
                         <li>
-                            <a href="{{ route('admin.premium-accounts.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.premium-accounts.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Akun Premium</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('admin.orders.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.orders.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Pesanan</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('admin.payments.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.payments.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Pembayaran</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('admin.customers.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.customers.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Customer</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('admin.vouchers.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.vouchers.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Voucher & Promo</span>
-                            </a>
-                        </li>
-                        
-                        <li>
-                            <a href="{{ route('admin.reviews.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.reviews.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Review</span>
+                            <a href="{{ route('admin.premium-accounts.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.premium-accounts.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">🔑</span><span>Akun Premium</span>
                             </a>
                         </li>
 
                         <li>
-                            <a href="{{ route('admin.reports.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.reports.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Laporan</span>
+                            <a href="{{ route('admin.orders.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.orders.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">🧾</span><span>Pesanan</span>
                             </a>
                         </li>
-                        
+
                         <li>
-                            <a href="{{ route('admin.settings.index') }}" class="flex items-center p-3 rounded-lg {{ request()->routeIs('admin.settings.*') ? 'bg-gray-100 text-blue-600' : 'hover:bg-gray-50 hover:text-blue-600' }}">
-                                <span>Pengaturan</span>
+                            <a href="{{ route('admin.payments.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.payments.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">💳</span><span>Pembayaran</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.customers.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.customers.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">👥</span><span>Customer</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.vouchers.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.vouchers.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">🎟️</span><span>Voucher & Promo</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.reviews.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.reviews.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">⭐</span><span>Review</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.reports.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.reports.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">📊</span><span>Laporan</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.settings.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.settings.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">⚙️</span><span>Pengaturan</span>
                             </a>
                         </li>
                     </ul>
 
                     <!-- Sidebar Logout (Dipaksa ke bawah) -->
-                    <div class="border-t border-gray-200 mt-6 pt-4">
+                    <div class="mt-6 border-t-2 border-dashed border-brand-100 pt-4">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full flex items-center p-3 rounded-lg text-red-600 hover:bg-red-50 hover:text-red-800 transition">
-                                <span>Logout</span>
+                            <button type="submit" class="flex w-full items-center rounded-2xl p-3 text-sm font-semibold text-rose-600 transition hover:bg-brand-100 hover:text-rose-700">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">🚪</span><span>Logout</span>
                             </button>
                         </form>
                     </div>
@@ -117,17 +121,17 @@
             <!-- Konten Utama Kanan -->
             <div class="flex-1 flex flex-col min-w-0">
                 <!-- Header Atas -->
-                <header class="h-16 bg-white shadow-sm border-b border-gray-200 flex items-center justify-between px-6">
-                    <h2 class="font-semibold text-lg text-gray-800 leading-tight">
+                <header class="flex h-16 items-center justify-between border-b-2 border-dashed border-brand-100 bg-white/80 px-6 backdrop-blur">
+                    <h2 class="font-display text-lg font-semibold leading-tight">
                         {{ $header ?? 'Dashboard Overview' }}
                     </h2>
-                    
+
                     <!-- Menu Header Logout (Bisa dibiarkan opsional atau dihapus jika sudah ada di sidebar) -->
                     <div class="flex items-center">
-                        <span class="text-sm text-gray-500 mr-4">Halo, {{ Auth::user()->name ?? 'Admin' }}</span>
+                        <span class="mr-4 text-sm text-mauve">Halo, <span class="font-bold text-brand-600">{{ Auth::user()->name ?? 'Admin' }}</span></span>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="text-sm font-medium text-red-600 hover:text-red-800">
+                            <button type="submit" class="cute-act cute-act-del">
                                 Logout
                             </button>
                         </form>
@@ -135,7 +139,7 @@
                 </header>
 
                 <!-- Area Injeksi Konten (Slot) -->
-                <main class="flex-1 overflow-y-auto">
+                <main class="flex-1 overflow-y-auto p-4 md:p-6">
                     {{ $slot }}
                 </main>
             </div>

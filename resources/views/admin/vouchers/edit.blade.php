@@ -1,49 +1,49 @@
 <x-admin-layout>
-    <div class="p-6 max-w-3xl mx-auto">
-        <div class="flex items-center gap-4 mb-6">
-            <a href="{{ route('admin.vouchers.index') }}" class="text-gray-500 hover:text-gray-700">&larr; Kembali</a>
-            <h1 class="text-2xl font-bold text-gray-800">Edit Voucher: {{ $voucher->code }}</h1>
+    <div class="mx-auto max-w-3xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+            <a href="{{ route('admin.vouchers.index') }}" class="cute-btn cute-btn-ghost px-4 py-1.5 text-sm">&larr; Kembali</a>
+            <h1 class="text-3xl font-bold">Edit Voucher: <span class="text-brand-600">{{ $voucher->code }}</span> 🎟️</h1>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+        <div class="cute-card p-7">
             <form action="{{ route('admin.vouchers.update', $voucher->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    
+                <div class="mb-7 grid grid-cols-1 gap-6 md:grid-cols-2">
+
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kode Voucher</label>
-                        <input type="text" name="code" value="{{ old('code', $voucher->code) }}" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 uppercase">
+                        <label class="cute-label">Kode Voucher</label>
+                        <input type="text" name="code" value="{{ old('code', $voucher->code) }}" required class="cute-input uppercase">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Diskon</label>
-                        <select name="discount_type" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Tipe Diskon</label>
+                        <select name="discount_type" required class="cute-select">
                             <option value="nominal" {{ $voucher->discount_type == 'nominal' ? 'selected' : '' }}>Nominal (Rp)</option>
                             <option value="persen" {{ $voucher->discount_type == 'persen' ? 'selected' : '' }}>Persentase (%)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nilai Diskon</label>
-                        <input type="number" name="discount_value" value="{{ old('discount_value', $voucher->discount_value) }}" required min="1" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Nilai Diskon</label>
+                        <input type="number" name="discount_value" value="{{ old('discount_value', $voucher->discount_value) }}" required min="1" class="cute-input">
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Batas Berlaku (Expired Date)</label>
-                        <input type="date" name="valid_until" value="{{ old('valid_until', $voucher->valid_until ? $voucher->valid_until->format('Y-m-d') : '') }}" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <label class="cute-label">Batas Berlaku (Expired Date)</label>
+                        <input type="date" name="valid_until" value="{{ old('valid_until', $voucher->valid_until ? $voucher->valid_until->format('Y-m-d') : '') }}" class="cute-input">
                     </div>
 
                     <div class="flex items-center pt-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1" {{ $voucher->is_active ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
-                            <span class="ml-2 text-sm text-gray-700">Aktifkan Voucher Ini</span>
+                        <label class="flex cursor-pointer items-center gap-2">
+                            <input type="checkbox" name="is_active" value="1" {{ $voucher->is_active ? 'checked' : '' }} class="h-[1.15rem] w-[1.15rem] cursor-pointer rounded border-2 border-brand-200 text-brand-300 focus:ring-brand-300">
+                            <span class="text-sm font-semibold">Aktifkan Voucher Ini</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 font-medium">
+                    <button type="submit" class="cute-btn cute-btn-primary px-8 py-3">
                         Simpan Perubahan
                     </button>
                 </div>
