@@ -1,75 +1,75 @@
 <x-admin-layout>
-    <div class="p-6 max-w-7xl mx-auto">
-        <div class="flex items-center gap-4 mb-6">
-            <a href="{{ route('admin.customers.index') }}" class="text-gray-500 hover:text-gray-700">&larr; Kembali</a>
-            <h1 class="text-2xl font-bold text-gray-800">Detail Pelanggan: {{ $customer->name }}</h1>
+    <div class="mx-auto max-w-7xl rounded-4xl bg-gradient-to-b from-brand-100/60 to-brand-50 p-6">
+        <div class="mb-6 flex flex-wrap items-center gap-4">
+            <a href="{{ route('admin.customers.index') }}" class="cute-btn cute-btn-ghost px-4 py-1.5 text-sm">&larr; Kembali</a>
+            <h1 class="text-3xl font-bold">Detail Pelanggan: <span class="text-brand-600">{{ $customer->name }}</span> 👤</h1>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
             <!-- Kiri: Profil Pelanggan -->
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 text-center">
-                    <div class="h-20 w-20 rounded-full bg-blue-100 text-blue-600 mx-auto flex items-center justify-center text-2xl font-bold mb-4">
+            <div class="space-y-6 lg:col-span-1">
+                <div class="cute-card p-6 text-center">
+                    <div class="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-3xl font-bold text-white ring-4 ring-brand-100">
                         {{ substr($customer->name, 0, 1) }}
                     </div>
-                    <h2 class="text-xl font-bold text-gray-900">{{ $customer->name }}</h2>
-                    <p class="text-gray-500 text-sm mb-4">{{ $customer->email }}</p>
-                    
+                    <h2 class="text-xl font-bold">{{ $customer->name }}</h2>
+                    <p class="mb-4 text-sm text-mauve">{{ $customer->email }}</p>
+
                     @if($customer->is_active)
-                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 mb-4">Akun Aktif</span>
+                        <span class="mb-4 inline-block rounded-full border-2 border-emerald-200 bg-mint px-4 py-1 text-xs font-bold text-emerald-700">Akun Aktif</span>
                     @else
-                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 mb-4">Akun Nonaktif</span>
+                        <span class="mb-4 inline-block rounded-full border-2 border-brand-300 bg-brand-100 px-4 py-1 text-xs font-bold text-rose-600">Akun Nonaktif</span>
                     @endif
 
-                    <div class="border-t pt-4 text-left">
-                        <p class="text-sm text-gray-500 mb-1">No. Handphone / WA</p>
-                        <p class="font-medium text-gray-900 mb-3">{{ $customer->phone ?? 'Belum ditambahkan' }}</p>
-                        
-                        <p class="text-sm text-gray-500 mb-1">Bergabung Sejak</p>
-                        <p class="font-medium text-gray-900">{{ $customer->created_at->format('d M Y') }}</p>
+                    <div class="border-t-2 border-dashed border-brand-100 pt-4 text-left">
+                        <p class="mb-1 text-sm text-mauve">No. Handphone / WA</p>
+                        <p class="mb-3 font-bold">{{ $customer->phone ?? 'Belum ditambahkan' }}</p>
+
+                        <p class="mb-1 text-sm text-mauve">Bergabung Sejak</p>
+                        <p class="font-bold">{{ $customer->created_at->format('d M Y') }}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Kanan: Riwayat Pembelian -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Riwayat Pembelian</h2>
-                    
+                <div class="cute-card p-6">
+                    <h2 class="mb-4 text-xl font-semibold">Riwayat Pembelian 🧾</h2>
+
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="cute-table min-w-[32rem]">
+                            <thead>
                                 <tr>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">No. Pesanan</th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th>No. Pesanan</th>
+                                    <th>Tanggal</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
+                            <tbody>
                                 @forelse($customer->orders->sortByDesc('created_at') as $order)
                                 <tr>
-                                    <td class="px-4 py-3 text-sm text-blue-600 font-medium">
-                                        <a href="{{ route('admin.orders.show', $order->id) }}">#{{ $order->order_number }}</a>
+                                    <td class="font-bold text-brand-600">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="underline-offset-4 hover:underline">#{{ $order->order_number }}</a>
                                     </td>
-                                    <td class="px-4 py-3 text-sm text-gray-500">{{ $order->created_at->format('d M Y') }}</td>
-                                    <td class="px-4 py-3 text-sm font-medium text-gray-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                                    <td class="px-4 py-3 text-sm">
+                                    <td class="text-mauve">{{ $order->created_at->format('d M Y') }}</td>
+                                    <td class="font-bold">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
+                                    <td>
                                         @if($order->status == 'pending')
-                                            <span class="text-yellow-600 font-semibold">Pending</span>
+                                            <span class="inline-block rounded-full border-2 border-amber-200 bg-amber-50 px-3.5 py-0.5 text-xs font-bold text-amber-700">Pending</span>
                                         @elseif($order->status == 'processing')
-                                            <span class="text-blue-600 font-semibold">Diproses</span>
+                                            <span class="inline-block rounded-full border-2 border-accent-200 bg-accent-100 px-3.5 py-0.5 text-xs font-bold text-purple-600">Diproses</span>
                                         @elseif($order->status == 'completed')
-                                            <span class="text-green-600 font-semibold">Selesai</span>
+                                            <span class="inline-block rounded-full border-2 border-emerald-200 bg-mint px-3.5 py-0.5 text-xs font-bold text-emerald-700">Selesai</span>
                                         @else
-                                            <span class="text-red-600 font-semibold">Dibatalkan</span>
+                                            <span class="inline-block rounded-full border-2 border-brand-300 bg-brand-100 px-3.5 py-0.5 text-xs font-bold text-rose-600">Dibatalkan</span>
                                         @endif
                                     </td>
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500">Pelanggan ini belum pernah melakukan pembelian.</td>
+                                    <td colspan="4" class="text-center font-semibold text-mauve">Pelanggan ini belum pernah melakukan pembelian.</td>
                                 </tr>
                                 @endforelse
                             </tbody>
