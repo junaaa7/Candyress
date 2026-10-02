@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Services\OrderFulfillmentService;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -13,6 +14,7 @@ class PaymentController extends Controller
     {
         // Memuat pembayaran beserta relasi order dan user
         $payments = Payment::with('order.user')->latest()->get();
+
         return view('admin.payments.index', compact('payments'));
     }
 
@@ -20,6 +22,7 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         $payment->load('order.user');
+
         return view('admin.payments.show', compact('payment'));
     }
 
@@ -28,7 +31,7 @@ class PaymentController extends Controller
     {
         $validated = $request->validate([
             'status' => 'required|in:approved,rejected',
-            'rejection_reason' => 'nullable|string|required_if:status,rejected'
+            'rejection_reason' => 'nullable|string|required_if:status,rejected',
         ]);
 
         $payment->update([
@@ -38,7 +41,7 @@ class PaymentController extends Controller
 
         // Sinkronisasi status order secara otomatis
         if ($validated['status'] == 'approved') {
-            $payment->order->update(['status' => 'processing']); // Otomatis diproses
+            app(OrderFulfillmentService::class)->fulfill($payment->order);
         } elseif ($validated['status'] == 'rejected') {
             $payment->order->update(['status' => 'pending']); // Kembalikan ke pending agar user bayar ulang
         }

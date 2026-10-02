@@ -12,13 +12,17 @@
             </div>
 
             {{-- ═══════════ Desktop Navigation (Center) ═══════════ --}}
+            @if(request()->routeIs('home') || request()->is('/'))
             <div class="hidden lg:flex items-center space-x-1">
-                <a href="#produk" class="cute-nav-link px-4 py-2 text-sm">Produk</a>
-                <a href="#tentang" class="cute-nav-link px-4 py-2 text-sm">Tentang</a>
-                <a href="#testimoni" class="cute-nav-link px-4 py-2 text-sm">Testimoni</a>
-                <a href="#faq" class="cute-nav-link px-4 py-2 text-sm">FAQ</a>
-                <a href="#kontak" class="cute-nav-link px-4 py-2 text-sm">Kontak</a>
+                <a href="/#produk" class="cute-nav-link px-4 py-2 text-sm">Produk</a>
+                <a href="/#tentang" class="cute-nav-link px-4 py-2 text-sm">Tentang</a>
+                <a href="/#testimoni" class="cute-nav-link px-4 py-2 text-sm">Testimoni</a>
+                <a href="/#faq" class="cute-nav-link px-4 py-2 text-sm">FAQ</a>
+                <a href="/#kontak" class="cute-nav-link px-4 py-2 text-sm">Kontak</a>
             </div>
+            @else
+            <div class="hidden lg:flex items-center space-x-1"></div>
+            @endif
 
             {{-- ═══════════ Desktop Right Section ═══════════ --}}
             <div class="hidden lg:flex items-center space-x-3">
@@ -39,6 +43,24 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                         </svg>
                         Pesanan
+                    </a>
+
+                    {{-- Cart Link --}}
+                    <a href="{{ route('cart.index') }}" class="cute-nav-link relative inline-flex items-center gap-1.5 px-4 py-2 text-sm">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                        </svg>
+                        Keranjang
+                        @php
+                            $cartItemCount = 0;
+                            if(auth()->check()) {
+                                $cart = \App\Models\Cart::where('user_id', auth()->id())->first();
+                                $cartItemCount = $cart ? $cart->items()->sum('quantity') : 0;
+                            }
+                        @endphp
+                        @if($cartItemCount > 0)
+                            <span class="absolute top-1 right-2 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-brand-600 rounded-full border-2 border-white">{{ $cartItemCount }}</span>
+                        @endif
                     </a>
 
                     {{-- Divider --}}
@@ -150,14 +172,16 @@
          x-transition:leave-end="opacity-0 -translate-y-2"
          x-cloak
          class="lg:hidden border-t-2 border-dashed border-brand-100 bg-brand-50/95 backdrop-blur-lg">
+        @if(request()->routeIs('home') || request()->is('/'))
         <div class="px-4 py-4 space-y-1">
             {{-- Navigation Links --}}
-            <a href="#produk" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Produk</a>
-            <a href="#tentang" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Tentang</a>
-            <a href="#testimoni" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Testimoni</a>
-            <a href="#faq" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">FAQ</a>
-            <a href="#kontak" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Kontak</a>
+            <a href="/#produk" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Produk</a>
+            <a href="/#tentang" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Tentang</a>
+            <a href="/#testimoni" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Testimoni</a>
+            <a href="/#faq" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">FAQ</a>
+            <a href="/#kontak" @click="mobileOpen = false" class="cute-nav-link block px-4 py-2.5 text-base">Kontak</a>
         </div>
+        @endif
 
         {{-- Auth Section --}}
         <div class="border-t-2 border-dashed border-brand-100 px-4 py-4">
@@ -184,6 +208,22 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                     </svg>
                     Pesanan Saya
+                </a>
+
+                <a href="{{ route('cart.index') }}" @click="mobileOpen = false" class="cute-nav-link flex items-center gap-2 px-4 py-2.5 text-base">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    </svg>
+                    Keranjang
+                    @if(auth()->check())
+                        @php
+                            $cart = \App\Models\Cart::where('user_id', auth()->id())->first();
+                            $cartItemCount = $cart ? $cart->items()->sum('quantity') : 0;
+                        @endphp
+                        @if($cartItemCount > 0)
+                            <span class="inline-flex items-center justify-center px-2 py-0.5 ml-2 text-xs font-bold text-white bg-brand-600 rounded-full">{{ $cartItemCount }}</span>
+                        @endif
+                    @endif
                 </a>
 
                 <div class="mt-2 border-t-2 border-dashed border-brand-100 pt-2">

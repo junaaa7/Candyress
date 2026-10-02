@@ -15,6 +15,13 @@
                         <p class="mt-1.5 text-xs font-bold text-rose-600">{{ $message }}</p>
                     @enderror
                 </div>
+                
+                <div class="mb-6">
+                    <label class="cute-label">Default Syarat & Ketentuan (S&K)</label>
+                    <textarea name="default_snk" rows="4" class="cute-input resize-y" placeholder="Contoh: Dilarang mengubah password & profil..."></textarea>
+                    <p class="mt-1 text-xs text-gray-500">S&K ini akan otomatis berlaku untuk semua produk dalam kategori ini (kecuali dioverride di produk).</p>
+                </div>
+
                 <div class="flex justify-end">
                     <button type="submit" class="cute-btn cute-btn-primary px-8 py-3">Simpan</button>
                 </div>

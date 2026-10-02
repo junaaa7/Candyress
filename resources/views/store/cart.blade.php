@@ -35,8 +35,21 @@
                         <!-- Info Produk -->
                         <div class="flex-grow">
                             <h3 class="font-bold text-gray-900 text-lg">{{ $item->product->name }}</h3>
-                            <p class="text-sm text-gray-500 mb-2">{{ $item->product->product_type }}</p>
-                            <div class="font-bold text-brand-600">Rp {{ number_format($price, 0, ',', '.') }} <span class="text-xs text-gray-400 font-normal">x {{ $item->quantity }}</span></div>
+                            <p class="text-sm text-gray-500 mb-2">{{ $item->product->duration_label ?? $item->product->product_type }}</p>
+                            <div class="font-bold text-brand-600">Rp {{ number_format($price, 0, ',', '.') }}</div>
+                        </div>
+
+                        <!-- Kuantitas & Subtotal -->
+                        <div class="flex flex-col items-end gap-2 pr-12">
+                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                                @csrf @method('PUT')
+                                <button type="submit" name="action" value="decrease" class="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold transition">-</button>
+                                <input type="number" name="quantity" value="{{ $item->quantity }}" class="w-12 text-center border-0 p-1 text-sm font-semibold bg-white" readonly>
+                                <button type="submit" name="action" value="increase" class="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold transition">+</button>
+                            </form>
+                            <div class="text-sm font-bold text-gray-800">
+                                Subtotal: Rp {{ number_format($subtotal, 0, ',', '.') }}
+                            </div>
                         </div>
 
                         <!-- Hapus -->
@@ -76,7 +89,7 @@
                         <span class="font-extrabold text-2xl text-brand-600">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
                     </div>
                     <a href="{{ route('checkout.index') }}" class="w-full block text-center bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold text-lg transition-all shadow-md">
-                        Lanjut ke Pembayaran
+                        Lanjut ke Checkout
                     </a>
                 </div>
             @endif

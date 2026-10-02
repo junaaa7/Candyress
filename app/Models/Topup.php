@@ -11,7 +11,9 @@ class Topup extends Model
         'reference_id',
         'amount',
         'payment_method',
-        'payment_status',
+        'status',
+        'proof_image',
+        'admin_notes',
         'qr_string',
         'qr_code_url',
         'payload',
@@ -34,17 +36,17 @@ class Topup extends Model
 
     public function isPending(): bool
     {
-        return $this->payment_status === 'pending';
+        return $this->status === 'pending';
     }
 
     public function isPaid(): bool
     {
-        return $this->payment_status === 'paid';
+        return $this->status === 'paid';
     }
 
     public function isExpired(): bool
     {
-        return $this->payment_status === 'expired' || 
+        return $this->status === 'expired' ||
                ($this->expired_at && $this->expired_at->isPast());
     }
 }

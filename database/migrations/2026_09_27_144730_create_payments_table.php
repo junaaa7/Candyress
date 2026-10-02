@@ -15,7 +15,6 @@ return new class extends Migration
             $table->decimal('amount', 15, 2); // Jumlah yang ditransfer
             $table->string('payment_proof')->nullable(); // Link gambar bukti transfer
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->text('rejection_reason')->nullable(); // Alasan jika ditolak
             $table->timestamps();
         });
     }

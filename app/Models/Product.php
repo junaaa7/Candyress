@@ -27,6 +27,8 @@ class Product extends Model
         'features',
         'usage_instructions',
         'terms_and_conditions',
+        'login_instructions',
+        'duration_label',
     ];
 
     public function category()
@@ -40,7 +42,31 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_items')
-                    ->withPivot('quantity', 'price')
-                    ->withTimestamps();
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
+
+    /**
+     * Relasi One-to-Many ke ProductStock (Daftar Akun Premium)
+     */
+    public function productStocks()
+    {
+        return $this->hasMany(ProductStock::class);
+    }
+
+    /**
+     * Accessor untuk mendapatkan S&K mutlak dari Kategori / Aplikasi induknya
+     */
+    public function getTermsAttribute()
+    {
+        return $this->category ? $this->category->default_snk : null;
+    }
+
+    /**
+     * Accessor lama (bisa dihapus atau dibiarkan untuk fallback legacy)
+     */
+    public function getResolvedSnkAttribute()
+    {
+        return $this->terms_and_conditions ?: $this->terms;
     }
 }

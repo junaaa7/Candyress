@@ -35,7 +35,7 @@
 
                     <div>
                         <label class="cute-label">Durasi</label>
-                        <input type="text" name="duration" value="{{ old('duration', $product->duration) }}" required class="cute-input">
+                        <input type="text" name="duration_label" value="{{ old('duration_label', $product->duration_label) }}" required class="cute-input">
                     </div>
 
                     <div>
@@ -67,9 +67,19 @@
                     </div>
                 </div>
 
+                <div class="mb-5">
+                    <label class="cute-label">Deskripsi Produk</label>
+                    <textarea name="description" rows="3" required class="cute-input resize-y">{{ old('description', $product->description) }}</textarea>
+                </div>
+
+                <div class="mb-5">
+                    <label class="cute-label">Petunjuk Login (Login Instructions)</label>
+                    <textarea name="login_instructions" rows="3" class="cute-input resize-y" placeholder="Langkah-langkah login bagi pelanggan...">{{ old('login_instructions', $product->login_instructions) }}</textarea>
+                </div>
+
                 <div class="mb-7">
-                    <label class="cute-label">Deskripsi Produk & Aturan</label>
-                    <textarea name="description" rows="4" required class="cute-input resize-y">{{ old('description', $product->description) }}</textarea>
+                    <label class="cute-label">S&K Khusus Produk (Kosongkan jika ikut Kategori)</label>
+                    <textarea name="terms_and_conditions" rows="3" class="cute-input resize-y" placeholder="Tambahan larangan / aturan untuk produk ini...">{{ old('terms_and_conditions', $product->terms_and_conditions) }}</textarea>
                 </div>
 
                 <div class="flex justify-end">

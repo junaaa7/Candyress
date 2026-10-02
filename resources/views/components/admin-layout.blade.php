@@ -58,7 +58,7 @@
                         </li>
 
                         <li>
-                            <a href="{{ route('admin.premium-accounts.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.premium-accounts.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                            <a href="{{ route('admin.stocks.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.stocks.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
                                 <span class="mr-2.5 w-5 text-center" aria-hidden="true">🔑</span><span>Akun Premium</span>
                             </a>
                         </li>
@@ -78,6 +78,12 @@
                         <li>
                             <a href="{{ route('admin.customers.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.customers.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
                                 <span class="mr-2.5 w-5 text-center" aria-hidden="true">👥</span><span>Customer</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('admin.topups.index') }}" class="flex items-center rounded-2xl p-3 transition-colors {{ request()->routeIs('admin.topups.*') ? 'bg-brand-100 font-bold text-brand-600' : 'hover:bg-brand-50 hover:text-brand-600' }}">
+                                <span class="mr-2.5 w-5 text-center" aria-hidden="true">💰</span><span>Top Up</span>
                             </a>
                         </li>
 

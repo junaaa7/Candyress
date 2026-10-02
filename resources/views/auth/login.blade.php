@@ -35,10 +35,10 @@
 
             <form action="{{ route('login') }}" method="POST">
                 @csrf
-                <!-- Email -->
+                <!-- Email atau Username -->
                 <div class="mb-5">
-                    <label class="cute-label" for="email">Alamat Email</label>
-                    <input type="email" id="email" name="email" class="cute-input" placeholder="nama@email.com" required autofocus>
+                    <label class="cute-label" for="login">Email atau Username</label>
+                    <input type="text" id="login" name="login" class="cute-input" placeholder="email@contoh.com atau username" required autofocus>
                 </div>
 
                 <!-- Password -->

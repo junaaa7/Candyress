@@ -2,87 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Topup;
-use App\Models\WalletTransaction;
-use App\Services\PaymentGatewayService;
+use App\Models\TopUp;
+use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class TopupController extends Controller
 {
     public function __construct(
-        protected PaymentGatewayService $paymentGateway
+        protected WalletService $walletService
     ) {}
 
-    /**
-     * Show wallet dashboard with balance, top-up form, and transaction history.
-     */
     public function index()
     {
-        $user = auth()->user();
+        $topups = TopUp::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $transactions = WalletTransaction::where('user_id', $user->id)
-            ->latest()
-            ->paginate(10);
-
-        $pendingTopup = Topup::where('user_id', $user->id)
-            ->where('payment_status', 'pending')
-            ->where('expired_at', '>', now())
-            ->latest()
-            ->first();
-
-        return view('customer.wallet', compact('user', 'transactions', 'pendingTopup'));
+        return view('customer.topup.index', compact('topups'));
     }
 
-    /**
-     * Process top-up request: create topup record + generate QRIS.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'amount' => 'required|integer|min:10000|max:10000000',
-        ], [
-            'amount.required' => 'Nominal top-up wajib diisi.',
-            'amount.integer' => 'Nominal harus berupa angka.',
-            'amount.min' => 'Minimal top-up Rp 10.000.',
-            'amount.max' => 'Maksimal top-up Rp 10.000.000.',
+            'amount' => 'required|numeric|min:10000|max:5000000',
         ]);
 
-        // Create topup record
-        $topup = Topup::create([
+        $topup = TopUp::create([
             'user_id' => auth()->id(),
-            'reference_id' => 'TU-' . strtoupper(Str::random(12)),
+            'reference_id' => 'TU-'.strtoupper(Str::random(8)),
             'amount' => $request->amount,
-            'payment_method' => 'qris',
-            'payment_status' => 'pending',
+            'status' => 'pending',
         ]);
 
-        // Call payment gateway to generate QRIS
-        $qrisData = $this->paymentGateway->createQrisCharge($topup);
-
-        $topup->update([
-            'qr_string' => $qrisData['qr_string'],
-            'qr_code_url' => $qrisData['qr_code_url'],
-            'expired_at' => $qrisData['expired_at'],
-        ]);
-
-        return redirect()->route('customer.topup.show', $topup->reference_id);
+        return redirect()->route('customer.topup.show', $topup->reference_id)
+            ->with('success', 'Request top up berhasil dibuat!');
     }
 
-    /**
-     * Show QRIS payment page with QR code and countdown timer.
-     */
-    public function show(string $referenceId)
+    public function show($referenceId)
     {
-        $topup = Topup::where('reference_id', $referenceId)
+        $topup = TopUp::where('reference_id', $referenceId)
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        // Auto-expire if past deadline
-        if ($topup->isPending() && $topup->expired_at && $topup->expired_at->isPast()) {
-            $topup->update(['payment_status' => 'expired']);
+        return view('customer.topup.show', compact('topup'));
+    }
+
+    /**
+     * Handle proof of payment upload for a top-up request.
+     */
+    public function uploadProof(Request $request, string $referenceId)
+    {
+        $request->validate([
+            'proof_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $topup = TopUp::where('reference_id', $referenceId)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        if (! in_array($topup->status, ['pending', 'rejected'])) {
+            return back()->with('error', 'Top up ini tidak dapat menerima bukti pembayaran saat ini.');
         }
 
-        return view('customer.topup-show', compact('topup'));
+        $path = $request->file('proof_image')->store('proofs', 'public');
+
+        $topup->update([
+            'proof_image' => $path,
+            'status' => 'waiting_confirmation',
+        ]);
+
+        return back()->with('success', 'Bukti pembayaran berhasil diupload! Silakan tunggu konfirmasi admin.');
     }
 }

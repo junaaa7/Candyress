@@ -7,8 +7,8 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Review;
+use App\Services\OrderFulfillmentService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
@@ -39,11 +39,15 @@ class CustomerController extends Controller
     // Browse product catalog with search & category filter
     public function products(Request $request)
     {
-        $query = Product::where('is_active', true)->with('category');
+        $query = Product::where('is_active', true)
+            ->with('category')
+            ->withCount(['productStocks as available_stock_count' => function ($query) {
+                $query->where('status', 'available');
+            }]);
 
         // Search by name
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $query->where('name', 'like', '%'.$request->search.'%');
         }
 
         // Filter by category
@@ -69,17 +73,31 @@ class CustomerController extends Controller
         }
 
         $orders = $query->latest()->paginate(10);
-        
+
         return view('customer.orders', compact('orders'));
     }
 
     // Show single order detail
     public function showOrder($order_number)
     {
-        $order = Order::with(['items.product', 'payment'])
+        $order = Order::with(['items.product.category', 'items.productStock', 'payment'])
             ->where('user_id', auth()->id())
             ->where('order_number', $order_number)
             ->firstOrFail();
+
+        // Auto fallback: if completed but items missing stock, try fulfilling again
+        if ($order->status === 'completed') {
+            $hasUnfulfilled = $order->items->whereNull('product_stock_id')->isNotEmpty();
+            if ($hasUnfulfilled) {
+                try {
+                    app(OrderFulfillmentService::class)->fulfill($order);
+                    // Reload order to fetch new productStock relations
+                    $order->load(['items.productStock']);
+                } catch (\Exception $e) {
+                    // Silently fail if still out of stock, view will handle it
+                }
+            }
+        }
 
         return view('customer.order-detail', compact('order'));
     }
@@ -106,7 +124,7 @@ class CustomerController extends Controller
         $order = Order::where('user_id', auth()->id())
             ->where('order_number', $order_number)
             ->firstOrFail();
-            
+
         // Pastikan pesanan belum selesai atau dibatalkan
         if (in_array($order->status, ['completed', 'cancelled'])) {
             return back()->with('error', 'Status pesanan tidak mengizinkan pembayaran.');
@@ -121,7 +139,7 @@ class CustomerController extends Controller
 
         // Store new proof
         $path = $request->file('payment_proof')->store('payment-proofs', 'public');
-        
+
         // Gunakan updateOrCreate agar data payment dibuat jika belum ada
         Payment::updateOrCreate(
             ['order_id' => $order->id],
@@ -132,7 +150,7 @@ class CustomerController extends Controller
                 'amount' => $order->total_price,
             ]
         );
-        
+
         // Ubah status order menjadi processing setelah bukti dikirim
         $order->update(['status' => 'processing']);
 
@@ -157,7 +175,7 @@ class CustomerController extends Controller
             ->pluck('product')
             ->unique('id')
             ->filter(function ($product) {
-                return !Review::where('user_id', auth()->id())
+                return ! Review::where('user_id', auth()->id())
                     ->where('product_id', $product->id)
                     ->exists();
             });
@@ -182,7 +200,7 @@ class CustomerController extends Controller
             })
             ->exists();
 
-        if (!$hasPurchased) {
+        if (! $hasPurchased) {
             return back()->with('error', 'Anda hanya bisa mereview produk yang sudah dibeli dan selesai.');
         }
 
@@ -210,7 +228,7 @@ class CustomerController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',

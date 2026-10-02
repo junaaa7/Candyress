@@ -13,6 +13,7 @@ class CategoryController extends Controller
     {
         // Menampilkan kategori beserta jumlah produk di dalamnya
         $categories = Category::withCount('products')->latest()->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -24,14 +25,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name'
+            'name' => 'required|string|max:255|unique:categories,name',
+            'default_snk' => 'nullable|string',
         ], [
-            'name.unique' => 'Nama kategori ini sudah ada.'
+            'name.unique' => 'Nama kategori ini sudah ada.',
         ]);
 
         Category::create([
             'name' => $request->name,
-            'slug' => Str::slug($request->name)
+            'slug' => Str::slug($request->name),
+            'default_snk' => $request->default_snk,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil ditambahkan!');
@@ -45,12 +48,14 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id
+            'name' => 'required|string|max:255|unique:categories,name,'.$category->id,
+            'default_snk' => 'nullable|string',
         ]);
 
         $category->update([
             'name' => $request->name,
-            'slug' => Str::slug($request->name)
+            'slug' => Str::slug($request->name),
+            'default_snk' => $request->default_snk,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui!');
@@ -60,6 +65,7 @@ class CategoryController extends Controller
     {
         // Peringatan: Menghapus kategori akan menghapus produk di dalamnya juga (karena cascadeOnDelete)
         $category->delete();
+
         return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }

@@ -33,19 +33,42 @@
                 <p class="mt-2.5 text-[0.95rem] text-mauve">Bergabunglah untuk mendapatkan akses akun premium termurah</p>
             </div>
 
+            <!-- Tampilkan error validasi jika ada -->
+            @if ($errors->any())
+                <div class="mb-4 rounded-md bg-red-50 p-4 text-sm text-red-500">
+                    <ul class="list-disc pl-4">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('register') }}" method="POST">
                 @csrf
 
-                <!-- Nama -->
+                <!-- Nama Lengkap -->
                 <div class="mb-5">
                     <label class="cute-label" for="name">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" class="cute-input" placeholder="John Doe" required autofocus>
+                    <input type="text" id="name" name="name" class="cute-input" placeholder="John Doe" value="{{ old('name') }}" required autofocus>
+                </div>
+
+                <!-- Username -->
+                <div class="mb-5">
+                    <label class="cute-label" for="username">Username</label>
+                    <input type="text" id="username" name="username" class="cute-input" placeholder="johndoe123" value="{{ old('username') }}" required>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-5">
                     <label class="cute-label" for="email">Alamat Email</label>
-                    <input type="email" id="email" name="email" class="cute-input" placeholder="nama@email.com" required>
+                    <input type="email" id="email" name="email" class="cute-input" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                </div>
+
+                <!-- No WhatsApp -->
+                <div class="mb-5">
+                    <label class="cute-label" for="whatsapp">No WhatsApp</label>
+                    <input type="text" id="whatsapp" name="whatsapp" class="cute-input" placeholder="08123456789" value="{{ old('whatsapp') }}" required>
                 </div>
 
                 <!-- Password -->

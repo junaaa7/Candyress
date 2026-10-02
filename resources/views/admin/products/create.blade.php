@@ -35,7 +35,7 @@
                     <!-- Durasi -->
                     <div>
                         <label class="cute-label">Durasi (Contoh: 1 Bulan, 1 Tahun)</label>
-                        <input type="text" name="duration" required class="cute-input">
+                        <input type="text" name="duration_label" required class="cute-input">
                     </div>
 
                     <!-- Tipe Produk -->
@@ -64,9 +64,21 @@
                 </div>
 
                 <!-- Deskripsi -->
+                <div class="mb-5">
+                    <label class="cute-label">Deskripsi Produk</label>
+                    <textarea name="description" rows="3" required class="cute-input resize-y"></textarea>
+                </div>
+
+                <!-- Petunjuk Login -->
+                <div class="mb-5">
+                    <label class="cute-label">Petunjuk Login (Login Instructions)</label>
+                    <textarea name="login_instructions" rows="3" class="cute-input resize-y" placeholder="Langkah-langkah login bagi pelanggan..."></textarea>
+                </div>
+
+                <!-- Syarat & Ketentuan Spesifik (Opsional) -->
                 <div class="mb-7">
-                    <label class="cute-label">Deskripsi Produk & Aturan</label>
-                    <textarea name="description" rows="4" required class="cute-input resize-y"></textarea>
+                    <label class="cute-label">S&K Khusus Produk (Kosongkan jika ikut Kategori)</label>
+                    <textarea name="terms_and_conditions" rows="3" class="cute-input resize-y" placeholder="Tambahan larangan / aturan untuk produk ini..."></textarea>
                 </div>
 
                 <div class="flex justify-end">

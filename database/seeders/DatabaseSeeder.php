@@ -18,9 +18,10 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@candyress.com'],
             [
                 'name' => 'Admin Candyress',
+                'username' => 'admin', // <-- Tambahkan username
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
-                'phone' => '081234567890',
+                'whatsapp' => '081371711181', // <-- Ubah 'phone' menjadi 'whatsapp' menyesuaikan Model User Anda
             ]
         );
 
@@ -29,9 +30,10 @@ class DatabaseSeeder extends Seeder
             ['email' => 'customer@gmail.com'],
             [
                 'name' => 'John Customer',
+                'username' => 'customer', // <-- Tambahkan username
                 'password' => Hash::make('password123'),
                 'role' => 'customer',
-                'phone' => '089876543210',
+                'whatsapp' => '081371711181', // <-- Ubah 'phone' menjadi 'whatsapp' menyesuaikan Model User Anda
             ]
         );
     }

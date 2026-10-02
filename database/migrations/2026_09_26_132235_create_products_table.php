@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('sold')->default(0);
             $table->json('features')->nullable(); // Untuk menyimpan list fitur produk
             $table->text('usage_instructions')->nullable();
-            $table->text('terms_and_conditions')->nullable();
+            $table->text('terms_and_conditions')->nullable(); // <-- INI YANG AKAN KITA JADIKAN S&K
             $table->timestamps();
         });
     }

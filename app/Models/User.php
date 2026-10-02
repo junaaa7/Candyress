@@ -18,11 +18,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
         'avatar',
-        'phone',
+        'whatsapp',
         'is_active',
         'balance',
     ];
@@ -50,7 +51,7 @@ class User extends Authenticatable
             'balance' => 'integer',
         ];
     }
-    
+
     /**
      * Check if user is admin
      */
@@ -90,6 +91,6 @@ class User extends Authenticatable
      */
     public function getFormattedBalanceAttribute(): string
     {
-        return 'Rp ' . number_format($this->balance, 0, ',', '.');
+        return 'Rp '.number_format($this->balance, 0, ',', '.');
     }
 }
