@@ -28,10 +28,10 @@ class PaymentGatewayService
         $expiredAt = now()->addMinutes(15);
 
         // Generate a mock QR string (in production this comes from the gateway)
-        $qrString = 'MOCK-QRIS-' . $topup->reference_id . '-' . $topup->amount;
+        $qrString = 'MOCK-QRIS-'.$topup->reference_id.'-'.$topup->amount;
 
         // Use a free QR code generator API for the QR image
-        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($qrString);
+        $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='.urlencode($qrString);
 
         return [
             'qr_string' => $qrString,

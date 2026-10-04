@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
@@ -12,6 +11,7 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = User::where('role', 'customer')->latest()->get();
+
         return view('admin.customers.index', compact('customers'));
     }
 
@@ -25,7 +25,7 @@ class CustomerController extends Controller
 
         // Memuat riwayat pesanan pelanggan beserta produknya
         $customer->load(['orders.products', 'orders.payment']);
-        
+
         return view('admin.customers.show', compact('customer'));
     }
 
@@ -37,10 +37,11 @@ class CustomerController extends Controller
         }
 
         $customer->update([
-            'is_active' => !$customer->is_active
+            'is_active' => ! $customer->is_active,
         ]);
 
         $status = $customer->is_active ? 'diaktifkan' : 'dinonaktifkan';
+
         return redirect()->back()->with('success', "Akun pelanggan berhasil $status!");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InsufficientBalanceException;
 use App\Models\User;
 use App\Models\WalletTransaction;
 use Illuminate\Support\Facades\DB;
@@ -45,8 +46,8 @@ class WalletService
             $lockedUser = User::lockForUpdate()->find($user->id);
 
             if ($lockedUser->balance < $amount) {
-                throw new \App\Exceptions\InsufficientBalanceException(
-                    'Saldo tidak mencukupi. Saldo saat ini: Rp ' . number_format($lockedUser->balance, 0, ',', '.')
+                throw new InsufficientBalanceException(
+                    'Saldo tidak mencukupi. Saldo saat ini: Rp '.number_format($lockedUser->balance, 0, ',', '.')
                 );
             }
 

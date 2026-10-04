@@ -93,7 +93,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('products', ProductController::class);
 
     // Kelola Stok Akun (Ganti dari premium-accounts lama)
-    Route::resource('stocks', StockController::class)->only(['index', 'store']);
+    Route::resource('stocks', StockController::class)->only(['index', 'store', 'update', 'destroy']);
 
     // Kelola Pesanan (Admin Order Management)
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);

@@ -27,7 +27,7 @@ $width = match ($width) {
             x-transition:leave-end="opacity-0 scale-95"
             class="absolute z-50 mt-2 {{ $width }} rounded-2xl shadow-sticker {{ $alignmentClasses }}"
             style="display: none;"
-            @click="open = false">
+            >
         <div class="overflow-hidden rounded-2xl border-2 border-brand-100 {{ $contentClasses }}">
             {{ $content }}
         </div>

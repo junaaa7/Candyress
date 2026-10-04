@@ -68,7 +68,7 @@
 
         {{-- Product Grid --}}
         @if($products->count())
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($products as $product)
                     <a href="{{ route('product.show', $product->slug) }}"
                        class="cute-card cute-lift group flex flex-col overflow-hidden">

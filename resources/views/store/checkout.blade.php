@@ -12,7 +12,7 @@
     </div>
 
     <!-- Form Pembayaran: Akan diarahkan ke CheckoutController yang mengurus Payment Gateway atau Potong Saldo -->
-    <form action="{{ route('checkout.process') ?? '#' }}" method="POST" class="flex flex-col lg:flex-row gap-8">
+    <form action="{{ route('checkout.process') ?? '#' }}" method="POST" class="flex flex-col lg:flex-row gap-6">
         @csrf
         <input type="hidden" name="payment_method" x-model="selectedPayment">
 

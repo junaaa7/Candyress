@@ -26,33 +26,52 @@ class StockController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'credentials' => 'required|string', // Format: email,password,pin,info
+            'credentials' => 'required|string',
         ]);
 
-        // Memecah inputan berdasarkan baris baru (Enter)
-        $lines = explode("\n", str_replace("\r", '', $request->credentials));
-        $count = 0;
+        // Simpan seluruh teks apa adanya sebagai 1 stok akun tunggal
+        $block = trim($request->credentials);
+        if (! empty($block)) {
+            ProductStock::create([
+                'product_id' => $request->product_id,
+                'credentials' => $block,
+                'status' => 'available',
+            ]);
 
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if (! empty($line)) {
-                $parts = explode(',', $line);
-                ProductStock::create([
-                    'product_id' => $request->product_id,
-                    'email' => isset($parts[0]) ? trim($parts[0]) : null,
-                    'password' => isset($parts[1]) ? trim($parts[1]) : null,
-                    'token_or_pin' => isset($parts[2]) ? trim($parts[2]) : null,
-                    'additional_info' => isset($parts[3]) ? trim($parts[3]) : null,
-                    'status' => 'available',
-                ]);
-                $count++;
+            // Otomatis tambah angka stock di tabel produk
+            $product = Product::find($request->product_id);
+            if ($product) {
+                $product->increment('stock', 1);
             }
         }
 
-        // Otomatis tambah angka stock di tabel produk
-        $product = Product::find($request->product_id);
-        $product->increment('stock', $count);
+        return redirect()->back()->with('success', '1 Akun berhasil ditambahkan ke stok!');
+    }
 
-        return redirect()->back()->with('success', "$count Akun berhasil ditambahkan ke stok!");
+    public function update(Request $request, ProductStock $stock)
+    {
+        $request->validate([
+            'credentials' => 'required|string',
+        ]);
+
+        $stock->update([
+            'credentials' => trim($request->credentials),
+        ]);
+
+        return redirect()->back()->with('success', 'Stok akun berhasil diperbarui!');
+    }
+
+    public function destroy(ProductStock $stock)
+    {
+        if ($stock->status === 'available') {
+            $product = $stock->product;
+            if ($product && $product->stock > 0) {
+                $product->decrement('stock', 1);
+            }
+        }
+
+        $stock->delete();
+
+        return redirect()->back()->with('success', 'Stok akun berhasil dihapus!');
     }
 }

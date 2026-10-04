@@ -83,7 +83,7 @@
                     <div class="inline-block p-3 bg-white border rounded-2xl shadow-sm">
                         <img src="{{ asset('images/payments/qris.jpg') }}" 
                              alt="QRIS Pembayaran" 
-                             class="w-64 max-w-full mx-auto rounded-xl object-contain"
+                             class="w-56 sm:w-64 max-w-full mx-auto rounded-xl object-contain"
                              onerror="this.onerror=null; this.src='{{ asset('images/qris.jpg') }}';">
                     </div>
 
@@ -95,14 +95,14 @@
                     </div>
 
                     <!-- Actions -->
-                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
+                    <div class="mt-6 flex flex-col sm:flex-row w-full gap-3 justify-center items-center">
                         <a href="{{ asset('images/payments/qris.jpg') }}" download="QRIS-Candyress.jpg" 
-                           class="px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 hover:bg-pink-100 rounded-lg border border-pink-200 transition">
+                           class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 hover:bg-pink-100 rounded-lg border border-pink-200 transition text-center">
                             Unduh Gambar QRIS
                         </a>
                         <a href="https://wa.me/6281371711181?text=Halo%20Admin,%20saya%20sudah%20transfer%20top%20up%20dengan%20ID:%20{{ $topup->reference_id ?? $topup->id }}%20sebesar%20Rp%20{{ number_format($topup->amount ?? 10000, 0, ',', '.') }}" 
                            target="_blank"
-                           class="px-5 py-2 text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 rounded-lg shadow transition">
+                           class="w-full sm:w-auto px-5 py-2 text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 rounded-lg shadow transition text-center">
                             Konfirmasi ke WhatsApp Admin
                         </a>
                     </div>

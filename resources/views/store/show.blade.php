@@ -22,10 +22,10 @@
         @endif
 
         <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+            <div class="flex flex-col md:flex-row gap-0">
                 
                 <!-- Kiri: Gambar Produk -->
-                <div class="p-8 md:p-12 bg-gray-50/50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100">
+                <div class="w-full md:w-1/2 p-8 md:p-12 bg-gray-50/50 flex items-center justify-center border-b md:border-b-0 md:border-r border-gray-100">
                     @if($product->thumbnail)
                         <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{ $product->name }}" class="w-full h-auto rounded-2xl shadow-md">
                     @else
@@ -36,7 +36,7 @@
                 </div>
 
                 <!-- Kanan: Detail Informasi -->
-                <div class="p-8 md:p-12 flex flex-col justify-center">
+                <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
                     <span class="inline-block px-3 py-1 bg-brand-50 text-brand-600 rounded-full text-xs font-bold tracking-wide uppercase w-max mb-4">
                         {{ $product->product_type }}
                     </span>
@@ -68,7 +68,7 @@
                     </div>
 
                    <!-- Tombol Action -->
-                    <form action="{{ route('cart.store') }}" method="POST" class="flex flex-col sm:flex-row gap-4">
+                    <form action="{{ route('cart.store') }}" method="POST" class="w-full flex flex-col sm:flex-row gap-3">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         

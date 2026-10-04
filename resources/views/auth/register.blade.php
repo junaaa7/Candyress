@@ -50,37 +50,69 @@
                 <!-- Nama Lengkap -->
                 <div class="mb-5">
                     <label class="cute-label" for="name">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" class="cute-input" placeholder="John Doe" value="{{ old('name') }}" required autofocus>
+                    <input type="text" id="name" name="name" class="cute-input" placeholder="" value="{{ old('name') }}" required autofocus>
                 </div>
 
                 <!-- Username -->
                 <div class="mb-5">
                     <label class="cute-label" for="username">Username</label>
-                    <input type="text" id="username" name="username" class="cute-input" placeholder="johndoe123" value="{{ old('username') }}" required>
+                    <input type="text" id="username" name="username" class="cute-input" placeholder="" value="{{ old('username') }}" required>
                 </div>
 
                 <!-- Email -->
                 <div class="mb-5">
                     <label class="cute-label" for="email">Alamat Email</label>
-                    <input type="email" id="email" name="email" class="cute-input" placeholder="nama@email.com" value="{{ old('email') }}" required>
+                    <input type="email" id="email" name="email" class="cute-input" placeholder="" value="{{ old('email') }}" required>
                 </div>
 
                 <!-- No WhatsApp -->
                 <div class="mb-5">
                     <label class="cute-label" for="whatsapp">No WhatsApp</label>
-                    <input type="text" id="whatsapp" name="whatsapp" class="cute-input" placeholder="08123456789" value="{{ old('whatsapp') }}" required>
+                    <input type="text" id="whatsapp" name="whatsapp" class="cute-input" placeholder="" value="{{ old('whatsapp') }}" required>
                 </div>
 
                 <!-- Password -->
                 <div class="mb-5">
                     <label class="cute-label" for="password">Kata Sandi</label>
-                    <input type="password" id="password" name="password" class="cute-input" placeholder="••••••••" required>
+                    <div class="relative" x-data="{ show: false }">
+                        <input :type="show ? 'text' : 'password'" id="password" name="password" class="cute-input w-full pr-11" placeholder="" required>
+                        <button type="button" 
+                                @click="show = !show" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-brand-300 hover:text-brand-600 focus:outline-none transition-colors"
+                                tabindex="-1">
+                            <!-- Mata Terbuka -->
+                            <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <!-- Mata Dicoret -->
+                            <svg x-show="show" x-cloak style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Konfirmasi Password -->
                 <div class="mb-7">
                     <label class="cute-label" for="password_confirmation">Konfirmasi Kata Sandi</label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" class="cute-input" placeholder="••••••••" required>
+                    <div class="relative" x-data="{ show: false }">
+                        <input :type="show ? 'text' : 'password'" id="password_confirmation" name="password_confirmation" class="cute-input w-full pr-11" placeholder="" required>
+                        <button type="button" 
+                                @click="show = !show" 
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-brand-300 hover:text-brand-600 focus:outline-none transition-colors"
+                                tabindex="-1">
+                            <!-- Mata Terbuka -->
+                            <svg x-show="!show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <!-- Mata Dicoret -->
+                            <svg x-show="show" x-cloak style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Submit Button -->

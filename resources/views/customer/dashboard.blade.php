@@ -93,7 +93,7 @@
                     <a href="{{ route('customer.orders.index') }}" class="cute-link text-sm">Lihat Semua</a>
                 </div>
 
-                <div class="overflow-x-auto p-3">
+                <div class="overflow-x-auto w-full p-3">
                     <table class="cute-table min-w-[44rem]">
                         <thead>
                             <tr>

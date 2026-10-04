@@ -4,7 +4,7 @@
     </svg>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
             <div class="col-span-1 md:col-span-2">
                 <span class="inline-flex items-center gap-1.5 font-display text-2xl font-bold tracking-tight text-brand-600">
                     <svg class="h-7 w-10 flex-none" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>Candyress.

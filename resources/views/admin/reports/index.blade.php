@@ -47,7 +47,7 @@
                 <div class="border-b-2 border-dashed border-brand-100 bg-brand-100/60 p-4">
                     <h2 class="text-lg font-semibold">10 Produk Terlaris 🏆</h2>
                 </div>
-                <div class="overflow-x-auto p-3">
+                <div class="overflow-x-auto w-full p-3">
                     <table class="cute-table min-w-[24rem]">
                         <thead>
                             <tr>
@@ -78,7 +78,7 @@
                 <div class="border-b-2 border-dashed border-brand-100 bg-brand-100/60 p-4">
                     <h2 class="text-lg font-semibold">Pesanan Harian (Periode Terpilih) 📅</h2>
                 </div>
-                <div class="overflow-x-auto p-3">
+                <div class="overflow-x-auto w-full p-3">
                     <table class="cute-table min-w-[24rem]">
                         <thead>
                             <tr>

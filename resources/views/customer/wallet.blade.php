@@ -92,7 +92,7 @@
                 <h3 class="text-lg font-semibold">Riwayat Mutasi Saldo 📒</h3>
             </div>
 
-            <div class="overflow-x-auto p-3">
+            <div class="overflow-x-auto w-full p-3">
                 <table class="cute-table min-w-[40rem]">
                     <thead>
                         <tr>

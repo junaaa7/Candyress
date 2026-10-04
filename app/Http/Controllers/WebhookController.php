@@ -26,6 +26,7 @@ class WebhookController extends Controller
         // 1. Validate webhook signature
         if (! $this->paymentGateway->validateWebhookSignature($payload)) {
             Log::warning('Webhook signature invalid', $payload);
+
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
@@ -43,6 +44,7 @@ class WebhookController extends Controller
 
         if (! $topup) {
             Log::warning('Webhook topup not found', ['reference_id' => $referenceId]);
+
             return response()->json(['message' => 'Topup not found'], 404);
         }
 
@@ -59,7 +61,7 @@ class WebhookController extends Controller
             $this->walletService->credit(
                 $topup->user,
                 $topup->amount,
-                'Top-up saldo via QRIS (' . $topup->reference_id . ')',
+                'Top-up saldo via QRIS ('.$topup->reference_id.')',
                 'topup',
                 $topup->id
             );

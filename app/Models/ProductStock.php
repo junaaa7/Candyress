@@ -9,6 +9,7 @@ class ProductStock extends Model
     protected $fillable = [
         'product_id',
         'order_id',
+        'credentials',
         'email',
         'password',
         'token_or_pin',

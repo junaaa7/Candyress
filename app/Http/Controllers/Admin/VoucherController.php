@@ -11,6 +11,7 @@ class VoucherController extends Controller
     public function index()
     {
         $vouchers = Voucher::latest()->get();
+
         return view('admin.vouchers.index', compact('vouchers'));
     }
 
@@ -44,7 +45,7 @@ class VoucherController extends Controller
     public function update(Request $request, Voucher $voucher)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:50|unique:vouchers,code,' . $voucher->id,
+            'code' => 'required|string|max:50|unique:vouchers,code,'.$voucher->id,
             'discount_type' => 'required|in:nominal,persen',
             'discount_value' => 'required|numeric|min:1',
             'valid_until' => 'nullable|date',
@@ -61,6 +62,7 @@ class VoucherController extends Controller
     public function destroy(Voucher $voucher)
     {
         $voucher->delete();
+
         return redirect()->route('admin.vouchers.index')->with('success', 'Voucher berhasil dihapus!');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Review;
 
 class StoreController extends Controller
 {
@@ -18,7 +19,15 @@ class StoreController extends Controller
             ->take(8)
             ->get();
 
-        return view('welcome', compact('products'));
+        // Ambil 6 ulasan terbaik dan terbaru untuk seksi testimoni
+        $reviews = Review::with(['user', 'product'])
+            ->where('is_visible', true)
+            ->where('rating', '>=', 4)
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('welcome', compact('products', 'reviews'));
     }
 
     public function show($slug)

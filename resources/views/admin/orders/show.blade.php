@@ -22,7 +22,7 @@
                 <!-- Daftar Produk -->
                 <div class="cute-card p-6">
                     <h2 class="mb-4 text-xl font-semibold">Produk yang Dibeli 🛍️</h2>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto w-full">
                         <table class="cute-table min-w-[30rem]">
                             <thead>
                                 <tr>

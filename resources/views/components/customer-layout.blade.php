@@ -17,7 +17,7 @@
         <div class="min-h-screen flex">
 
             <!-- Mobile sidebar backdrop -->
-            <div x-show="sidebarOpen" class="fixed inset-0 z-20 bg-brand-900/40 lg:hidden" @click="sidebarOpen = false" x-transition.opacity></div>
+            <div x-show="sidebarOpen" class="fixed inset-0 z-20 bg-brand-900/40 lg:hidden" x-cloak @click="sidebarOpen = false" x-transition.opacity></div>
 
             <!-- Sidebar -->
             <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 flex w-64 flex-col border-r-2 border-dashed border-brand-300/60 bg-gradient-to-b from-brand-100 to-brand-50 text-brand-900 shadow-xl shadow-brand-600/10 transition-transform duration-300 lg:static lg:translate-x-0 lg:shadow-none">

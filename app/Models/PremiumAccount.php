@@ -13,8 +13,8 @@ class PremiumAccount extends Model
         'product_id',
         'email',
         'password',
-        'status', 
-        'expired_at' // Kolom baru untuk masa berlaku
+        'status',
+        'expired_at', // Kolom baru untuk masa berlaku
     ];
 
     protected $casts = [

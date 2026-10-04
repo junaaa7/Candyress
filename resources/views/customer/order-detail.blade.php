@@ -64,7 +64,7 @@
                                             
                                             <!-- Tombol Salin -->
                                             <button @click="
-                                                let textToCopy = `Email: {{ $item->productStock->email }}\nPassword: {{ $item->productStock->password }}\n{{ $item->productStock->token_or_pin ? 'PIN/Token: ' . $item->productStock->token_or_pin : '' }}`;
+                                                let textToCopy = @js($item->productStock->credentials ?? ($item->productStock->email . "\n" . $item->productStock->password . "\n" . ($item->productStock->token_or_pin ?? '')));
                                                 navigator.clipboard.writeText(textToCopy.trim());
                                                 copied = true;
                                                 setTimeout(() => copied = false, 2000);
@@ -75,57 +75,32 @@
                                             </button>
                                         </div>
 
-                                        <div class="font-mono text-sm whitespace-pre-wrap break-words text-white bg-black/20 p-3 rounded-xl mb-3">Email: {{ $item->productStock->email }}
-Password: {{ $item->productStock->password }}
-@if($item->productStock->token_or_pin)
-PIN/Token: {{ $item->productStock->token_or_pin }}
-@endif
-@if($item->productStock->additional_info)
-Info Tambahan: {{ $item->productStock->additional_info }}
-@endif
-</div>
+                                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 font-mono text-sm text-gray-800 whitespace-pre-wrap break-words overflow-x-auto select-all mb-3">
+                                            {{ $item->productStock->credentials ?? trim($item->productStock->email . "\n" . $item->productStock->password . "\n" . ($item->productStock->token_or_pin ?? '') . "\n" . ($item->productStock->additional_info ?? '')) }}
+                                        </div>
 
                                         <!-- Instruksi Login (Jika ada) -->
                                         @if($item->product->login_instructions)
-                                            <div class="mt-3 text-sm text-emerald-50 bg-emerald-900/30 p-3 rounded-xl border border-emerald-400/30">
-                                                <span class="font-bold block mb-1">💡 Cara Login:</span>
-                                                <p class="whitespace-pre-wrap">{{ $item->product->login_instructions }}</p>
+                                            <div class="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-sm whitespace-pre-wrap">
+                                                <p class="font-bold flex items-center gap-1.5 mb-1">💡 Cara Login:</p>
+                                                <p>{{ $item->product->login_instructions }}</p>
+                                            </div>
+                                        @endif
+
+                                        <!-- Syarat & Ketentuan -->
+                                        @php
+                                            $snk = $item->product->terms_and_conditions ?: ($item->product->category->default_snk ?? null);
+                                        @endphp
+                                        @if($snk)
+                                            <div class="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-sm whitespace-pre-wrap">
+                                                <p class="font-bold flex items-center gap-1.5 mb-1">⚠️️ Syarat & Ketentuan:</p>
+                                                <p>{{ $snk }}</p>
                                             </div>
                                         @endif
                                     </div>
                                 @endif
                             @endforeach
                         </div>
-
-                        {{-- Tampilkan S&K Produk --}}
-                        @php
-                            $hasTnC = false;
-                            foreach($order->items as $item) {
-                                if($item->product && (!empty($item->product->terms_and_conditions) || !empty($item->product->terms))) {
-                                    $hasTnC = true;
-                                    break;
-                                }
-                            }
-                        @endphp
-                        
-                        @if($hasTnC)
-                            <div class="mt-4 rounded-2xl border-2 border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm">
-                                <h4 class="mb-2 font-bold flex items-center gap-2">
-                                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                    Peringatan & Syarat Ketentuan Aplikasi
-                                </h4>
-                                <div class="space-y-3">
-                                    @foreach($order->items as $item)
-                                        @if($item->product && (!empty($item->product->terms_and_conditions) || !empty($item->product->terms)))
-                                            <div class="text-sm">
-                                                <span class="font-bold text-amber-800 border-b border-amber-200 pb-0.5 inline-block mb-1">{{ $item->product->name }}</span>
-                                                <p class="whitespace-pre-wrap text-amber-700">{{ !empty($item->product->terms_and_conditions) ? $item->product->terms_and_conditions : $item->product->terms }}</p>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
 
                     @else
                         <p class="text-sm italic text-emerald-50">Kredensial akun belum tersedia.</p>
@@ -219,7 +194,7 @@ Info Tambahan: {{ $item->productStock->additional_info }}
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 {{-- Left Card: Informasi Pesanan --}}
                 <div class="cute-card overflow-hidden">
                     <div class="border-b-2 border-dashed border-brand-100 bg-brand-100/60 px-6 py-5">

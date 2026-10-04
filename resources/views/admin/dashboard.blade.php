@@ -85,7 +85,7 @@
         <!-- Bagian Bawah: Produk Terlaris -->
         <div class="cute-card p-6">
             <h2 class="mb-4 text-xl font-semibold">Produk Terlaris 🏆</h2>
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto w-full">
                 <table class="cute-table min-w-[24rem]">
                     <thead>
                         <tr>

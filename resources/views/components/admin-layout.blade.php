@@ -14,14 +14,16 @@
         <!-- Scripts (Pastikan npm run dev berjalan). Font Nunito & Fredoka dimuat dari app.css -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-brand-50 text-brand-900">
+    <body class="font-sans antialiased bg-brand-50 text-brand-900" x-data="{ sidebarOpen: false }">
         <!-- Gambar SVG maskot & ikon -->
         @include('components.cute-defs')
 
         <div class="min-h-screen flex">
+            <!-- Mobile sidebar backdrop -->
+            <div x-show="sidebarOpen" class="fixed inset-0 z-40 bg-brand-900/40 lg:hidden" x-cloak @click="sidebarOpen = false" x-transition.opacity></div>
 
             <!-- Sidebar Kiri -->
-            <aside class="hidden w-64 flex-col border-r-2 border-dashed border-brand-100 bg-white md:flex">
+            <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r-2 border-dashed border-brand-100 bg-white shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 lg:shadow-none">
                 <div class="flex h-16 items-center justify-center gap-2 border-b-2 border-dashed border-brand-100">
                     <svg class="h-7 w-10 flex-none" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
                     <h2 class="font-display text-xl font-bold text-brand-600">Candyress Admin</h2>
@@ -127,10 +129,15 @@
             <!-- Konten Utama Kanan -->
             <div class="flex-1 flex flex-col min-w-0">
                 <!-- Header Atas -->
-                <header class="flex h-16 items-center justify-between border-b-2 border-dashed border-brand-100 bg-white/80 px-6 backdrop-blur">
-                    <h2 class="font-display text-lg font-semibold leading-tight">
-                        {{ $header ?? 'Dashboard Overview' }}
-                    </h2>
+                <header class="flex h-16 items-center justify-between border-b-2 border-dashed border-brand-100 bg-white/80 px-4 md:px-6 backdrop-blur">
+                    <div class="flex items-center">
+                        <button @click="sidebarOpen = true" class="mr-3 p-2 text-brand-600 hover:bg-brand-50 rounded-lg lg:hidden" aria-label="Buka menu">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        </button>
+                        <h2 class="font-display text-lg font-semibold leading-tight">
+                            {{ $header ?? 'Dashboard Overview' }}
+                        </h2>
+                    </div>
 
                     <!-- Menu Header Logout (Bisa dibiarkan opsional atau dihapus jika sudah ada di sidebar) -->
                     <div class="flex items-center">

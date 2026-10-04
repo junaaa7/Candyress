@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Review;
-use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
@@ -12,6 +11,7 @@ class ReviewController extends Controller
     public function index()
     {
         $reviews = Review::with(['user', 'product'])->latest()->get();
+
         return view('admin.reviews.index', compact('reviews'));
     }
 
@@ -19,10 +19,11 @@ class ReviewController extends Controller
     public function toggleVisibility(Review $review)
     {
         $review->update([
-            'is_visible' => !$review->is_visible
+            'is_visible' => ! $review->is_visible,
         ]);
 
         $status = $review->is_visible ? 'ditampilkan ke publik' : 'disembunyikan dari publik';
+
         return redirect()->back()->with('success', "Review berhasil $status!");
     }
 
@@ -30,6 +31,7 @@ class ReviewController extends Controller
     public function destroy(Review $review)
     {
         $review->delete();
+
         return redirect()->back()->with('success', 'Review berhasil dihapus!');
     }
 }

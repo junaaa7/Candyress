@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             // Relasi ke tabel products (menandakan stok ini milik paket produk apa)
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            
+
             // Kredensial akun premium yang akan dijual
             $table->string('email');
-            $table->string('password'); 
-            
+            $table->string('password');
+
             // Status ketersediaan akun
             $table->enum('status', ['tersedia', 'terjual'])->default('tersedia');
-            
+
             $table->timestamps();
         });
     }

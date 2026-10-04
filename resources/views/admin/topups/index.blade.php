@@ -25,7 +25,7 @@
                 <p>Belum ada data Top Up yang ditemukan.</p>
             </div>
         @else
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto w-full">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-brand-50/50 border-b border-brand-100 border-dashed">

@@ -13,7 +13,8 @@ class SettingController extends Controller
     public function index()
     {
         // Ambil data pengaturan pertama, jika kosong buat instance baru
-        $setting = Setting::first() ?? new Setting();
+        $setting = Setting::first() ?? new Setting;
+
         return view('admin.settings.index', compact('setting'));
     }
 
@@ -33,8 +34,8 @@ class SettingController extends Controller
         $setting = Setting::first();
 
         // Jika belum ada data pengaturan sama sekali, buat baru
-        if (!$setting) {
-            $setting = new Setting();
+        if (! $setting) {
+            $setting = new Setting;
         }
 
         // Proses Upload Logo
@@ -59,7 +60,7 @@ class SettingController extends Controller
         $setting->email = $validated['email'];
         $setting->bank_account = $validated['bank_account'];
         $setting->store_info = $validated['store_info'];
-        
+
         $setting->save();
 
         return redirect()->back()->with('success', 'Pengaturan toko berhasil diperbarui!');
