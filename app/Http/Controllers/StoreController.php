@@ -19,15 +19,15 @@ class StoreController extends Controller
             ->take(8)
             ->get();
 
-        // Ambil 6 ulasan terbaik dan terbaru untuk seksi testimoni
-        $reviews = Review::with(['user', 'product'])
+        // Ambil 3 ulasan terbaik dan terbaru untuk seksi testimoni
+        $testimonials = Review::with(['user', 'product'])
             ->where('is_visible', true)
             ->where('rating', '>=', 4)
             ->latest()
-            ->take(6)
+            ->take(3)
             ->get();
 
-        return view('welcome', compact('products', 'reviews'));
+        return view('welcome', compact('products', 'testimonials'));
     }
 
     public function show($slug)

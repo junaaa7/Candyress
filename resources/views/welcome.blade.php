@@ -207,56 +207,85 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="reveal mb-10 text-3xl font-bold">Apa Kata Mereka? 💌</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Dummy Testimoni 1 -->
-                <div class="reveal cute-card -rotate-1 p-6">
-                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                    <p class="mb-4">"Akun Netflix mendarat dengan aman, prosesnya cepat banget. Recommended!"</p>
-                    <p class="font-semibold text-brand-600">- Budi S.</p>
-                </div>
-                <!-- Dummy Testimoni 2 -->
-                <div class="reveal cute-card rotate-1 p-6" style="--reveal-delay: 120ms">
-                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                    <p class="mb-4">"Langganan Canva Pro di sini harganya miring, garansinya beneran aktif."</p>
-                    <p class="font-semibold text-brand-600">- Rina M.</p>
-                </div>
-                <!-- Dummy Testimoni 3 -->
-                <div class="reveal cute-card -rotate-1 p-6" style="--reveal-delay: 240ms">
-                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                    <p class="mb-4">"Adminnya fast response, sangat terbantu waktu ada kendala di awal. Mantap Candyress."</p>
-                    <p class="font-semibold text-brand-600">- Andi P.</p>
-                </div>
+                @forelse($testimonials as $testimonial)
+                    @php
+                        $rotation = $loop->index % 2 === 0 ? '-rotate-1' : 'rotate-1';
+                        $delay = $loop->index * 120;
+                    @endphp
+                    <div class="reveal cute-card {{ $rotation }} p-6" style="--reveal-delay: {{ $delay }}ms">
+                        <div class="mb-4 text-lg text-amber-400">
+                            {{ str_repeat('★', $testimonial->rating) }}{{ str_repeat('☆', 5 - $testimonial->rating) }}
+                        </div>
+                        <p class="mb-4">"{{ $testimonial->comment }}"</p>
+                        <p class="font-semibold text-brand-600">- {{ $testimonial->user->name ?? 'Pelanggan' }}</p>
+                        @if($testimonial->product)
+                            <p class="text-xs text-mauve mt-1">{{ $testimonial->product->name }}</p>
+                        @endif
+                    </div>
+                @empty
+                    <div class="col-span-full text-center text-mauve">
+                        Belum ada ulasan.
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
 
     <!-- 5. FAQ Section (Target id="faq") (Alpine JS) -->
-    <div id="faq" class="scroll-mt-16 bg-white py-20">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="reveal mb-10 text-center text-3xl font-bold">Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️</h2>
-            <div class="space-y-4">
-                <!-- Item FAQ -->
-                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm">
-                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
-                        <span class="font-semibold">Apakah akun yang dijual legal?</span>
-                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
-                    </button>
-                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
-                        Ya, semua akun yang kami sediakan adalah 100% legal dan menggunakan metode pembayaran resmi, sehingga aman digunakan.
-                    </div>
-                </div>
-
-                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm" style="--reveal-delay: 120ms">
-                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
-                        <span class="font-semibold">Bagaimana sistem garansinya?</span>
-                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
-                    </button>
-                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
-                        Kami memberikan garansi penuh sesuai durasi produk. Cukup lapor melalui tiket di dashboard Anda jika ada kendala.
-                    </div>
-                </div>
-            </div>
+    <section id="faq" class="py-16 max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 flex items-center justify-center gap-2">
+                Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️
+            </h2>
         </div>
-    </div>
+
+        <div class="space-y-4" x-data="{ active: null }">
+            @php
+                $faqs = [
+                    [
+                        'q' => 'Berapa lama proses pengiriman akun setelah pembayaran?',
+                        'a' => 'Pengiriman akun dilakukan secara otomatis dan instan setelah pembayaran terkonfirmasi. Data akun (email, password/token) beserta instruksi login langsung dapat Anda akses di halaman detail pesanan.'
+                    ],
+                    [
+                        'q' => 'Bagaimana ketentuan dan proses klaim garansi?',
+                        'a' => 'Seluruh produk bergaransi penuh selama masa aktif paket. Jika terjadi kendala login sebelum durasi habis, hubungi admin WhatsApp dengan menyertakan Nomor Pesanan Anda untuk penanganan atau penggantian akun.'
+                    ],
+                    [
+                        'q' => 'Apakah akun yang dijual bertipe Private atau Sharing?',
+                        'a' => 'Tersedia pilihan Private maupun Sharing sesuai keterangan produk. Untuk akun Sharing, Anda mendapatkan profil/PIN khusus dan dilarang mengubah password, email, atau login melebihi batas perangkat.'
+                    ],
+                    [
+                        'q' => 'Metode pembayaran apa saja yang didukung?',
+                        'a' => 'Kami mendukung pembayaran melalui Saldo Candyress untuk proses instan, serta QRIS yang dapat dipindai oleh semua aplikasi e-wallet (DANA, OVO, GoPay) dan seluruh Mobile Banking.'
+                    ],
+                    [
+                        'q' => 'Apa yang harus dilakukan jika gagal login?',
+                        'a' => 'Pastikan Anda mengikuti instruksi pada bagian Cara Login di rincian pesanan dan menyalin kredensial tanpa spasi tambahan. Jika kendala berlanjut, hubungi admin kami via WhatsApp untuk bantuan segera.'
+                    ],
+                ];
+            @endphp
+
+            @foreach($faqs as $index => $faq)
+                <div class="bg-white border border-pink-200/80 rounded-2xl overflow-hidden shadow-sm transition">
+                    <button type="button" 
+                            @click="active = (active === {{ $index }} ? null : {{ $index }})" 
+                            class="w-full py-4 px-6 text-left flex justify-between items-center gap-4 text-gray-800 font-medium hover:text-pink-600 transition">
+                        <span class="text-sm sm:text-base">{{ $faq['q'] }}</span>
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-pink-50 text-pink-500 font-bold text-lg flex-shrink-0 transition-transform duration-200"
+                              :class="active === {{ $index }} ? 'rotate-45 bg-pink-500 text-white' : ''">
+                            +
+                        </span>
+                    </button>
+                    <div x-show="active === {{ $index }}" 
+                         x-collapse 
+                         x-cloak
+                         class="px-6 pb-5 text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-pink-50 pt-3">
+                        {{ $faq['a'] }}
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </section>
 
     <!-- Dummy div untuk target id="kontak" di paling bawah agar tidak lompat kosong -->
     <div id="kontak"></div>
