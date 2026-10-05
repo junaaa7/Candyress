@@ -35,17 +35,17 @@
                 <h3 class="inline-block rounded-full border-2 border-dashed border-brand-300 bg-brand-100 px-3.5 py-0.5 text-base font-semibold text-brand-600">Menu</h3>
                 <ul class="mt-5 space-y-2.5">
                     <li><a href="#" class="cute-footer-link text-sm">Home</a></li>
-                    <li><a href="#" class="cute-footer-link text-sm">Semua Produk</a></li>
-                    <li><a href="#" class="cute-footer-link text-sm">Cara Pembelian</a></li>
+                    <li><a href="/#produk" class="cute-footer-link text-sm">Semua Produk</a></li>
+                    <li><a href="/#cara-beli" class="cute-footer-link text-sm">Cara Pembelian</a></li>
                 </ul>
             </div>
 
             <div>
                 <h3 class="inline-block rounded-full border-2 border-dashed border-brand-300 bg-brand-100 px-3.5 py-0.5 text-base font-semibold text-brand-600">Bantuan</h3>
                 <ul class="mt-5 space-y-2.5">
-                    <li><a href="#" class="cute-footer-link text-sm">FAQ</a></li>
+                    <li><a href="/#faq" class="cute-footer-link text-sm">FAQ</a></li>
                     <li><a href="#" class="cute-footer-link text-sm">Syarat & Ketentuan</a></li>
-                    <li><a href="#" class="cute-footer-link text-sm">Hubungi Kami</a></li>
+                    <li><a href="/#kontak" class="cute-footer-link text-sm">Hubungi Kami</a></li>
                 </ul>
             </div>
         </div>

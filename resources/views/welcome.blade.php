@@ -15,26 +15,21 @@
         <svg class="pointer-events-none absolute bottom-[16%] left-[12%] hidden h-[3.4rem] w-[5.5rem] rotate-6 md:block lg:h-[4.4rem] lg:w-28" viewBox="0 0 64 40" aria-hidden="true"><use href="#cute-cloud"/></svg>
         <svg class="pointer-events-none absolute bottom-[20%] right-[14%] hidden h-[2.8rem] w-[4.25rem] -rotate-[8deg] md:block lg:h-14 lg:w-[5.25rem]" viewBox="0 0 48 32" aria-hidden="true"><use href="#cute-bow"/></svg>
 
-        {{-- Maskot floating di samping (absolute) --}}
-        <div class="pointer-events-none absolute right-[2%] lg:right-[8%] top-[55%] -translate-y-1/2 hidden md:block opacity-90 transition-transform hover:scale-105 duration-300">
-            <svg class="cute-mascot animate-float motion-reduce:animate-none w-48 lg:w-64 h-auto drop-shadow-md" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
-        </div>
-
-        <div class="relative mx-auto max-w-4xl px-5 pb-[clamp(5rem,11vw,10rem)] pt-[clamp(4.5rem,10vw,9rem)] text-center flex flex-col items-center">
-            <span class="hero-in cute-pill mb-7 px-5 py-2 text-[clamp(0.9rem,1.4vw,1.1rem)] shadow-sm" style="--hero-delay: 100ms">🍬 Toko akun digital favoritmu</span>
-            
-            <h1 class="hero-in text-[clamp(3rem,9vw,7.25rem)] font-bold leading-[1.02] tracking-tight text-brand-900 mb-6" style="--hero-delay: 200ms">
+        <div class="relative mx-auto max-w-7xl px-5 pb-[clamp(5rem,11vw,10rem)] pt-[clamp(4.5rem,10vw,9rem)] text-center">
+            <div class="hero-in">
+                <svg class="cute-mascot animate-float motion-reduce:animate-none" viewBox="0 0 200 140" role="img" aria-label="Maskot permen Candyress"><use href="#cute-mascot"/></svg>
+            </div>
+            <span class="hero-in cute-pill mb-7 px-5 py-2 text-[clamp(0.9rem,1.4vw,1.1rem)]" style="--hero-delay: 100ms">🍬 Toko akun digital favoritmu</span>
+            <h1 class="hero-in text-[clamp(3rem,9vw,7.25rem)] font-bold leading-[1.02] tracking-tight text-brand-900" style="--hero-delay: 200ms">
                 Premium Apps, <br />
                 <span class="cute-underline text-brand-600">Harga Bersahabat</span> 💕
             </h1>
-            
-            <p class="hero-in text-base sm:text-lg lg:text-[clamp(1.1rem,2vw,1.45rem)] text-mauve max-w-2xl mx-auto leading-relaxed mb-8" style="--hero-delay: 320ms">
+            <p class="hero-in mx-auto mt-7 max-w-2xl text-[clamp(1.1rem,2vw,1.45rem)] leading-relaxed text-mauve" style="--hero-delay: 320ms">
                 Temukan berbagai layanan digital premium untuk hiburan, produktivitas, desain, AI, dan lainnya. Proses instan dan bergaransi.
             </p>
-            
-            <div class="hero-in flex flex-wrap items-center justify-center gap-4" style="--hero-delay: 440ms">
-                <a href="#produk" class="cute-btn cute-btn-primary px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)] hover:-translate-y-0.5 transition-all duration-200">Jelajahi Produk</a>
-                <a href="#cara-beli" class="cute-btn cute-btn-ghost px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)] hover:-translate-y-0.5 transition-all duration-200">Cara Pembelian</a>
+            <div class="hero-in mt-11 flex flex-wrap items-center justify-center gap-4" style="--hero-delay: 440ms">
+                <a href="#produk" class="cute-btn cute-btn-primary px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)]">Jelajahi Produk</a>
+                <a href="#cara-beli" class="cute-btn cute-btn-ghost px-10 py-4 text-[clamp(1.05rem,1.6vw,1.25rem)]">Cara Pembelian</a>
             </div>
         </div>
 
@@ -43,11 +38,11 @@
         </svg>
     </div>
 
-    <!-- 2. Katalog Section (Target id="produk" dipindahkan ke sini) -->
-    <div id="produk" class="scroll-mt-16 bg-white">
+    <!-- 2. Kategori Section -->
+    <div class="bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="reveal text-center mb-10">
-                <h2 class="text-3xl font-bold">Katalog</h2>
+                <h2 class="text-3xl font-bold">Kategori Populer</h2>
                 <p class="mt-2 text-mauve">Pilih yang paling kamu suka</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
@@ -71,7 +66,7 @@
         </div>
     </div>
 
-    <!-- Section Tentang Kami (Target id="tentang") -->
+    <!-- TAMBAHAN: Section Tentang Kami (Target id="tentang") -->
     <div id="tentang" class="scroll-mt-16 bg-brand-100 py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div class="reveal cute-card border-brand-300 p-8 shadow-[0_6px_0_theme(colors.brand.300)] md:p-12">
@@ -84,7 +79,77 @@
         </div>
     </div>
 
-    <!-- 3. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
+    <!-- 3. Katalog Showcase Section (Target id="produk") -->
+    <div id="produk" class="scroll-mt-16 bg-brand-50 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {{-- Header --}}
+            <div class="reveal text-center mb-14">
+                <span class="cute-pill mb-4 px-4 py-1.5 text-sm">🛍️ Katalog</span>
+                <h2 class="text-3xl md:text-4xl font-bold">Aplikasi Premium Pilihan</h2>
+                <p class="mx-auto mt-4 max-w-2xl leading-relaxed text-mauve">
+                    Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
+                </p>
+            </div>
+
+            {{-- Catalog Grid --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @forelse($products as $product)
+                    <a href="{{ route('product.show', $product->slug) }}"
+                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center"
+                       style="--reveal-delay: {{ ($loop->index % 4) * 90 }}ms">
+
+                        {{-- Logo / Icon --}}
+                        <div class="mb-5 h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
+                            @if($product->thumbnail)
+                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
+                                     alt="{{ $product->name }}"
+                                     class="w-full h-full object-cover" />
+                            @else
+                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100">
+                                    <span class="font-display text-2xl font-bold text-brand-600">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- App Name --}}
+                        <h3 class="mb-1.5 line-clamp-1 text-lg font-semibold transition-colors group-hover:text-brand-600">
+                            {{ $product->name }}
+                        </h3>
+
+                        {{-- Tagline / Short Description --}}
+                        <p class="mb-4 line-clamp-2 text-sm leading-relaxed text-mauve">
+                            {{ Str::limit(strip_tags($product->description), 70) ?: ($product->category->name ?? 'Layanan digital premium') }}
+                        </p>
+
+                        {{-- Category Pill --}}
+                        <span class="cute-pill mt-auto">
+                            {{ $product->category->name ?? 'Digital' }}
+                        </span>
+                    </a>
+                @empty
+                    <div class="reveal cute-card col-span-full py-16 text-center">
+                        <svg class="cute-mascot mb-4 w-28" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
+                        <p class="font-semibold text-brand-600">Belum ada produk yang ditambahkan.</p>
+                        <p class="mt-1 text-sm text-mauve">Produk akan muncul di sini setelah ditambahkan.</p>
+                    </div>
+                @endforelse
+            </div>
+
+            {{-- View All Link --}}
+            @if($products->count())
+                <div class="reveal mt-12 text-center">
+                    <a href="{{ route('home') }}#produk" class="cute-btn cute-btn-ghost px-8 py-3 text-sm">
+                        Lihat Semua Produk
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- 4. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
     <div id="cara-beli" class="scroll-mt-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="grid items-start gap-12 md:grid-cols-2 md:gap-16">
@@ -137,95 +202,58 @@
         </div>
     </div>
 
-    <!-- Section Testimoni (Target id="testimoni") -->
+    <!-- TAMBAHAN: Section Testimoni (Target id="testimoni") -->
     <div id="testimoni" class="scroll-mt-16 bg-gradient-to-b from-brand-50 to-brand-100/70 py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="reveal mb-10 text-3xl font-bold">Apa Kata Mereka? 💌</h2>
-            @if(isset($reviews) && $reviews->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    @foreach($reviews as $review)
-                        @php
-                            $rotation = $loop->iteration % 2 === 0 ? 'rotate-1' : '-rotate-1';
-                            $delay = ($loop->iteration - 1) * 120;
-                        @endphp
-                        <div class="reveal cute-card {{ $rotation }} p-6" style="--reveal-delay: {{ $delay }}ms">
-                            <div class="mb-4 text-lg text-amber-400">
-                                {!! str_repeat('★', $review->rating) !!}{!! str_repeat('☆', 5 - $review->rating) !!}
-                            </div>
-                            <p class="mb-4">"{{ $review->comment ?? 'Pelayanan sangat memuaskan!' }}"</p>
-                            <p class="font-semibold text-brand-600">- {{ explode(' ', $review->user->name)[0] }}</p>
-                            @if($review->product)
-                                <p class="text-xs text-mauve mt-1">{{ $review->product->name }}</p>
-                            @endif
-                        </div>
-                    @endforeach
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Dummy Testimoni 1 -->
+                <div class="reveal cute-card -rotate-1 p-6">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
+                    <p class="mb-4">"Akun Netflix mendarat dengan aman, prosesnya cepat banget. Recommended!"</p>
+                    <p class="font-semibold text-brand-600">- Budi S.</p>
                 </div>
-            @else
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Dummy Testimoni 1 -->
-                    <div class="reveal cute-card -rotate-1 p-6">
-                        <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                        <p class="mb-4">"Akun Netflix mendarat dengan aman, prosesnya cepat banget. Recommended!"</p>
-                        <p class="font-semibold text-brand-600">- Budi S.</p>
-                    </div>
-                    <!-- Dummy Testimoni 2 -->
-                    <div class="reveal cute-card rotate-1 p-6" style="--reveal-delay: 120ms">
-                        <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                        <p class="mb-4">"Langganan Canva Pro di sini harganya miring, garansinya beneran aktif."</p>
-                        <p class="font-semibold text-brand-600">- Rina M.</p>
-                    </div>
-                    <!-- Dummy Testimoni 3 -->
-                    <div class="reveal cute-card -rotate-1 p-6" style="--reveal-delay: 240ms">
-                        <div class="mb-4 text-lg text-amber-400">★★★★★</div>
-                        <p class="mb-4">"Adminnya fast response, sangat terbantu waktu ada kendala di awal. Mantap Candyress."</p>
-                        <p class="font-semibold text-brand-600">- Andi P.</p>
-                    </div>
+                <!-- Dummy Testimoni 2 -->
+                <div class="reveal cute-card rotate-1 p-6" style="--reveal-delay: 120ms">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
+                    <p class="mb-4">"Langganan Canva Pro di sini harganya miring, garansinya beneran aktif."</p>
+                    <p class="font-semibold text-brand-600">- Rina M.</p>
                 </div>
-            @endif
+                <!-- Dummy Testimoni 3 -->
+                <div class="reveal cute-card -rotate-1 p-6" style="--reveal-delay: 240ms">
+                    <div class="mb-4 text-lg text-amber-400">★★★★★</div>
+                    <p class="mb-4">"Adminnya fast response, sangat terbantu waktu ada kendala di awal. Mantap Candyress."</p>
+                    <p class="font-semibold text-brand-600">- Andi P.</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 4. FAQ Section (Target id="faq") (Alpine JS) -->
+    <!-- 5. FAQ Section (Target id="faq") (Alpine JS) -->
     <div id="faq" class="scroll-mt-16 bg-white py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="reveal mb-10 text-center text-3xl font-bold">Pertanyaan Sering Diajukan (FAQ) 🙋‍♀️</h2>
-            <div x-data="{ active: null }" class="space-y-4">
-                @php
-                    $faqs = [
-                        [
-                            'q' => 'Berapa lama proses pengiriman akun setelah pembayaran?',
-                            'a' => 'Pengiriman akun dilakukan secara otomatis dan instan detik itu juga setelah pembayaran berhasil. Detail akun (email, password/token) serta panduan login akan langsung tampil pada invoice pesanan Anda.'
-                        ],
-                        [
-                            'q' => 'Bagaimana sistem garansi jika akun bermasalah?',
-                            'a' => 'Semua akun bergaransi penuh sesuai durasi paket yang dibeli. Jika terjadi kendala sebelum masa aktif habis, silakan hubungi admin via WhatsApp dengan menyertakan Nomor Pesanan untuk perbaikan atau pergantian akun.'
-                        ],
-                        [
-                            'q' => 'Apakah akun yang dijual bersifat Private atau Sharing?',
-                            'a' => 'Kami menyediakan pilihan akun Private maupun Sharing sesuai keterangan pada kartu produk. Untuk akun Sharing, pembeli mendapatkan profil dan PIN khusus serta dilarang mengubah data akun atau login melebihi batas perangkat.'
-                        ],
-                        [
-                            'q' => 'Metode pembayaran apa saja yang tersedia?',
-                            'a' => 'Kami mendukung pembayaran menggunakan Saldo Candyress untuk checkout instan, serta QRIS yang dapat di-scan dari seluruh mobile banking dan e-wallet (GoPay, OVO, DANA, dll).'
-                        ],
-                        [
-                            'q' => 'Apa yang harus dilakukan jika gagal login?',
-                            'a' => 'Pastikan mengikuti langkah-langkah pada instruksi \'Cara Login\' di halaman pesanan. Jika masih mengalami kendala, klik menu Kontak / WhatsApp admin untuk mendapatkan bantuan langsung.'
-                        ]
-                    ];
-                @endphp
-
-                @foreach($faqs as $index => $faq)
-                    <div class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm" style="--reveal-delay: {{ $index * 60 }}ms">
-                        <button @click="active === {{ $index }} ? active = null : active = {{ $index }}" class="flex w-full items-center justify-between px-4 py-3.5 sm:px-6 sm:py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="active === {{ $index }}">
-                            <span class="font-semibold">{{ $faq['q'] }}</span>
-                            <span x-text="active === {{ $index }} ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600 transition-colors duration-300" :class="active === {{ $index }} ? 'bg-brand-200' : 'bg-brand-100'"></span>
-                        </button>
-                        <div x-show="active === {{ $index }}" x-collapse x-cloak class="px-6 pb-4 text-mauve">
-                            {{ $faq['a'] }}
-                        </div>
+            <div class="space-y-4">
+                <!-- Item FAQ -->
+                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
+                        <span class="font-semibold">Apakah akun yang dijual legal?</span>
+                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
+                        Ya, semua akun yang kami sediakan adalah 100% legal dan menggunakan metode pembayaran resmi, sehingga aman digunakan.
                     </div>
-                @endforeach
+                </div>
+
+                <div x-data="{ expanded: false }" class="reveal cute-card overflow-hidden rounded-3xl shadow-sticker-sm" style="--reveal-delay: 120ms">
+                    <button @click="expanded = !expanded" class="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-300" :aria-expanded="expanded">
+                        <span class="font-semibold">Bagaimana sistem garansinya?</span>
+                        <span x-text="expanded ? '−' : '+'" class="ml-3 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-100 text-xl text-brand-600"></span>
+                    </button>
+                    <div x-show="expanded" x-collapse x-cloak class="px-6 pb-4 text-mauve">
+                        Kami memberikan garansi penuh sesuai durasi produk. Cukup lapor melalui tiket di dashboard Anda jika ada kendala.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
