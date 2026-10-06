@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -17,7 +18,7 @@ class CustomerTest extends TestCase
     public function test_customer_can_view_products()
     {
         $user = User::factory()->create();
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         Product::create([
             'category_id' => $category->id,
             'name' => 'Product 1',

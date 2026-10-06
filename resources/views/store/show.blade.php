@@ -49,7 +49,7 @@
                             <span class="ml-1 font-medium text-gray-700">{{ $product->rating }}</span>
                         </div>
                         <span class="text-gray-300">|</span>
-                        <span class="text-gray-500 text-sm">Terjual {{ $product->sold }}</span>
+                        <span class="text-gray-500 text-sm">Terjual {{ $product->sold_count ?? 0 }}</span>
                     </div>
 
                     <div class="mb-8">

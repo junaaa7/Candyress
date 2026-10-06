@@ -41,9 +41,14 @@ class CustomerController extends Controller
     {
         $query = Product::where('is_active', true)
             ->with('category')
-            ->withCount(['productStocks as available_stock_count' => function ($query) {
-                $query->where('status', 'available');
-            }]);
+            ->withCount([
+                'productStocks as available_stock_count' => function ($query) {
+                    $query->where('status', 'available');
+                },
+                'productStocks as sold_count' => function ($query) {
+                    $query->where('status', 'sold');
+                },
+            ]);
 
         // Search by name
         if ($request->filled('search')) {

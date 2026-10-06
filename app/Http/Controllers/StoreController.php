@@ -12,9 +12,14 @@ class StoreController extends Controller
         // Ambil produk yang statusnya aktif, terbaru, maksimal 8 produk untuk homepage
         $products = Product::where('is_active', true)
             ->with('category')
-            ->withCount(['productStocks as available_stock_count' => function ($query) {
-                $query->where('status', 'available');
-            }])
+            ->withCount([
+                'productStocks as available_stock_count' => function ($query) {
+                    $query->where('status', 'available');
+                },
+                'productStocks as sold_count' => function ($query) {
+                    $query->where('status', 'sold');
+                },
+            ])
             ->latest()
             ->take(8)
             ->get();
@@ -35,9 +40,14 @@ class StoreController extends Controller
         // Cari produk berdasarkan slug
         $product = Product::where('slug', $slug)
             ->where('is_active', true)
-            ->withCount(['productStocks as available_stock_count' => function ($query) {
-                $query->where('status', 'available');
-            }])
+            ->withCount([
+                'productStocks as available_stock_count' => function ($query) {
+                    $query->where('status', 'available');
+                },
+                'productStocks as sold_count' => function ($query) {
+                    $query->where('status', 'sold');
+                },
+            ])
             ->firstOrFail();
 
         return view('store.show', compact('product'));

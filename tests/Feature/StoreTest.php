@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -19,7 +20,7 @@ class StoreTest extends TestCase
 
     public function test_product_show_page_loads_correctly()
     {
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Store Product',

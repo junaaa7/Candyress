@@ -114,7 +114,7 @@
                                     <span class="ml-1 font-bold text-brand-900">{{ $product->rating }}</span>
                                 </div>
                                 <span>•</span>
-                                <span>Terjual {{ $product->sold }}</span>
+                                <span>Terjual {{ $product->sold_count ?? 0 }}</span>
                                 <span>&bull;</span>
                                 @if($product->available_stock_count > 0)
                                     <span class="text-green-600 font-semibold text-xs bg-green-50 px-1.5 py-0.5 rounded">Stok: {{ $product->available_stock_count }}</span>

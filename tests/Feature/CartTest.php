@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -24,7 +26,7 @@ class CartTest extends TestCase
     public function test_user_can_add_product_to_cart()
     {
         $user = User::factory()->create();
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Test Product',
@@ -33,8 +35,8 @@ class CartTest extends TestCase
             'product_type' => 'digital',
             'price' => 10000,
         ]);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
 
         $response = $this->actingAs($user)->post(route('cart.store'), [
             'product_id' => $product->id,
@@ -52,7 +54,7 @@ class CartTest extends TestCase
     {
         $user = User::factory()->create();
         $cart = Cart::create(['user_id' => $user->id]);
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Test Product',
@@ -61,8 +63,8 @@ class CartTest extends TestCase
             'product_type' => 'digital',
             'price' => 10000,
         ]);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
         $cartItem = CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
@@ -84,7 +86,7 @@ class CartTest extends TestCase
     {
         $user = User::factory()->create();
         $cart = Cart::create(['user_id' => $user->id]);
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Test Product',
@@ -93,8 +95,8 @@ class CartTest extends TestCase
             'product_type' => 'digital',
             'price' => 10000,
         ]);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
         $cartItem = CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,

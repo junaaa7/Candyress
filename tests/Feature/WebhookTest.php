@@ -38,7 +38,7 @@ class WebhookTest extends TestCase
             'id' => $topup->id,
             'status' => 'paid',
         ]);
-        
+
         // Assert user balance increased
         $this->assertEquals(50000, $user->fresh()->balance);
     }

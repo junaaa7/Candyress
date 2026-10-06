@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -25,7 +26,7 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
         ]);
 
-        $product = \App\Models\Product::findOrFail($request->product_id);
+        $product = Product::findOrFail($request->product_id);
         $availableStock = $product->productStocks()->where('status', 'available')->count();
         if ($availableStock <= 0) {
             return redirect()->back()->with('error', 'Maaf, stok produk ini baru saja habis!');

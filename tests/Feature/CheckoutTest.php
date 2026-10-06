@@ -4,8 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Category;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -18,7 +21,7 @@ class CheckoutTest extends TestCase
     {
         $user = User::factory()->create();
         $cart = Cart::create(['user_id' => $user->id]);
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Test Product',
@@ -27,8 +30,8 @@ class CheckoutTest extends TestCase
             'product_type' => 'digital',
             'price' => 10000,
         ]);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
         CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
@@ -51,7 +54,7 @@ class CheckoutTest extends TestCase
     {
         $user = User::factory()->create();
         $cart = Cart::create(['user_id' => $user->id]);
-        $category = \App\Models\Category::create(['name' => 'Cat', 'slug' => 'cat']);
+        $category = Category::create(['name' => 'Cat', 'slug' => 'cat']);
         $product = Product::create([
             'category_id' => $category->id,
             'name' => 'Test Product',
@@ -60,8 +63,8 @@ class CheckoutTest extends TestCase
             'product_type' => 'digital',
             'price' => 10000,
         ]);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
-        \App\Models\ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data', 'status' => 'available']);
+        ProductStock::create(['product_id' => $product->id, 'content' => 'Data2', 'status' => 'available']);
         CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $product->id,
@@ -89,7 +92,7 @@ class CheckoutTest extends TestCase
             'total_price' => 10000,
             'status' => 'pending',
         ]);
-        \App\Models\Payment::create([
+        Payment::create([
             'order_id' => $order->id,
             'payment_method' => 'QRIS',
             'amount' => 10000,
