@@ -71,7 +71,7 @@
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($products as $product)
                     <a href="{{ route('product.show', $product->slug) }}"
-                       class="cute-card cute-lift group flex flex-col overflow-hidden">
+                       class="cute-card cute-lift group flex flex-col overflow-hidden {{ $product->available_stock_count <= 0 ? 'opacity-75 pointer-events-none' : '' }}">
                         {{-- Thumbnail --}}
                         <div class="relative aspect-video overflow-hidden bg-brand-50">
                             @if($product->thumbnail)
@@ -84,13 +84,21 @@
                                 </div>
                             @endif
 
+                            @if($product->available_stock_count <= 0)
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/40 z-10">
+                                    <span class="rounded-lg bg-rose-500 px-3 py-1.5 font-bold text-white shadow-sm text-sm">
+                                        HABIS
+                                    </span>
+                                </div>
+                            @endif
+
                             {{-- Category Badge --}}
-                            <span class="cute-pill absolute left-3 top-3 bg-white/90 backdrop-blur-sm">
+                            <span class="cute-pill absolute left-3 top-3 bg-white/90 backdrop-blur-sm z-20">
                                 {{ $product->category->name ?? '-' }}
                             </span>
 
-                            @if($product->discount_price)
-                                <span class="absolute right-3 top-3 rounded-full border-2 border-white bg-brand-600 px-3 py-0.5 text-xs font-bold text-white shadow-sm">Promo</span>
+                            @if($product->discount_price && $product->available_stock_count > 0)
+                                <span class="absolute right-3 top-3 rounded-full border-2 border-white bg-brand-600 px-3 py-0.5 text-xs font-bold text-white shadow-sm z-20">Promo</span>
                             @endif
                         </div>
 
@@ -124,12 +132,18 @@
                                         <span class="font-display text-lg font-bold text-brand-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                                     @endif
                                 </div>
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-brand-600 transition-colors group-hover:text-brand-700">
-                                    Lihat
-                                    <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                                    </svg>
-                                </span>
+                                @if($product->available_stock_count > 0)
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold text-brand-600 transition-colors group-hover:text-brand-700">
+                                        Lihat
+                                        <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                        </svg>
+                                    </span>
+                                @else
+                                    <span class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed select-none">
+                                        Stok Habis
+                                    </span>
+                                @endif
                             </div>
                         </div>
                     </a>

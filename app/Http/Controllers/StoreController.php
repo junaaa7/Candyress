@@ -33,7 +33,12 @@ class StoreController extends Controller
     public function show($slug)
     {
         // Cari produk berdasarkan slug
-        $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $product = Product::where('slug', $slug)
+            ->where('is_active', true)
+            ->withCount(['productStocks as available_stock_count' => function ($query) {
+                $query->where('status', 'available');
+            }])
+            ->firstOrFail();
 
         return view('store.show', compact('product'));
     }

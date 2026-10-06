@@ -95,11 +95,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($products as $product)
                     <a href="{{ route('product.show', $product->slug) }}"
-                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center"
+                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center {{ $product->available_stock_count <= 0 ? 'opacity-75 pointer-events-none' : '' }}"
                        style="--reveal-delay: {{ ($loop->index % 4) * 90 }}ms">
 
                         {{-- Logo / Icon --}}
-                        <div class="mb-5 h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
+                        <div class="mb-5 relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
                             @if($product->thumbnail)
                                 <img src="{{ asset('storage/' . $product->thumbnail) }}"
                                      alt="{{ $product->name }}"
@@ -107,6 +107,13 @@
                             @else
                                 <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100">
                                     <span class="font-display text-2xl font-bold text-brand-600">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
+                                </div>
+                            @endif
+                            @if($product->available_stock_count <= 0)
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/40 z-10">
+                                    <span class="rounded bg-rose-500 px-2 py-0.5 font-bold text-white shadow-sm text-xs">
+                                        HABIS
+                                    </span>
                                 </div>
                             @endif
                         </div>

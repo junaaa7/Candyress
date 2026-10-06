@@ -237,7 +237,7 @@ class CustomerController extends Controller
 
         $data = [
             'name' => $request->name,
-            'phone' => $request->phone,
+            'whatsapp' => $request->phone,
         ];
 
         if ($request->hasFile('avatar')) {

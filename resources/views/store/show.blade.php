@@ -72,15 +72,22 @@
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         
-                        <button type="submit" name="add_to_cart" value="1" class="flex-1 bg-white border-2 border-brand-500 text-brand-600 hover:bg-brand-50 py-3.5 px-6 rounded-2xl font-bold text-lg transition-all flex justify-center items-center gap-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            Tambah ke Keranjang
-                        </button>
+                        @if($product->available_stock_count > 0)
+                            <button type="submit" name="add_to_cart" value="1" class="flex-1 bg-white border-2 border-brand-500 text-brand-600 hover:bg-brand-50 py-3.5 px-6 rounded-2xl font-bold text-lg transition-all flex justify-center items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                Tambah ke Keranjang
+                            </button>
 
-                        <button type="submit" name="buy_now" value="1" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white py-3.5 px-6 rounded-2xl font-bold text-lg transition-all shadow-lg hover:shadow-brand-500/30 flex justify-center items-center gap-2">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            Beli Sekarang
-                        </button>
+                            <button type="submit" name="buy_now" value="1" class="flex-1 bg-brand-600 hover:bg-brand-700 text-white py-3.5 px-6 rounded-2xl font-bold text-lg transition-all shadow-lg hover:shadow-brand-500/30 flex justify-center items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                Beli Sekarang
+                            </button>
+                        @else
+                            <button type="button" disabled class="w-full py-3 px-6 rounded-xl bg-gray-200 text-gray-400 font-semibold cursor-not-allowed select-none flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                                Stok Produk Sedang Habis
+                            </button>
+                        @endif
                     </form>
                 </div>
             </div>

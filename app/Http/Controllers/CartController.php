@@ -25,6 +25,12 @@ class CartController extends Controller
             'product_id' => 'required|exists:products,id',
         ]);
 
+        $product = \App\Models\Product::findOrFail($request->product_id);
+        $availableStock = $product->productStocks()->where('status', 'available')->count();
+        if ($availableStock <= 0) {
+            return redirect()->back()->with('error', 'Maaf, stok produk ini baru saja habis!');
+        }
+
         $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
         if ($request->has('buy_now') && $request->buy_now == '1') {

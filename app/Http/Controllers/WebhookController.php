@@ -67,14 +67,14 @@ class WebhookController extends Controller
             );
 
             $topup->update([
-                'payment_status' => 'paid',
+                'status' => 'paid',
                 'payload' => $payload,
             ]);
 
             Log::info('Topup paid successfully', ['reference_id' => $referenceId, 'amount' => $topup->amount]);
         } elseif (in_array($mappedStatus, ['expired', 'failed'])) {
             $topup->update([
-                'payment_status' => $mappedStatus,
+                'status' => $mappedStatus,
                 'payload' => $payload,
             ]);
         }

@@ -51,6 +51,13 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index');
         }
 
+        foreach ($cart->items as $item) {
+            $availableStock = $item->product->productStocks()->where('status', 'available')->count();
+            if ($availableStock < $item->quantity) {
+                return redirect()->route('cart.index')->with('error', "Maaf, stok untuk produk '{$item->product->name}' tidak mencukupi atau habis.");
+            }
+        }
+
         try {
             DB::beginTransaction();
 
