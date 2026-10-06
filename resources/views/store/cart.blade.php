@@ -65,7 +65,7 @@
                         <div class="text-6xl mb-4">🛒</div>
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Keranjang Anda Kosong</h3>
                         <p class="text-gray-500 mb-6">Yuk temukan akun premium favorit Anda di Candyress!</p>
-                        <a href="/" class="inline-block bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-brand-700 transition">Belanja Sekarang</a>
+                        <a href="{{ route('customer.products.index') }}" class="inline-block bg-brand-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-brand-700 transition">Belanja Sekarang</a>
                     </div>
                 @endforelse
             </div>
