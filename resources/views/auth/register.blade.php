@@ -115,6 +115,14 @@
                     </div>
                 </div>
 
+                <!-- Syarat & Ketentuan -->
+                <div class="mb-7 flex items-start gap-3">
+                    <input type="checkbox" id="terms" name="terms" required class="mt-1.5 h-4 w-4 rounded border-brand-300 text-brand-500 focus:ring-brand-500">
+                    <label for="terms" class="text-sm text-mauve leading-relaxed">
+                        Saya menyetujui <a href="{{ route('terms.conditions') }}" target="_blank" class="cute-link font-bold underline">Syarat dan Ketentuan</a> yang berlaku di Candyress.
+                    </label>
+                </div>
+
                 <!-- Submit Button -->
                 <button type="submit" class="cute-btn cute-btn-primary w-full py-3.5 text-lg">
                     Daftar Sekarang

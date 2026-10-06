@@ -38,33 +38,7 @@
         </svg>
     </div>
 
-    <!-- 2. Kategori Section -->
-    <div class="bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="reveal text-center mb-10">
-                <h2 class="text-3xl font-bold">Kategori Populer</h2>
-                <p class="mt-2 text-mauve">Pilih yang paling kamu suka</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-                @php
-                    $categories = [
-                        ['name' => 'Streaming', 'icon' => 'cute-ic-streaming', 'bg' => 'bg-brand-100'],
-                        ['name' => 'AI Tools', 'icon' => 'cute-ic-ai', 'bg' => 'bg-accent-100'],
-                        ['name' => 'Design', 'icon' => 'cute-ic-design', 'bg' => 'bg-peach'],
-                        ['name' => 'Productivity', 'icon' => 'cute-ic-productivity', 'bg' => 'bg-mint'],
-                    ];
-                @endphp
-                @foreach($categories as $cat)
-                    <a href="#" class="reveal cute-card cute-lift group p-6 text-center" style="--reveal-delay: {{ $loop->index * 90 }}ms">
-                        <div class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full transition-transform group-hover:scale-110 {{ $cat['bg'] }}">
-                            <svg class="h-10 w-10 flex-none" viewBox="0 0 48 48" aria-hidden="true"><use href="#{{ $cat['icon'] }}"/></svg>
-                        </div>
-                        <h3 class="text-lg font-semibold">{{ $cat['name'] }}</h3>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </div>
+
 
     <!-- TAMBAHAN: Section Tentang Kami (Target id="tentang") -->
     <div id="tentang" class="scroll-mt-16 bg-brand-100 py-20">
@@ -79,82 +53,136 @@
         </div>
     </div>
 
-    <!-- 3. Katalog Showcase Section (Target id="produk") -->
-    <div id="produk" class="scroll-mt-16 bg-brand-50 py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Header --}}
-            <div class="reveal text-center mb-14">
-                <span class="cute-pill mb-4 px-4 py-1.5 text-sm">🛍️ Katalog</span>
-                <h2 class="text-3xl md:text-4xl font-bold">Aplikasi Premium Pilihan</h2>
-                <p class="mx-auto mt-4 max-w-2xl leading-relaxed text-mauve">
-                    Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
-                </p>
-            </div>
-
-            {{-- Catalog Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                @forelse($products as $product)
-                    <a href="{{ route('product.show', $product->slug) }}"
-                       class="reveal cute-card cute-lift group flex flex-col items-center p-6 text-center {{ $product->available_stock_count <= 0 ? 'opacity-75 pointer-events-none' : '' }}"
-                       style="--reveal-delay: {{ ($loop->index % 4) * 90 }}ms">
-
-                        {{-- Logo / Icon --}}
-                        <div class="mb-5 relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-3xl border-[3px] border-brand-100 shadow-sticker-sm transition-transform duration-300 group-hover:rotate-3">
-                            @if($product->thumbnail)
-                                <img src="{{ asset('storage/' . $product->thumbnail) }}"
-                                     alt="{{ $product->name }}"
-                                     class="w-full h-full object-cover" />
-                            @else
-                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-100 to-accent-100">
-                                    <span class="font-display text-2xl font-bold text-brand-600">{{ strtoupper(substr($product->name, 0, 1)) }}</span>
-                                </div>
-                            @endif
-                            @if($product->available_stock_count <= 0)
-                                <div class="absolute inset-0 flex items-center justify-center bg-black/40 z-10">
-                                    <span class="rounded bg-rose-500 px-2 py-0.5 font-bold text-white shadow-sm text-xs">
-                                        HABIS
-                                    </span>
-                                </div>
-                            @endif
-                        </div>
-
-                        {{-- App Name --}}
-                        <h3 class="mb-1.5 line-clamp-1 text-lg font-semibold transition-colors group-hover:text-brand-600">
-                            {{ $product->name }}
-                        </h3>
-
-                        {{-- Tagline / Short Description --}}
-                        <p class="mb-4 line-clamp-2 text-sm leading-relaxed text-mauve">
-                            {{ Str::limit(strip_tags($product->description), 70) ?: ($product->category->name ?? 'Layanan digital premium') }}
-                        </p>
-
-                        {{-- Category Pill --}}
-                        <span class="cute-pill mt-auto">
-                            {{ $product->category->name ?? 'Digital' }}
-                        </span>
-                    </a>
-                @empty
-                    <div class="reveal cute-card col-span-full py-16 text-center">
-                        <svg class="cute-mascot mb-4 w-28" viewBox="0 0 200 140" aria-hidden="true"><use href="#cute-mascot"/></svg>
-                        <p class="font-semibold text-brand-600">Belum ada produk yang ditambahkan.</p>
-                        <p class="mt-1 text-sm text-mauve">Produk akan muncul di sini setelah ditambahkan.</p>
-                    </div>
-                @endforelse
-            </div>
-
-            {{-- View All Link --}}
-            @if($products->count())
-                <div class="reveal mt-12 text-center">
-                    <a href="{{ route('home') }}#produk" class="cute-btn cute-btn-ghost px-8 py-3 text-sm">
-                        Lihat Semua Produk
-                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                        </svg>
-                    </a>
-                </div>
-            @endif
+    <!-- Section Aplikasi Premium Pilihan (Statis dengan Logo Asli) -->
+    <section id="produk" class="py-16 max-w-6xl mx-auto px-4 sm:px-6 text-center">
+        <!-- Badge & Heading -->
+        <div class="inline-block px-4 py-1.5 rounded-full bg-pink-100 text-pink-600 text-xs font-semibold mb-3">
+            🛍️ Katalog
         </div>
-    </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-800 mb-2">
+            Aplikasi Premium Pilihan
+        </h2>
+        <p class="text-sm text-gray-500 max-w-xl mx-auto mb-10">
+            Koleksi lengkap layanan digital terbaik untuk menunjang produktivitas dan hiburanmu.
+        </p>
+
+        <!-- Grid Kartu Produk -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-center">
+            <!-- 1. Netflix -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" 
+                         alt="Netflix" 
+                         class="max-h-8 max-w-[110px] object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Netflix</h3>
+                    <p class="text-xs text-gray-400 mt-1">Streaming film & series tanpa batas</p>
+                </div>
+            </div>
+
+            <!-- 2. YouTube Premium -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" 
+                         alt="YouTube Premium" 
+                         class="max-h-7 max-w-[120px] object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">YouTube Premium</h3>
+                    <p class="text-xs text-gray-400 mt-1">Bebas iklan, putar di latar belakang</p>
+                </div>
+            </div>
+
+            <!-- 3. ChatGPT Plus -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" 
+                         alt="ChatGPT Plus" 
+                         class="max-h-11 max-w-[44px] object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">ChatGPT Plus</h3>
+                    <p class="text-xs text-gray-400 mt-1">AI assistant tanpa limit</p>
+                </div>
+            </div>
+
+            <!-- 4. Spotify -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" 
+                         alt="Spotify" 
+                         class="max-h-8 max-w-[110px] object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Spotify</h3>
+                    <p class="text-xs text-gray-400 mt-1">Jutaan lagu bebas iklan audio jernih</p>
+                </div>
+            </div>
+
+            <!-- 5. Canva Pro -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <div class="transition-transform duration-300 group-hover:scale-110">
+                        <svg class="h-11 w-11" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="50" fill="url(#canva_gradient_anim)"/>
+                            <path d="M49.2 68c-11.2 0-19.2-8.4-19.2-20.2 0-13.4 9.8-23.8 22.8-23.8 7.6 0 13.2 3.8 15.6 9.8l-7.2 3.6c-1.4-3.6-4.6-5.8-8.4-5.8-7.8 0-13.4 6.8-13.4 16.2 0 7.8 5 13 12.4 13 4.2 0 7.8-2.2 9.6-6l7 3.8C65.8 64.4 60.2 68 49.2 68z" fill="white"/>
+                            <defs>
+                                <linearGradient id="canva_gradient_anim" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#00C4CC"/>
+                                    <stop offset="1" stop-color="#7D2AE8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Canva Pro</h3>
+                    <p class="text-xs text-gray-400 mt-1">Desain profesional tanpa ribet</p>
+                </div>
+            </div>
+
+            <!-- 6. Zoom Pro -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Zoom_Communications_Logo.svg" 
+                         alt="Zoom Pro" 
+                         class="max-h-6 max-w-[100px] object-contain transition-transform duration-300 group-hover:scale-110">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Zoom Pro</h3>
+                    <p class="text-xs text-gray-400 mt-1">Meeting tanpa batas waktu</p>
+                </div>
+            </div>
+
+            <!-- 7. Vidio -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <img src="{{ asset('images/vidio.png') }}" 
+                         alt="Vidio" 
+                         class="h-11 w-11 rounded-xl object-cover shadow-sm transition-transform duration-300 group-hover:scale-110"
+                         onerror="this.src='https://placehold.co/100x100/e50914/white?text=Vidio'">
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Vidio</h3>
+                    <p class="text-xs text-gray-400 mt-1">Liga & konten lokal terlengkap</p>
+                </div>
+            </div>
+
+            <!-- 8. Viu -->
+            <div class="group bg-white p-6 rounded-2xl border border-pink-100 shadow-sm flex flex-col items-center justify-between cursor-default select-none transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-xl hover:shadow-pink-100/80 hover:border-pink-300">
+                <div class="h-14 w-full flex items-center justify-center mb-3">
+                    <div class="bg-[#F8B600] px-4 py-1.5 rounded-xl flex items-center justify-center shadow-sm transition-transform duration-300 group-hover:scale-110">
+                        <span class="text-black font-black text-xl tracking-tight font-sans">viu</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-800 text-sm group-hover:text-pink-600 transition">Viu</h3>
+                    <p class="text-xs text-gray-400 mt-1">Drama Asia favorit kamu</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 4. Mengapa Memilih Kami & Cara Kerja (Target id="cara-beli") -->
     <div id="cara-beli" class="scroll-mt-16 bg-white">

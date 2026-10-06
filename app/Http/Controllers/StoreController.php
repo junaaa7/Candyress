@@ -9,21 +9,6 @@ class StoreController extends Controller
 {
     public function index()
     {
-        // Ambil produk yang statusnya aktif, terbaru, maksimal 8 produk untuk homepage
-        $products = Product::where('is_active', true)
-            ->with('category')
-            ->withCount([
-                'productStocks as available_stock_count' => function ($query) {
-                    $query->where('status', 'available');
-                },
-                'productStocks as sold_count' => function ($query) {
-                    $query->where('status', 'sold');
-                },
-            ])
-            ->latest()
-            ->take(8)
-            ->get();
-
         // Ambil 3 ulasan terbaik dan terbaru untuk seksi testimoni
         $testimonials = Review::with(['user', 'product'])
             ->where('is_visible', true)
@@ -32,7 +17,7 @@ class StoreController extends Controller
             ->take(3)
             ->get();
 
-        return view('welcome', compact('products', 'testimonials'));
+        return view('welcome', compact('testimonials'));
     }
 
     public function show($slug)

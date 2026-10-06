@@ -72,9 +72,15 @@
                                 class="cute-nav-link inline-flex items-center gap-2 py-1.5 pl-1.5 pr-3"
                                 type="button">
                             {{-- Avatar --}}
-                            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-xs font-bold text-white ring-2 ring-brand-100">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </span>
+                            @if(Auth::user()->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists(Auth::user()->avatar))
+                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="inline-flex h-8 w-8 rounded-full border-2 border-white ring-2 ring-brand-100 object-cover">
+                            @elseif(Auth::user()->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="inline-flex h-8 w-8 rounded-full border-2 border-white ring-2 ring-brand-100 object-cover">
+                            @else
+                                <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-xs font-bold text-white ring-2 ring-brand-100">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </span>
+                            @endif
                             <span class="text-sm font-bold max-w-[120px] truncate">
                                 {{ Auth::user()->name }}
                             </span>
@@ -188,9 +194,15 @@
             @auth
                 {{-- User Info --}}
                 <div class="mb-2 flex items-center gap-3 rounded-2xl bg-brand-100 px-3 py-2">
-                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-sm font-bold text-white ring-2 ring-brand-100">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                    </span>
+                    @if(Auth::user()->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists(Auth::user()->avatar))
+                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="inline-flex h-10 w-10 rounded-full border-2 border-white ring-2 ring-brand-100 object-cover">
+                    @elseif(Auth::user()->avatar)
+                        <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="inline-flex h-10 w-10 rounded-full border-2 border-white ring-2 ring-brand-100 object-cover">
+                    @else
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-sm font-bold text-white ring-2 ring-brand-100">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </span>
+                    @endif
                     <div class="min-w-0">
                         <p class="truncate font-display text-sm font-semibold">{{ Auth::user()->name }}</p>
                         <p class="truncate text-xs text-mauve">{{ Auth::user()->email }}</p>

@@ -24,6 +24,7 @@ class AuthenticationTest extends TestCase
         $response = $this->post('/login', [
             'login' => $user->email,
             'password' => 'password',
+            'terms' => 'on',
         ]);
 
         $this->assertAuthenticated();
@@ -37,9 +38,24 @@ class AuthenticationTest extends TestCase
         $this->post('/login', [
             'login' => $user->email,
             'password' => 'wrong-password',
+            'terms' => 'on',
         ]);
 
         $this->assertGuest();
+    }
+
+    public function test_inactive_users_can_not_authenticate(): void
+    {
+        $user = User::factory()->create(['is_active' => false]);
+
+        $response = $this->post('/login', [
+            'login' => $user->email,
+            'password' => 'password',
+            'terms' => 'on',
+        ]);
+
+        $this->assertGuest();
+        $response->assertSessionHasErrors('login');
     }
 
     public function test_users_can_logout(): void

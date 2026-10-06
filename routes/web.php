@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 // Route Publik
 Route::get('/', [StoreController::class, 'index'])->name('home');
 Route::get('/produk/{slug}', [StoreController::class, 'show'])->name('product.show');
+Route::view('/terms-and-conditions', 'terms')->name('terms.conditions');
 
 // Route khusus user login (Customer / Global Auth)
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::post('/checkout/voucher/apply', [CheckoutController::class, 'applyVoucher'])->name('checkout.voucher.apply');
+    Route::post('/checkout/voucher/remove', [CheckoutController::class, 'removeVoucher'])->name('checkout.voucher.remove');
 
     // Saldo & Top-Up (Wallet)
     Route::get('/saldo', [TopupController::class, 'index'])->name('customer.topup.index');

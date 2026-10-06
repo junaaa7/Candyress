@@ -23,8 +23,20 @@
             <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 flex w-64 flex-col border-r-2 border-dashed border-brand-300/60 bg-gradient-to-b from-brand-100 to-brand-50 text-brand-900 shadow-xl shadow-brand-600/10 transition-transform duration-300 lg:static lg:translate-x-0 lg:shadow-none">
                 <!-- User Profile Info -->
                 <div class="flex flex-col items-center border-b-2 border-dashed border-brand-300/60 p-6">
-                    <div class="mb-3 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-brand-300 to-brand-500 font-display text-2xl font-bold text-white ring-4 ring-brand-100">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
+                    <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center border-2 border-pink-200 shadow-sm mx-auto mb-3">
+                        @if(Auth::user()->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists(Auth::user()->avatar))
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" 
+                                 alt="{{ Auth::user()->name }}" 
+                                 class="w-full h-full object-cover">
+                        @elseif(Auth::user()->avatar)
+                            <img src="{{ asset(Auth::user()->avatar) }}" 
+                                 alt="{{ Auth::user()->name }}" 
+                                 class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full bg-pink-400 text-white font-bold text-2xl flex items-center justify-center">
+                                {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
+                            </div>
+                        @endif
                     </div>
                     <div class="w-full truncate text-center font-display text-lg font-semibold">{{ Auth::user()->name ?? 'User' }}</div>
                     <div class="w-full truncate text-center text-sm text-mauve">{{ Auth::user()->email ?? '' }}</div>

@@ -25,9 +25,10 @@ class RegistrationTest extends TestCase
             'whatsapp' => '08123456789',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'terms' => 'on',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertGuest();
+        $response->assertRedirect(route('login'));
     }
 }

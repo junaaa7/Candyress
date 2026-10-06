@@ -11,10 +11,7 @@
         <p class="text-gray-500 mt-2">Pilih metode pembayaran untuk menyelesaikan pesanan Anda.</p>
     </div>
 
-    <!-- Form Pembayaran: Akan diarahkan ke CheckoutController yang mengurus Payment Gateway atau Potong Saldo -->
-    <form action="{{ route('checkout.process') ?? '#' }}" method="POST" class="flex flex-col lg:flex-row gap-6">
-        @csrf
-        <input type="hidden" name="payment_method" x-model="selectedPayment">
+    <div class="flex flex-col lg:flex-row gap-6">
 
         <!-- Bagian Kiri: Pilihan Metode Pembayaran -->
         <div class="w-full lg:w-2/3 space-y-6">
@@ -118,7 +115,43 @@
         </div>
 
         <!-- Bagian Kanan: Ringkasan Order -->
-        <div class="w-full lg:w-1/3">
+        <div class="w-full lg:w-1/3 space-y-6">
+            
+            <!-- Form Voucher -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Punya Kode Voucher?</h2>
+                @if($activeVoucher)
+                    <div class="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-emerald-100 p-1.5 rounded-full text-emerald-600">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-emerald-700">{{ $activeVoucher->code }}</p>
+                                <p class="text-xs text-emerald-600 font-medium">Berhasil dipakai!</p>
+                            </div>
+                        </div>
+                        <form action="{{ route('checkout.voucher.remove') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="text-sm font-bold text-rose-500 hover:text-rose-700 px-2 py-1">Hapus</button>
+                        </form>
+                    </div>
+                @else
+                    <form action="{{ route('checkout.voucher.apply') }}" method="POST" class="flex gap-2">
+                        @csrf
+                        <input type="text" name="voucher_code" placeholder="Masukkan kode promo..." class="flex-1 border-gray-200 rounded-xl text-sm focus:border-pink-500 focus:ring focus:ring-pink-200 transition-colors" required>
+                        <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-colors shadow-sm">Gunakan</button>
+                    </form>
+                @endif
+                
+                @if(session('error'))
+                    <p class="text-xs text-rose-500 mt-3 font-medium flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg> {{ session('error') }}</p>
+                @endif
+                @if(session('success'))
+                    <p class="text-xs text-emerald-500 mt-3 font-medium flex items-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg> {{ session('success') }}</p>
+                @endif
+            </div>
+
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
                 <h2 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-3">Ringkasan Order</h2>
                 
@@ -134,11 +167,17 @@
                     @endforeach
                 </div>
 
-                <div class="border-t border-dashed border-gray-200 pt-4 mb-6">
-                    <div class="flex justify-between items-center text-gray-600 mb-2">
+                <div class="border-t border-dashed border-gray-200 pt-4 mb-6 space-y-2">
+                    <div class="flex justify-between items-center text-gray-600">
                         <p>Subtotal</p>
-                        <p x-text="formatRupiah(totalTagihan)"></p>
+                        <p>Rp {{ number_format($subtotal, 0, ',', '.') }}</p>
                     </div>
+                    @if($discount > 0)
+                        <div class="flex justify-between items-center text-emerald-600 font-medium">
+                            <p>Diskon Voucher</p>
+                            <p>- Rp {{ number_format($discount, 0, ',', '.') }}</p>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="border-t border-gray-200 pt-4 mb-6">
@@ -149,12 +188,16 @@
                 </div>
 
                 <!-- Tombol Submit -->
-                <button type="submit" 
-                        class="w-full py-4 px-6 rounded-xl font-bold text-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                        :class="buttonClass"
-                        :disabled="!selectedPayment">
-                    <span x-text="buttonText"></span>
-                </button>
+                <form action="{{ route('checkout.process') ?? '#' }}" method="POST" id="form-checkout">
+                    @csrf
+                    <input type="hidden" name="payment_method" x-model="selectedPayment">
+                    <button type="submit" 
+                            class="w-full py-4 px-6 rounded-xl font-bold text-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                            :class="buttonClass"
+                            :disabled="!selectedPayment">
+                        <span x-text="buttonText"></span>
+                    </button>
+                </form>
 
                 <p class="text-xs text-center text-gray-400 mt-4 flex items-center justify-center gap-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -162,7 +205,7 @@
                 </p>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 @push('scripts')

@@ -5,8 +5,14 @@
         <!-- Welcome Banner -->
         <div class="rounded-4xl bg-gradient-to-r from-brand-300 to-brand-500 p-6 text-white shadow-xl shadow-brand-600/20 sm:p-8">
             <div class="flex items-center gap-6">
-                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-white bg-white/30 font-display text-2xl font-bold backdrop-blur-sm">
-                    {{ substr(Auth::user()->name, 0, 1) }}
+                <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-white bg-white/30 font-display text-2xl font-bold backdrop-blur-sm overflow-hidden">
+                    @if(Auth::user()->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists(Auth::user()->avatar))
+                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @elseif(Auth::user()->avatar)
+                        <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                    @else
+                        {{ substr(Auth::user()->name, 0, 1) }}
+                    @endif
                 </div>
                 <div>
                     <h2 class="mb-1 text-2xl font-bold">Halo, {{ Auth::user()->name }}! 💕</h2>
@@ -216,7 +222,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ url('/') }}" class="cute-card cute-lift group flex items-center gap-4 p-5">
+                    <a href="{{ route('customer.products.index') }}" class="cute-card cute-lift group flex items-center gap-4 p-5">
                         <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-mint text-emerald-700 transition-transform group-hover:scale-110">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         </div>

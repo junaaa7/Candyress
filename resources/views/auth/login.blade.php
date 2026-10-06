@@ -32,6 +32,42 @@
                 <h1 class="text-[1.75rem] font-bold leading-tight">Selamat Datang Kembali 💕</h1>
             </div>
 
+            <!-- Alert Box untuk Error / Akun Nonaktif -->
+            @if ($errors->any())
+                <div class="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm flex items-start gap-2.5 shadow-sm">
+                    <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div class="flex-1">
+                        @foreach ($errors->all() as $error)
+                            <p class="font-medium">{{ $error }}</p>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm flex items-center gap-2.5 shadow-sm">
+                    <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                    </svg>
+                    <span class="font-medium">{{ session('error') }}</span>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="mb-6 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-600 font-medium">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('status'))
+                <div class="mb-6 rounded-xl bg-brand-50 border border-brand-200 p-4 text-sm text-brand-600 font-medium">
+                    {{ session('status') }}
+                </div>
+            @endif
+
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <!-- Email atau Username -->
@@ -71,6 +107,14 @@
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="cute-link text-sm">Lupa sandi?</a>
                     @endif
+                </div>
+
+                <!-- Syarat & Ketentuan -->
+                <div class="mb-7 flex items-start gap-3">
+                    <input type="checkbox" id="terms" name="terms" required class="mt-1.5 h-4 w-4 rounded border-brand-300 text-brand-500 focus:ring-brand-500">
+                    <label for="terms" class="text-sm text-mauve leading-relaxed">
+                        Saya menyetujui <a href="{{ route('terms.conditions') }}" target="_blank" class="cute-link font-bold underline">Syarat dan Ketentuan</a> yang berlaku di Candyress.
+                    </label>
                 </div>
 
                 <!-- Submit Button -->

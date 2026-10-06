@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
+use App\Models\Voucher;
 use App\Services\OrderFulfillmentService;
 use App\Services\WalletService;
 use Illuminate\Http\Request;
@@ -27,16 +28,34 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong.');
         }
 
-        $totalAmount = 0;
+        $subtotal = 0;
         foreach ($cart->items as $item) {
             $price = $item->product->discount_price ?? $item->product->price;
-            $totalAmount += $price * $item->quantity;
+            $subtotal += $price * $item->quantity;
         }
+
+        $discount = 0;
+        $activeVoucher = null;
+        if (session()->has('voucher_code')) {
+            $voucher = Voucher::where('code', session('voucher_code'))->where('is_active', true)->first();
+            if ($voucher && ($voucher->valid_until === null || $voucher->valid_until >= now()->startOfDay())) {
+                $activeVoucher = $voucher;
+                if ($voucher->discount_type === 'nominal') {
+                    $discount = $voucher->discount_value;
+                } else {
+                    $discount = $subtotal * ($voucher->discount_value / 100);
+                }
+            } else {
+                session()->forget(['voucher_code', 'voucher_discount']);
+            }
+        }
+
+        $totalAmount = max(0, $subtotal - $discount);
 
         $user = auth()->user()->fresh();
         $userBalance = $user->balance ?? 0;
 
-        return view('store.checkout', compact('cart', 'totalAmount', 'userBalance'));
+        return view('store.checkout', compact('cart', 'subtotal', 'discount', 'totalAmount', 'userBalance', 'activeVoucher'));
     }
 
     public function process(Request $request)
@@ -66,6 +85,22 @@ class CheckoutController extends Controller
             foreach ($cart->items as $item) {
                 $price = $item->product->discount_price ?? $item->product->price;
                 $totalAmount += $price * $item->quantity;
+            }
+
+            // Terapkan Voucher Jika Ada
+            $discount = 0;
+            if (session()->has('voucher_code')) {
+                $voucher = Voucher::where('code', session('voucher_code'))->where('is_active', true)->first();
+                if ($voucher && ($voucher->valid_until === null || $voucher->valid_until >= now()->startOfDay())) {
+                    if ($voucher->discount_type === 'nominal') {
+                        $discount = $voucher->discount_value;
+                    } else {
+                        $discount = $totalAmount * ($voucher->discount_value / 100);
+                    }
+                    $totalAmount = max(0, $totalAmount - $discount);
+                } else {
+                    session()->forget(['voucher_code', 'voucher_discount']);
+                }
             }
 
             // === BALANCE PAYMENT ===
@@ -119,8 +154,9 @@ class CheckoutController extends Controller
                 // 5. Fulfillment Stock
                 app(OrderFulfillmentService::class)->fulfill($order);
 
-                // 6. Hapus isi keranjang
+                // 6. Hapus isi keranjang & voucher session
                 $cart->items()->delete();
+                session()->forget(['voucher_code', 'voucher_discount']);
 
                 DB::commit();
 
@@ -155,8 +191,9 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
 
-            // 4. Hapus isi keranjang setelah checkout sukses
+            // 4. Hapus isi keranjang & voucher session setelah checkout sukses
             $cart->items()->delete();
+            session()->forget(['voucher_code', 'voucher_discount']);
 
             DB::commit();
 
@@ -172,6 +209,36 @@ class CheckoutController extends Controller
 
             return back()->with('error', 'Terjadi kesalahan sistem saat memproses pesanan Anda.');
         }
+    }
+
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'voucher_code' => 'required|string',
+        ]);
+
+        $voucher = Voucher::where('code', $request->voucher_code)
+            ->where('is_active', true)
+            ->first();
+
+        if (! $voucher) {
+            return back()->with('error', 'Voucher tidak ditemukan atau sudah tidak aktif.');
+        }
+
+        if ($voucher->valid_until !== null && $voucher->valid_until < now()->startOfDay()) {
+            return back()->with('error', 'Masa berlaku voucher sudah habis.');
+        }
+
+        session(['voucher_code' => $voucher->code]);
+
+        return back()->with('success', 'Voucher berhasil diterapkan!');
+    }
+
+    public function removeVoucher()
+    {
+        session()->forget(['voucher_code', 'voucher_discount']);
+
+        return back()->with('success', 'Voucher berhasil dihapus.');
     }
 
     public function success($order_number)
