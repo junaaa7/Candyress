@@ -8,6 +8,10 @@
             @php
                 $isQris = stripos($order->payment->payment_method, 'qris') !== false;
                 $isSaldo = stripos($order->payment->payment_method, 'saldo') !== false;
+                $storeSetting = \App\Models\Setting::first();
+                $qrisUrl = !empty($storeSetting?->qris_image) 
+                    ? asset('storage/' . $storeSetting->qris_image) 
+                    : asset('images/payments/qris.jpg');
             @endphp
 
             @if($isQris && $order->status === 'pending')
@@ -47,10 +51,10 @@
 
             @if($isQris && $order->status === 'pending')
                 <div class="bg-brand-50 p-6 rounded-2xl mb-8 border border-brand-200 text-center">
-                    <img src="{{ asset('images/payments/qris.jpg') }}" alt="QRIS Candyress" class="w-full max-w-[280px] mx-auto rounded-xl shadow-sm mb-6 object-contain">
+                    <img src="{{ $qrisUrl }}" alt="QRIS Candyress" class="w-full max-w-[280px] mx-auto rounded-xl shadow-sm mb-6 object-contain">
                     
                     <div class="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-                        <a href="{{ asset('images/payments/qris.jpg') }}" download="QRIS-Candyress.jpg" class="inline-flex justify-center items-center px-4 py-2 bg-white border border-brand-300 rounded-xl text-brand-700 font-semibold hover:bg-brand-50 transition-colors">
+                        <a href="{{ $qrisUrl }}" download="QRIS-Candyress.jpg" class="inline-flex justify-center items-center px-4 py-2 bg-white border border-brand-300 rounded-xl text-brand-700 font-semibold hover:bg-brand-50 transition-colors">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                             Unduh QRIS
                         </a>

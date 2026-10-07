@@ -38,7 +38,7 @@ class CheckoutController extends Controller
         $activeVoucher = null;
         if (session()->has('voucher_code')) {
             $voucher = Voucher::where('code', session('voucher_code'))->where('is_active', true)->first();
-            if ($voucher && ($voucher->valid_until === null || $voucher->valid_until >= now()->startOfDay())) {
+            if ($voucher && ! $voucher->isExpired()) {
                 $activeVoucher = $voucher;
                 if ($voucher->discount_type === 'nominal') {
                     $discount = $voucher->discount_value;
@@ -91,7 +91,7 @@ class CheckoutController extends Controller
             $discount = 0;
             if (session()->has('voucher_code')) {
                 $voucher = Voucher::where('code', session('voucher_code'))->where('is_active', true)->first();
-                if ($voucher && ($voucher->valid_until === null || $voucher->valid_until >= now()->startOfDay())) {
+                if ($voucher && ! $voucher->isExpired()) {
                     if ($voucher->discount_type === 'nominal') {
                         $discount = $voucher->discount_value;
                     } else {
@@ -225,7 +225,7 @@ class CheckoutController extends Controller
             return back()->with('error', 'Voucher tidak ditemukan atau sudah tidak aktif.');
         }
 
-        if ($voucher->valid_until !== null && $voucher->valid_until < now()->startOfDay()) {
+        if ($voucher->isExpired()) {
             return back()->with('error', 'Masa berlaku voucher sudah habis.');
         }
 

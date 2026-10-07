@@ -79,9 +79,15 @@
                     <h3 class="font-semibold text-gray-800 text-lg mb-2">Scan QRIS untuk Pembayaran</h3>
                     <p class="text-sm text-gray-500 mb-4">Silakan scan kode QR di bawah ini menggunakan aplikasi e-Wallet atau Mobile Banking.</p>
 
+                    @php
+                        $storeSetting = \App\Models\Setting::first();
+                        $qrisUrl = !empty($storeSetting?->qris_image) 
+                            ? asset('storage/' . $storeSetting->qris_image) 
+                            : asset('images/payments/qris.jpg');
+                    @endphp
                     <!-- QRIS Image -->
                     <div class="inline-block p-3 bg-white border rounded-2xl shadow-sm">
-                        <img src="{{ asset('images/payments/qris.jpg') }}" 
+                        <img src="{{ $qrisUrl }}" 
                              alt="QRIS Pembayaran" 
                              class="w-56 sm:w-64 max-w-full mx-auto rounded-xl object-contain"
                              onerror="this.onerror=null; this.src='{{ asset('images/qris.jpg') }}';">
@@ -96,7 +102,7 @@
 
                     <!-- Actions -->
                     <div class="mt-6 flex flex-col sm:flex-row w-full gap-3 justify-center items-center">
-                        <a href="{{ asset('images/payments/qris.jpg') }}" download="QRIS-Candyress.jpg" 
+                        <a href="{{ $qrisUrl }}" download="QRIS-Candyress.jpg" 
                            class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 hover:bg-pink-100 rounded-lg border border-pink-200 transition text-center">
                             Unduh Gambar QRIS
                         </a>

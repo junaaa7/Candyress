@@ -44,7 +44,9 @@
                             {{ $voucher->valid_until ? $voucher->valid_until->format('d M Y') : 'Tanpa Batas' }}
                         </td>
                         <td>
-                            @if($voucher->is_active)
+                            @if($voucher->isExpired())
+                                <span class="inline-block rounded-full border-2 border-gray-300 bg-gray-100 px-3.5 py-0.5 text-xs font-bold text-gray-500">Kedaluwarsa</span>
+                            @elseif($voucher->is_active)
                                 <span class="inline-block rounded-full border-2 border-emerald-200 bg-mint px-3.5 py-0.5 text-xs font-bold text-emerald-700">Aktif</span>
                             @else
                                 <span class="inline-block rounded-full border-2 border-brand-300 bg-brand-100 px-3.5 py-0.5 text-xs font-bold text-rose-600">Nonaktif</span>

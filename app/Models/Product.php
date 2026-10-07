@@ -69,4 +69,22 @@ class Product extends Model
     {
         return $this->terms_and_conditions ?: $this->terms;
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getAverageRatingAttribute(): float
+    {
+        // Cek apakah relasi reviews ada dan hitung rata-rata langsung
+        $avg = $this->reviews()->avg('rating');
+
+        return (float) ($avg ? round($avg, 1) : 0.0);
+    }
+
+    public function getReviewsCountAttribute(): int
+    {
+        return (int) $this->reviews()->count();
+    }
 }
