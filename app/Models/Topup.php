@@ -18,6 +18,7 @@ class Topup extends Model
         'qr_code_url',
         'payload',
         'expired_at',
+        'snap_token',
     ];
 
     protected function casts(): array

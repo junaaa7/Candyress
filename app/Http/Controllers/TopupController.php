@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\TopUp;
+use App\Services\PaymentGatewayService;
 use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Midtrans\Config;
+use Midtrans\Transaction;
 
 class TopupController extends Controller
 {
@@ -45,7 +48,51 @@ class TopupController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        return view('customer.topup.show', compact('topup'));
+        // Auto-Sync dengan Midtrans jika status masih pending
+        if ($topup->status === 'pending') {
+            Config::$serverKey = trim(config('midtrans.server_key') ?? env('MIDTRANS_SERVER_KEY'));
+            Config::$isProduction = config('midtrans.is_production', false);
+            Config::$curlOptions = [];
+
+            try {
+                // Coba sinkronisasi status
+                $midtransStatus = Transaction::status($topup->reference_id);
+                if ($midtransStatus) {
+                    $status = $midtransStatus->transaction_status ?? null;
+                    $fraud = $midtransStatus->fraud_status ?? null;
+
+                    if ($status == 'settlement' || ($status == 'capture' && $fraud == 'accept')) {
+                        // Tambah saldo user
+                        $this->walletService->addBalance($topup->user, $topup->amount, 'Topup Saldo', 'topup', $topup->id);
+                        $topup->status = 'success';
+                        $topup->save();
+                    } elseif (in_array($status, ['deny', 'cancel', 'expire'])) {
+                        $topup->status = 'failed';
+                        $topup->save();
+                    }
+                }
+            } catch (\Exception $e) {
+                // Mungkin transaksi belum ada di Midtrans, lanjut generate token
+            }
+
+            // Generate Snap Token jika masih pending dan belum ada token valid
+            if ($topup->status === 'pending' && (empty($topup->snap_token) || ! str_contains($topup->snap_token, '-'))) {
+                try {
+                    $snapToken = app(PaymentGatewayService::class)->generateTopupSnapToken($topup);
+                    if ($snapToken) {
+                        $topup->snap_token = $snapToken;
+                        $topup->save();
+                    }
+                } catch (\Exception $e) {
+                    session()->flash('midtrans_error', 'Gagal memuat Midtrans: '.$e->getMessage());
+                }
+            }
+        }
+
+        return view('customer.topup.show', [
+            'topup' => $topup,
+            'snapToken' => $topup->snap_token,
+        ]);
     }
 
     /**

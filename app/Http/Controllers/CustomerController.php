@@ -9,7 +9,10 @@ use App\Models\Product;
 use App\Models\Review;
 use App\Services\OrderFulfillmentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Midtrans\Config;
+use Midtrans\Transaction;
 
 class CustomerController extends Controller
 {
@@ -101,6 +104,50 @@ class CustomerController extends Controller
                 } catch (\Exception $e) {
                     // Silently fail if still out of stock, view will handle it
                 }
+            }
+        }
+
+        // Auto-Sync dengan Midtrans jika status masih pending/menunggu
+        if ($order->status !== 'paid' && $order->status !== 'completed' && in_array(strtoupper($order->payment_method), ['MIDTRANS', 'QRIS'])) {
+            Config::$serverKey = config('midtrans.server_key') ?? env('MIDTRANS_SERVER_KEY');
+            Config::$isProduction = config('midtrans.is_production', false);
+            Config::$curlOptions = [];
+
+            try {
+                // Ambil status riil langsung dari API Midtrans
+                $midtransStatus = Transaction::status($order->order_number);
+
+                if ($midtransStatus) {
+                    $status = $midtransStatus->transaction_status ?? null;
+                    $fraud = $midtransStatus->fraud_status ?? null;
+
+                    if ($status == 'settlement' || ($status == 'capture' && $fraud == 'accept')) {
+                        // Payment is successful
+                        if ($order->payment) {
+                            $order->payment->status = 'approved';
+                            $order->payment->save();
+                        }
+
+                        $order->status = 'processing';
+                        $order->save();
+
+                        // Panggil fungsi serahkan akun otomatis dari stok
+                        app(OrderFulfillmentService::class)->fulfill($order);
+
+                        // Reload order
+                        $order->load(['items.productStock']);
+
+                    } elseif (in_array($status, ['deny', 'cancel', 'expire'])) {
+                        if ($order->payment) {
+                            $order->payment->status = 'rejected';
+                            $order->payment->save();
+                        }
+                        $order->status = 'failed';
+                        $order->save();
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::info('Midtrans status check skipped: '.$e->getMessage());
             }
         }
 

@@ -9,9 +9,11 @@ use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Voucher;
 use App\Services\OrderFulfillmentService;
+use App\Services\PaymentGatewayService;
 use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
@@ -121,6 +123,7 @@ class CheckoutController extends Controller
                     'order_number' => 'ORD-'.strtoupper(Str::random(8)),
                     'total_price' => $totalAmount,
                     'status' => 'processing',
+                    'payment_method' => 'SALDO',
                 ]);
 
                 // 2. Buat Order Items
@@ -163,13 +166,14 @@ class CheckoutController extends Controller
                 return redirect()->route('checkout.success', $order->order_number);
             }
 
-            // === STANDARD PAYMENT (QRIS / Transfer) ===
+            // === STANDARD PAYMENT (Midtrans / Transfer) ===
             // 1. Buat Order
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'order_number' => 'ORD-'.strtoupper(Str::random(8)),
                 'total_price' => $totalAmount,
                 'status' => 'pending',
+                'payment_method' => $request->payment_method,
             ]);
 
             // 2. Buat Order Items
@@ -183,15 +187,31 @@ class CheckoutController extends Controller
                 ]);
             }
 
-            // 3. Buat Data Pembayaran
+            // 3. Generate Midtrans Snap Token
+            $snapToken = null;
+            if (in_array(strtoupper($request->payment_method), ['MIDTRANS', 'QRIS'])) {
+                try {
+                    $snapToken = app(PaymentGatewayService::class)->generateSnapToken($order);
+                    if ($snapToken) {
+                        $order->snap_token = $snapToken;
+                        $order->save();
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Checkout Midtrans Error: '.$e->getMessage());
+                    // Biarkan kosong, akan digenerate ulang di success page
+                }
+            }
+
+            // 4. Buat Data Pembayaran
             Payment::create([
                 'order_id' => $order->id,
                 'payment_method' => $request->payment_method,
                 'amount' => $totalAmount,
                 'status' => 'pending',
+                'snap_token' => $snapToken,
             ]);
 
-            // 4. Hapus isi keranjang & voucher session setelah checkout sukses
+            // 5. Hapus isi keranjang & voucher session setelah checkout sukses
             $cart->items()->delete();
             session()->forget(['voucher_code', 'voucher_discount']);
 
@@ -247,6 +267,28 @@ class CheckoutController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
-        return view('store.success', compact('order'));
+        // Generate Snap Token jika belum ada
+        if (
+            (empty($order->snap_token) || ! str_contains($order->snap_token, '-'))
+            && in_array(strtoupper($order->payment_method ?? $order->payment?->payment_method), ['MIDTRANS', 'QRIS'])
+        ) {
+            try {
+                $snapToken = app(PaymentGatewayService::class)->generateSnapToken($order);
+                if ($snapToken) {
+                    $order->snap_token = $snapToken;
+                    $order->save();
+                } else {
+                    session()->flash('midtrans_error', 'Gagal mendapatkan token dari Midtrans.');
+                }
+            } catch (\Exception $e) {
+                Log::error('Midtrans Token Error: '.$e->getMessage());
+                session()->flash('midtrans_error', $e->getMessage());
+            }
+        }
+
+        return view('store.success', [
+            'order' => $order,
+            'snapToken' => $order->snap_token,
+        ]);
     }
 }

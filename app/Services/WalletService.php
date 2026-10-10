@@ -76,4 +76,22 @@ class WalletService
     {
         return $user->balance >= $amount;
     }
+
+    /**
+     * Tambah saldo user dan catat mutasi jika diperlukan (Alias for credit)
+     */
+    public function addBalance(User|int $user, float|int $amount, ?string $description = null, ?string $referenceType = null, ?int $referenceId = null): bool
+    {
+        $userModel = $user instanceof User ? $user : User::findOrFail($user);
+
+        $this->credit(
+            $userModel,
+            (int) $amount,
+            $description ?? 'Top up saldo',
+            $referenceType,
+            $referenceId
+        );
+
+        return true;
+    }
 }

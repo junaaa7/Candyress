@@ -69,43 +69,44 @@
                                :disabled="!hasEnoughBalance">
                     </label>
 
-                    <!-- Opsi 2: QRIS (Otomatis) -->
-                    <label for="metode_qris"
-                           @click="selectedPayment = 'QRIS'"
+                    <!-- Opsi 2: Midtrans Snap (Otomatis) -->
+                    <label for="metode_midtrans"
+                           @click="selectedPayment = 'MIDTRANS'"
                            class="block relative border rounded-xl p-5 cursor-pointer transition-all duration-200"
                            :class="{
-                               'border-pink-500 bg-pink-50': selectedPayment === 'QRIS',
-                               'border-gray-200 hover:border-pink-300 hover:bg-pink-50/30': selectedPayment !== 'QRIS'
+                               'border-pink-500 bg-pink-50': selectedPayment === 'MIDTRANS',
+                               'border-gray-200 hover:border-pink-300 hover:bg-pink-50/30': selectedPayment !== 'MIDTRANS'
                            }">
                         <div class="flex items-start justify-between">
                             <div class="flex items-start gap-4">
                                 <div class="w-5 h-5 mt-1 rounded-full border border-gray-300 flex items-center justify-center shrink-0"
-                                     :class="selectedPayment === 'QRIS' ? 'border-pink-500' : ''">
-                                    <div class="w-3 h-3 rounded-full bg-pink-500" x-show="selectedPayment === 'QRIS'" x-cloak></div>
+                                     :class="selectedPayment === 'MIDTRANS' ? 'border-pink-500' : ''">
+                                    <div class="w-3 h-3 rounded-full bg-pink-500" x-show="selectedPayment === 'MIDTRANS'" x-cloak></div>
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-gray-800">QRIS (Otomatis)</h3>
-                                    <p class="text-sm text-gray-500 mt-1">Bayar menggunakan e-Wallet (Gopay, OVO, Dana) atau M-Banking. Diproses otomatis oleh Payment Gateway.</p>
+                                    <h3 class="font-bold text-gray-800">Transfer / e-Wallet (Otomatis)</h3>
+                                    <p class="text-sm text-gray-500 mt-1">Bayar menggunakan e-Wallet (Gopay, OVO, Dana, ShopeePay), Transfer Bank, atau QRIS. Diproses otomatis oleh Midtrans.</p>
                                     
                                     <!-- Logo e-Wallets -->
                                     <div class="flex items-center gap-2 mt-3">
                                         <span class="text-[10px] font-bold px-2 py-1 bg-green-500 text-white rounded">Gopay</span>
                                         <span class="text-[10px] font-bold px-2 py-1 bg-purple-600 text-white rounded">OVO</span>
                                         <span class="text-[10px] font-bold px-2 py-1 bg-blue-500 text-white rounded">DANA</span>
+                                        <span class="text-[10px] font-bold px-2 py-1 bg-orange-500 text-white rounded">ShopeePay</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="bg-gray-100 p-2 rounded-xl text-gray-600 shrink-0 border border-gray-200">
-                                <!-- Ikon QR Code -->
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm13 0h3v3h-3v-3zm-3 3h3v3h-3v-3zm3 3h3v3h-3v-3zm-3-6h3v3h-3v-3z"></path></svg>
+                                <!-- Ikon Pembayaran -->
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                             </div>
                         </div>
 
                         <!-- Input Radio -->
                         <input type="radio" 
-                               id="metode_qris"
+                               id="metode_midtrans"
                                name="payment_option" 
-                               value="QRIS" 
+                               value="MIDTRANS" 
                                x-model="selectedPayment" 
                                class="sr-only">
                     </label>
@@ -214,7 +215,7 @@
         Alpine.data('checkoutLogic', (totalTagihan, saldoUser) => ({
             totalTagihan: totalTagihan,
             balance: saldoUser,
-            selectedPayment: null, // 'SALDO' atau 'QRIS'
+            selectedPayment: null, // 'SALDO' atau 'MIDTRANS'
             
             get hasEnoughBalance() {
                 return this.balance >= this.totalTagihan;
@@ -227,8 +228,8 @@
                 if (this.selectedPayment === 'SALDO') {
                     return 'Bayar dengan Saldo';
                 }
-                if (this.selectedPayment === 'QRIS') {
-                    return 'Lanjut ke Pembayaran QRIS';
+                if (this.selectedPayment === 'MIDTRANS') {
+                    return 'Lanjut ke Pembayaran';
                 }
                 return 'Bayar Sekarang';
             },

@@ -107,7 +107,18 @@
                     @endif
                 </div>
             @elseif($order->status === 'pending')
-                @if(stripos($order->payment_method, 'qris') !== false)
+                @if(in_array(strtoupper($order->payment_method), ['MIDTRANS', 'QRIS']))
+                    <div class="flex items-start rounded-4xl border-2 border-brand-300 bg-brand-100 p-5">
+                        <div class="text-2xl mr-4 flex-shrink-0">💳</div>
+                        <div class="flex-1">
+                            <h3 class="mb-1 text-lg font-bold text-brand-700">Menunggu Pembayaran Midtrans</h3>
+                            <p class="text-sm text-brand-600 mb-3">Silakan selesaikan pembayaran Anda melalui sistem Midtrans.</p>
+                            <a href="{{ route('checkout.success', $order->order_number) }}" class="cute-btn cute-btn-primary px-4 py-2 text-sm">
+                                Buka Halaman Pembayaran
+                            </a>
+                        </div>
+                    </div>
+                @elseif(false)
                     <div class="rounded-4xl border-2 border-brand-300 bg-white p-6 shadow-xl shadow-brand-500/10">
                         <div class="text-center mb-6">
                             <h3 class="text-xl font-bold text-brand-700 mb-2">Selesaikan Pembayaran QRIS</h3>
@@ -295,7 +306,8 @@
             {{-- Upload Bukti Pembayaran Section --}}
             @php
                 $paymentStatus = $order->payment ? $order->payment->status : 'pending';
-                $showUpload = $order->status === 'pending' || in_array($paymentStatus, ['pending', 'rejected']);
+                $isMidtrans = in_array(strtoupper($order->payment_method), ['MIDTRANS', 'QRIS']);
+                $showUpload = !$isMidtrans && ($order->status === 'pending' || in_array($paymentStatus, ['pending', 'rejected']));
             @endphp
 
             @if($showUpload && $order->status !== 'cancelled')

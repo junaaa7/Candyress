@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TopupController;
@@ -83,6 +84,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Webhook Payment Gateway (QRIS callback — no auth, no CSRF)
 Route::post('/webhook/payment', [WebhookController::class, 'handlePayment'])
     ->name('webhook.payment')
+    ->withoutMiddleware([VerifyCsrfToken::class]);
+
+// Webhook Midtrans (no auth, no CSRF)
+Route::post('/webhook/midtrans', [MidtransWebhookController::class, 'handle'])
+    ->name('webhook.midtrans')
     ->withoutMiddleware([VerifyCsrfToken::class]);
 
 // Route khusus Admin

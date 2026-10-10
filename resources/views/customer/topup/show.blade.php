@@ -73,76 +73,55 @@
                 </div>
             @endif
 
-            {{-- Section 4: If status is pending or rejected --}}
-            @if($status === 'pending' || $status === 'rejected')
+            {{-- Section 4: If status is pending --}}
+            @if($status === 'pending')
                 <div class="mt-6 border-t pt-6 text-center">
-                    <h3 class="font-semibold text-gray-800 text-lg mb-2">Scan QRIS untuk Pembayaran</h3>
-                    <p class="text-sm text-gray-500 mb-4">Silakan scan kode QR di bawah ini menggunakan aplikasi e-Wallet atau Mobile Banking.</p>
-
-                    @php
-                        $storeSetting = \App\Models\Setting::first();
-                        $qrisUrl = !empty($storeSetting?->qris_image) 
-                            ? asset('storage/' . $storeSetting->qris_image) 
-                            : asset('images/payments/qris.jpg');
-                    @endphp
-                    <!-- QRIS Image -->
-                    <div class="inline-block p-3 bg-white border rounded-2xl shadow-sm">
-                        <img src="{{ $qrisUrl }}" 
-                             alt="QRIS Pembayaran" 
-                             class="w-56 sm:w-64 max-w-full mx-auto rounded-xl object-contain"
-                             onerror="this.onerror=null; this.src='{{ asset('images/qris.jpg') }}';">
-                    </div>
-
-                    <!-- Instructions -->
-                    <div class="mt-4 text-xs text-gray-500 space-y-1">
-                        <p>1. Transfer sesuai nominal: <strong class="text-pink-600 font-bold">Rp {{ number_format($topup->amount ?? 10000, 0, ',', '.') }}</strong></p>
-                        <p>2. Pastikan nominal transfer sama persis.</p>
-                        <p>3. Konfirmasi pembayaran setelah berhasil transfer.</p>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="mt-6 flex flex-col sm:flex-row w-full gap-3 justify-center items-center">
-                        <a href="{{ $qrisUrl }}" download="QRIS-Candyress.jpg" 
-                           class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-pink-600 bg-pink-50 hover:bg-pink-100 rounded-lg border border-pink-200 transition text-center">
-                            Unduh Gambar QRIS
-                        </a>
-                        <a href="https://wa.me/6281371711181?text=Halo%20Admin,%20saya%20sudah%20transfer%20top%20up%20dengan%20ID:%20{{ $topup->reference_id ?? $topup->id }}%20sebesar%20Rp%20{{ number_format($topup->amount ?? 10000, 0, ',', '.') }}" 
-                           target="_blank"
-                           class="w-full sm:w-auto px-5 py-2 text-sm font-medium text-white bg-pink-500 hover:bg-pink-600 rounded-lg shadow transition text-center">
-                            Konfirmasi ke WhatsApp Admin
-                        </a>
-                    </div>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-2">Selesaikan Pembayaran via Midtrans</h3>
+                    <p class="text-sm text-gray-500 mb-6">Silakan selesaikan pembayaran top up sebesar <strong>Rp {{ number_format($topup->amount, 0, ',', '.') }}</strong>.</p>
                     
-                    <form action="{{ route('customer.topup.upload-proof', $topup->reference_id) }}" method="POST" enctype="multipart/form-data" class="mt-6 p-4 bg-gray-50 rounded-xl text-left border">
-                        @csrf
-                        <div class="mb-4">
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Upload Bukti Pembayaran</label>
-                            <input type="file" name="proof_image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100" accept="image/*" required>
-                            @error('proof_image')
-                                <p class="text-rose-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <button type="submit" class="w-full px-5 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-900 rounded-lg shadow transition">
-                            Kirim Bukti Pembayaran
+                    @if(isset($snapToken) && $snapToken)
+                        <button id="pay-button" class="px-6 py-3 text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow transition">
+                            Lanjutkan Pembayaran
                         </button>
-                    </form>
-                </div>
-            @endif
-
-            {{-- Section 5: If status is waiting_confirmation --}}
-            @if($status === 'waiting_confirmation')
-                <div class="cute-card p-8 text-center border-2 border-purple-200 bg-purple-50/30">
-                    <div class="text-5xl mb-4">⏳</div>
-                    <h4 class="text-xl font-bold text-purple-800 mb-2">Bukti Pembayaran Terkirim</h4>
-                    <p class="text-purple-600 mb-6">Terima kasih! Admin sedang memverifikasi pembayaran Anda (estimasi 5-30 menit).</p>
-                    
-                    @if(!empty($topup->proof_image))
-                        <div class="mt-4">
-                            <p class="text-sm text-gray-500 mb-2">Bukti yang diupload:</p>
-                            <img src="{{ asset('storage/' . $topup->proof_image) }}" alt="Bukti Pembayaran" class="max-w-[200px] mx-auto rounded-xl shadow-sm border border-gray-200">
+                    @else
+                        <div class="p-4 bg-rose-50 text-rose-600 rounded-lg text-sm font-medium border border-rose-200">
+                            Mohon maaf, terjadi kesalahan saat memuat metode pembayaran Midtrans. Silakan refresh halaman.
                         </div>
                     @endif
                 </div>
+
+                @if(isset($snapToken) && $snapToken)
+                <script type="text/javascript"
+                        src="https://app.sandbox.midtrans.com/snap/snap.js"
+                        data-client-key="{{ config('midtrans.client_key') ?? env('MIDTRANS_CLIENT_KEY') }}">
+                </script>
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var payButton = document.getElementById('pay-button');
+                        if (payButton) {
+                            payButton.addEventListener('click', function () {
+                                window.snap.pay('{{ $snapToken }}', {
+                                    onSuccess: function(result) {
+                                        window.location.reload();
+                                    },
+                                    onPending: function(result) {
+                                        window.location.reload();
+                                    },
+                                    onError: function(result) {
+                                        alert("Pembayaran gagal!");
+                                    },
+                                    onClose: function() {
+                                        console.log('Customer closed the popup without finishing the payment');
+                                    }
+                                });
+                            });
+                            
+                            // Auto trigger Midtrans popup when page loads
+                            payButton.click();
+                        }
+                    });
+                </script>
+                @endif
             @endif
 
             {{-- Section 6: If status is approved --}}

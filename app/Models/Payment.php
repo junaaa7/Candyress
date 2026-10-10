@@ -16,6 +16,7 @@ class Payment extends Model
         'payment_proof',
         'status',
         'rejection_reason',
+        'snap_token',
     ];
 
     public function order()
